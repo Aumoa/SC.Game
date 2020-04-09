@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "THHourai": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

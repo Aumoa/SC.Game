@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="App.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="AppConfiguration.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="GameLogic.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegratedFactory.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="CDevice.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="CSwapChain.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="CCommandQueue.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="CDeviceContext.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="UISystem.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderBuilder.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="CRootSignatureDesc.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphicsPipelineStateDesc.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Mutex.h">
+      <Filter>WinHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="LargeHeap.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapAllocator.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="GC.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Anchor.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Brush.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.DependencyObject.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.DependencyProperty.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Element.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.NavigationEventArgs.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Page.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Thickness.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.SolidColorBrush.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Shapes.Shape.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Shapes.Rectangle.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="tag_ShaderInfo.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Panel.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.RelativePanel.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="DescriptorAllocator.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="CShaderResourceView.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="GlyphBuffer.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.TextBlock.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.TextFormat.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.TextAlignment.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.TextVerticalAlignment.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.GlyphRenderer.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="VisibleDescriptorAllocator.h">
+      <Filter>DXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.RichTextColorUnknown.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCode.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="App.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="AppConfiguration.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="GameLogic.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="IntegratedFactory.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CCommandQueue.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CDevice.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CSwapChain.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeviceContext.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="UISystem.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderBuilder.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderBuilder.UI.cpp">
+      <Filter>Shaders\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Mutex.cpp">
+      <Filter>WinHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="HeapAllocator.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="GC.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="Heap.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="LargeHeap.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphicsPipelineStateDesc.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CRootSignatureDesc.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Brush.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.DependencyObject.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Element.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.NavigationEventArgs.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Page.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.SolidColorBrush.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Shapes.Shape.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Shapes.Rectangle.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Panel.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.RelativePanel.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptorAllocator.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CShaderResourceView.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="GlyphBuffer.cpp">
+      <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.TextFormat.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.TextBlock.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.GlyphRenderer.cpp">
+      <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="VisibleDescriptorAllocator.cpp">
+      <Filter>DXHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.RichTextColorUnknown.cpp">
+      <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Managed">
+      <UniqueIdentifier>{2b988acd-4e65-4f1a-b0ad-66b7d6df9382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packages">
+      <UniqueIdentifier>{388a2ee7-3d22-452a-8782-d3d3f253aee0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXHelper">
+      <UniqueIdentifier>{522da5eb-f062-46ea-878f-fe6754be38e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{3713c526-f1d5-4b15-8dd7-fb1210684006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\UI">
+      <UniqueIdentifier>{45de8627-e132-428d-9f70-e545be09bb42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Headers">
+      <UniqueIdentifier>{ad012173-07ed-40c5-9d59-decf79d9888a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WinHelper">
+      <UniqueIdentifier>{a8f29893-c5dd-456e-882d-3ccf9c097bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managed\UI">
+      <UniqueIdentifier>{b7d8585d-3e0d-4cde-9ed9-33049914a225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unmanaged">
+      <UniqueIdentifier>{09f5b671-823e-4cdf-85b5-59e5e801141f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="UIPixelShader.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="UIVertexShader.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Brush.hlsli">
+      <Filter>Shaders\Headers</Filter>
+    </None>
+    <None Include="Common.hlsli">
+      <Filter>Shaders\Headers</Filter>
+    </None>
+  </ItemGroup>
+</Project>
