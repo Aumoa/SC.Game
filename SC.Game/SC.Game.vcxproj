@@ -165,31 +165,44 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="AppConfiguration.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Asset.h" />
+    <ClInclude Include="Behaviour.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CCommandQueue.h" />
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CDeviceContext.h" />
     <ClInclude Include="CGraphicsPipelineStateDesc.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="CRootSignatureDesc.h" />
     <ClInclude Include="CShaderResourceView.h" />
     <ClInclude Include="CSwapChain.h" />
     <ClInclude Include="DescriptorAllocator.h" />
+    <ClInclude Include="GeometryBuffer.h" />
+    <ClInclude Include="HDRBuffer.h" />
+    <ClInclude Include="HEvent.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GC.h" />
     <ClInclude Include="GlyphBuffer.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapAllocator.h" />
+    <ClInclude Include="ImmutableHeap.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="IntegratedFactory.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="LargeHeap.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshFilter.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShaderBuilder.h" />
     <ClInclude Include="tag_ShaderInfo.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="UI.Anchor.h" />
     <ClInclude Include="UI.Brush.h" />
     <ClInclude Include="UI.DependencyObject.h" />
@@ -210,6 +223,7 @@
     <ClInclude Include="UI.TextVerticalAlignment.h" />
     <ClInclude Include="UI.Thickness.h" />
     <ClInclude Include="UISystem.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="VisibleDescriptorAllocator.h" />
     <ClInclude Include="GameObject.h" />
   </ItemGroup>
@@ -218,10 +232,14 @@
     <ClCompile Include="AppConfiguration.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="Behaviour.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CCommandQueue.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CDeviceContext.cpp" />
     <ClCompile Include="CGraphicsPipelineStateDesc.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="CRootSignatureDesc.cpp" />
     <ClCompile Include="CShaderResourceView.cpp" />
     <ClCompile Include="CSwapChain.cpp" />
@@ -229,13 +247,20 @@
     <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GC.cpp" />
+    <ClCompile Include="GeometryBuffer.cpp" />
     <ClCompile Include="GlyphBuffer.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="HDRBuffer.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapAllocator.cpp" />
+    <ClCompile Include="HEvent.cpp" />
+    <ClCompile Include="ImmutableHeap.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="IntegratedFactory.cpp" />
     <ClCompile Include="LargeHeap.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshFilter.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Mutex.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -243,11 +268,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ShaderBuilder.cpp" />
+    <ClCompile Include="ShaderBuilder.3D.cpp" />
+    <ClCompile Include="ShaderBuilder.PostProcess.cpp" />
     <ClCompile Include="ShaderBuilder.UI.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UI.Brush.cpp" />
     <ClCompile Include="UI.DependencyObject.cpp" />
     <ClCompile Include="UI.Element.cpp" />
@@ -266,6 +295,30 @@
     <ClCompile Include="VisibleDescriptorAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="ColorPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="ColorVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="ToneMappingPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="ToneMappingVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="UIVertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -281,7 +334,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Brush.hlsli" />
+    <None Include="Camera.hlsli" />
     <None Include="Common.hlsli" />
+    <None Include="GammaHelper.hlsli" />
+    <None Include="HDR.hlsli" />
+    <None Include="Light.hlsli" />
+    <None Include="Material.hlsli" />
+    <None Include="RenderingShaderCommon.hlsli" />
+    <None Include="Transform.hlsli" />
+    <None Include="Vertex.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SC\SC.csproj">

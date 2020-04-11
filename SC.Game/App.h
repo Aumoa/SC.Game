@@ -18,6 +18,8 @@ namespace SC::Game
 		static HWND hWnd;
 		static Event<DisposingDelegate> Disposing;
 		static Event<ResizingDelegate> Resizing;
+		static int mWidth;
+		static int mHeight;
 
 		static std::wstring mAppName;
 		static int mPhysicsHz;
@@ -35,6 +37,7 @@ namespace SC::Game
 		static void Initialize();
 		static void DisposeAll();
 		static void CoreLoop();
+		static void GCAdd( ComPtr<IUnknown> pUnknown );
 
 	private:
 		static void OnDisposing();

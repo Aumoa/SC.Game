@@ -23,6 +23,17 @@ CDeviceContext::CDeviceContext( D3D12_COMMAND_LIST_TYPE type )
 	mVisibleDescriptorAllocators[1] = VisibleDescriptorAllocator( 512 );
 }
 
+CDeviceContext::CDeviceContext( D3D12_COMMAND_LIST_TYPE type, bool simplify )
+{
+	mType = type;
+
+	auto pDevice = Graphics::mDevice->pDevice.Get();
+
+	HR( pDevice->CreateCommandAllocator( mType, IID_PPV_ARGS( &mCommandAllocators[0] ) ) );
+
+	mSimplify = simplify;
+}
+
 CDeviceContext::CDeviceContext( CDeviceContext&& from )
 {
 	mType = from.mType;
@@ -61,7 +72,10 @@ void CDeviceContext::Reset( int frameIndex, ID3D12PipelineState* pInitialPipelin
 
 	mFrameIndex = frameIndex;
 
-	mVisibleDescriptorAllocators[frameIndex].Reset( *this );
+	if ( !mSimplify )
+	{
+		mVisibleDescriptorAllocators[frameIndex].Reset( *this );
+	}
 }
 
 void CDeviceContext::Close()
@@ -164,6 +178,45 @@ void CDeviceContext::SetGraphicsRootShaderResource( UINT index, CShaderResourceV
 	auto handle = mVisibleDescriptorAllocators[mFrameIndex].GetGPUHandle( idx );
 
 	mCommandList->SetGraphicsRootDescriptorTable( index, handle );
+}
+
+void CDeviceContext::CopyResource( ID3D12Resource* pDstResource, ID3D12Resource* pSrcResource )
+{
+	mCommandList->CopyResource( pDstResource, pSrcResource );
+}
+
+void CDeviceContext::ClearDepthStencilView( const D3D12_CPU_DESCRIPTOR_HANDLE& depthStencilView, D3D12_CLEAR_FLAGS clearFlags, float depth, UINT8 stencil, UINT numRects, const D3D12_RECT* pRects )
+{
+	mCommandList->ClearDepthStencilView( depthStencilView, clearFlags, depth, stencil, numRects, pRects );
+}
+
+void CDeviceContext::SetGraphicsRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView* pShaderResourceViews )
+{
+	UINT start = -1;
+
+	for ( UINT i = 0; i < numShaderResources; ++i )
+	{
+		auto idx = mVisibleDescriptorAllocators[mFrameIndex].CopyFrom( pShaderResourceViews[i].mIndex, *this );
+		if ( start == -1 ) start = idx;
+	}
+
+	auto handle = mVisibleDescriptorAllocators[mFrameIndex].GetGPUHandle( start );
+	mCommandList->SetGraphicsRootDescriptorTable( index, handle );
+}
+
+void CDeviceContext::IASetVertexBuffers( UINT startSlot, UINT numViews, const D3D12_VERTEX_BUFFER_VIEW* pViews )
+{
+	mCommandList->IASetVertexBuffers( startSlot, numViews, pViews );
+}
+
+void CDeviceContext::IASetIndexBuffer( const D3D12_INDEX_BUFFER_VIEW* pView )
+{
+	mCommandList->IASetIndexBuffer( pView );
+}
+
+void CDeviceContext::DrawIndexedInstanced( UINT indexCountPerInstance, UINT instanceCount, UINT startIndexLocation, INT baseVertexLocation, UINT startInstanceLocation )
+{
+	mCommandList->DrawIndexedInstanced( indexCountPerInstance, instanceCount, startIndexLocation, baseVertexLocation, startInstanceLocation );
 }
 
 CDeviceContext& CDeviceContext::operator=( CDeviceContext&& from )

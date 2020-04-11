@@ -13,6 +13,7 @@ namespace SC::Game
 		void Execute( int numContexts, CDeviceContext** ppDeviceContexts );
 		UINT64 Signal();
 		void Signal( ID3D12Fence* pFence, UINT64 fenceValue );
+		void SetEventOnCompletion( UINT64 fenceValue, HEvent& hEvent );
 
 		ComPtr<ID3D12CommandQueue> pCommandQueue;
 		ComPtr<ID3D12Fence> pFence;

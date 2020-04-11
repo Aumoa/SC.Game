@@ -21,8 +21,8 @@ namespace SC::Game::UI::Shapes
 
 	public:
 		/// <summary> <see cref="Rectangle"/> 클래스의 새 인스턴스를 초기화합니다. </summary>
-		/// <param name="name"> 개체 이름을 전달합니다. </param>
-		Rectangle( System::String^ name );
+		/// <param name="xName"> 개체 이름을 전달합니다. </param>
+		Rectangle( System::String^ xName );
 		~Rectangle();
 		!Rectangle();
 	};

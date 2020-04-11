@@ -22,9 +22,12 @@ namespace SC::Game
 		std::queue<ComPtr<IUnknown>> mGCItems;
 		ComPtr<LargeHeap> mShaderDispatchUI;
 
+		bool mSimplify = false;
+
 	public:
 		CDeviceContext();
 		CDeviceContext( D3D12_COMMAND_LIST_TYPE type );
+		CDeviceContext( D3D12_COMMAND_LIST_TYPE type, bool simplify );
 		CDeviceContext( CDeviceContext&& from );
 		CDeviceContext( const CDeviceContext& ) = delete;
 
@@ -51,6 +54,12 @@ namespace SC::Game
 		void RSSetViewports( UINT numViewports, const D3D12_VIEWPORT* pViewports );
 		void RSSetScissorRects( UINT numRects, const D3D12_RECT* pRects );
 		void SetGraphicsRootShaderResource( UINT index, CShaderResourceView& shaderResourceView );
+		void CopyResource( ID3D12Resource* pDstResource, ID3D12Resource* pSrcResource );
+		void ClearDepthStencilView( const D3D12_CPU_DESCRIPTOR_HANDLE& depthStencilView, D3D12_CLEAR_FLAGS clearFlags = D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, float depth = 1.0f, UINT8 stencil = 0, UINT numRects = 0, const D3D12_RECT* pRects = nullptr );
+		void SetGraphicsRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView* pShaderResourceViews );
+		void IASetVertexBuffers( UINT startSlot, UINT numViews, const D3D12_VERTEX_BUFFER_VIEW* pViews );
+		void IASetIndexBuffer( const D3D12_INDEX_BUFFER_VIEW* pView );
+		void DrawIndexedInstanced( UINT indexCountPerInstance, UINT instanceCount, UINT startIndexLocation, INT baseVertexLocation, UINT startInstanceLocation );
 
 		void ClearRenderTargetView( D3D12_CPU_DESCRIPTOR_HANDLE renderTargetView, const std::array<FLOAT, 4>& colorRGBA, UINT numRects = 0, const D3D12_RECT* pRects = nullptr )
 		{

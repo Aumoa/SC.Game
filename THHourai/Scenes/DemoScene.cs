@@ -11,7 +11,7 @@ namespace THHourai
 		LoadingPage loadingPage;
 		bool isFirst = false;
 
-		Task<Scene00> nextScene;
+		Task<Scene00.Scene> nextScene;
 
 		public DemoScene() : base()
 		{
@@ -25,7 +25,7 @@ namespace THHourai
 				App.Navigate( demoPage );
 				demoPage.HelpText = "장면을 불러오는 중...";
 
-				nextScene = SceneManager.LoadSceneAsync<Scene00>();
+				nextScene = SceneManager.LoadSceneAsync<Scene00.Scene>();
 				isFirst = false;
 			}
 

@@ -30,6 +30,12 @@ CShaderResourceView::~CShaderResourceView()
 
 CShaderResourceView& CShaderResourceView::operator=( CShaderResourceView&& right )
 {
+	if ( mIndex != -1 )
+	{
+		DescriptorAllocator::Push( mIndex );
+		mIndex = -1;
+	}
+
 	mIndex = right.mIndex;
 	right.mIndex = -1;
 

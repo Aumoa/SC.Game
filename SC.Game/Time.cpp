@@ -1,22 +1,22 @@
 using namespace SC;
 using namespace SC::Game;
 
-double Time::DeltaTime::get()
+float Time::DeltaTime::get()
 {
 	return mDeltaTime;
 }
 
-void Time::DeltaTime::set( double value )
+void Time::DeltaTime::set( float value )
 {
 	mDeltaTime = value;
 }
 
-double Time::FixedDeltaTime::get()
+float Time::FixedDeltaTime::get()
 {
 	return mFixedDeltaTime;
 }
 
-void Time::FixedDeltaTime::set( double value )
+void Time::FixedDeltaTime::set( float value )
 {
 	mFixedDeltaTime = value;
 }

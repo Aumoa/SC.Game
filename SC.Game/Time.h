@@ -7,28 +7,28 @@ namespace SC::Game
 	/// </summary>
 	public ref class Time abstract sealed
 	{
-		static double mDeltaTime;
-		static double mFixedDeltaTime;
+		static float mDeltaTime;
+		static float mFixedDeltaTime;
 
 	public:
 		/// <summary>
 		/// 이전 Update로부터 경과된 시간을 초 단위로 가져옵니다.
 		/// </summary>
-		static property double DeltaTime
+		static property float DeltaTime
 		{
-			double get();
+			float get();
 		internal:
-			void set( double value );
+			void set( float value );
 		}
 
 		/// <summary>
 		/// 이전 FixedUpdate로부터 경과된 시간을 초 단위로 가져옵니다.
 		/// </summary>
-		static property double FixedDeltaTime
+		static property float FixedDeltaTime
 		{
-			double get();
+			float get();
 		internal:
-			void set( double value );
+			void set( float value );
 		}
 	};
 }

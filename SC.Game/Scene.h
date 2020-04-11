@@ -3,18 +3,23 @@
 namespace SC::Game
 {
 	ref class GameObject;
+	ref class Camera;
+	ref class MeshRenderer;
 
 	/// <summary>
 	/// 게임의 한 장면을 표현합니다.
 	/// </summary>
 	public ref class Scene abstract : public System::Collections::Generic::IList<GameObject^>
 	{
+	internal:
 		Diagnostics::StepTimer^ mUpdateTimer;
 		Diagnostics::StepTimer^ mFixedUpdateTimer;
 
 		System::Collections::Generic::List<GameObject^>^ mGameObjects;
 
 		System::Collections::Generic::List<GameObject^>^ mSceneGraph;
+		System::Collections::Generic::List<Camera^>^ mSceneCameras;
+		System::Collections::Generic::List<MeshRenderer^>^ mSceneMeshRenderers;
 
 	private:
 		virtual System::Collections::IEnumerator^ GetEnumerator2() sealed = System::Collections::IEnumerable::GetEnumerator;

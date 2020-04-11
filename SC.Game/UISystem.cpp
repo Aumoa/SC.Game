@@ -13,6 +13,9 @@ gcroot<UI::Page^> UISystem::mReservedPage;
 gcroot<UI::SolidColorBrush^> UISystem::mDefaultBlackBrush;
 gcroot<UI::TextFormat^> UISystem::mDefaultTextFormat;
 
+float UISystem::mWidth;
+float UISystem::mHeight;
+
 ComPtr<Heap> UISystem::mConstantBuffer;
 D3D12_VIEWPORT UISystem::mViewport;
 D3D12_RECT UISystem::mScissorRect;
@@ -65,10 +68,7 @@ void UISystem::Update( int frameIndex )
 
 	if ( auto page = ( Page^ )mRootPage; page )
 	{
-		RECT rc;
-		GetClientRect( App::hWnd, &rc );
-
-		RectangleF fullscreen( 0, 0, ( float )rc.right - rc.left, ( float )rc.bottom - rc.top );
+		RectangleF fullscreen( 0, 0, mWidth, mHeight );
 
 		page->Update( fullscreen );
 	}
@@ -148,4 +148,7 @@ void UISystem::OnResizing( int width, int height )
 	mScissorRect.top = 0;
 	mScissorRect.right = width;
 	mScissorRect.bottom = height;
+
+	mWidth = ( float )width;
+	mHeight = ( float )height;
 }

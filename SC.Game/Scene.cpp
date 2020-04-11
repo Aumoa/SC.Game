@@ -9,7 +9,10 @@ using namespace System::Collections::Generic;
 Scene::Scene()
 {
 	mGameObjects = gcnew List<GameObject^>();
+
 	mSceneGraph = gcnew List<GameObject^>();
+	mSceneCameras = gcnew List<Camera^>();
+	mSceneMeshRenderers = gcnew List<MeshRenderer^>();
 }
 
 System::Collections::IEnumerator^ Scene::GetEnumerator2()
@@ -22,6 +25,8 @@ void Scene::PopulateSceneGraph()
 	if ( mSceneUpdated )
 	{
 		mSceneGraph->Clear();
+		mSceneCameras->Clear();
+		mSceneMeshRenderers->Clear();
 
 		for each ( auto i in mGameObjects )
 		{
@@ -36,10 +41,13 @@ void Scene::IncludeChilds( GameObject^ gameObject )
 {
 	mSceneGraph->Add( gameObject );
 
-	//for each ( auto child in gameObject )
-	//{
+	if ( auto cam = gameObject->GetComponent<Camera^>(); cam ) mSceneCameras->Add( cam );
+	if ( auto meshRenderer = gameObject->GetComponent<MeshRenderer^>(); meshRenderer ) mSceneMeshRenderers->Add( meshRenderer );
 
-	//}
+	for each ( auto child in gameObject->mGameObjects )
+	{
+		IncludeChilds( child );
+	}
 }
 
 IEnumerator<GameObject^>^ Scene::GetEnumerator()
@@ -124,17 +132,32 @@ void Scene::Update()
 	// 장면 그래프를 작성합니다.
 	PopulateSceneGraph();
 
-	mUpdateTimer->Tick( nullptr );
-	mFixedUpdateTimer->Tick( gcnew StepTimerCallbackDelegate( this, &Scene::FixedUpdate ) );
-
 	// Update에 대한 Time 클래스 개체를 갱신합니다.
-	Time::DeltaTime = mUpdateTimer->ElapsedSeconds;
+	mUpdateTimer->Tick( nullptr );
+	Time::DeltaTime = ( float )mUpdateTimer->ElapsedSeconds;
+
+	for each ( auto cam in mSceneCameras )
+	{
+		cam->Update();
+	}
+
+	for each ( auto go in mSceneGraph )
+	{
+		go->Update();
+	}
+
+	mFixedUpdateTimer->Tick( gcnew StepTimerCallbackDelegate( this, &Scene::FixedUpdate ) );
 }
 
 void Scene::FixedUpdate()
 {
 	// FixedUpdate에 대한 Time 클래스 개체를 갱신합니다.
-	Time::FixedDeltaTime = mFixedUpdateTimer->ElapsedSeconds;
+	Time::FixedDeltaTime = ( float )mFixedUpdateTimer->ElapsedSeconds;
+
+	for each ( auto go in mSceneGraph )
+	{
+		go->FixedUpdate();
+	}
 }
 
 int Scene::Count::get()

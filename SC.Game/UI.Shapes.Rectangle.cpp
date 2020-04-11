@@ -31,7 +31,7 @@ void Rectangle::Render( CDeviceContext& deviceContext )
 	}
 }
 
-Rectangle::Rectangle( String^ name ) : Shape( name )
+Rectangle::Rectangle( String^ xName ) : Shape( xName )
 {
 	Width = 100;
 	Height = 100;

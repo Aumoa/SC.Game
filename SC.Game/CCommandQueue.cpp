@@ -44,3 +44,8 @@ void CCommandQueue::Signal( ID3D12Fence* pFence, UINT64 fenceValue )
 {
 	HR( pCommandQueue->Signal( pFence, fenceValue ) );
 }
+
+void CCommandQueue::SetEventOnCompletion( UINT64 fenceValue, HEvent& hEvent )
+{
+	HR( pFence->SetEventOnCompletion( fenceValue, hEvent.mHandle ) );
+}

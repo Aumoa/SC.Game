@@ -17,6 +17,9 @@
 #include <d2d1_1.h>
 #include <dwrite.h>
 #include <wincodec.h>
+#include <DirectXMath.h>
+
+using namespace DirectX;
 
 #include <exception>
 #include <functional>
@@ -41,6 +44,7 @@ using Microsoft::WRL::ComPtr;
 
 /* WinHelper */
 #include "Mutex.h"
+#include "HEvent.h"
 
 /* DXHelper */
 #include "CDevice.h"
@@ -52,13 +56,19 @@ using Microsoft::WRL::ComPtr;
 #include "IntegratedFactory.h"
 #include "LargeHeap.h"
 #include "Heap.h"
+#include "ImmutableHeap.h"
 #include "CShaderResourceView.h"
 
 /* Unmanaged */
 #include "tag_ShaderInfo.h"
 #include "GlyphBuffer.h"
+#include "Vertex.h"
 #include "UI.GlyphRenderer.h"
 #include "UI.RichTextColorUnknown.h"
+
+/* Buffers */
+#include "GeometryBuffer.h"
+#include "HDRBuffer.h"
 
 /* Packages */
 #include "App.h"
@@ -130,6 +140,7 @@ inline void HR( HRESULT hr )
 #include "UI.TextVerticalAlignment.h"
 
 /* Struct */
+#include "Ray.h"
 #include "UI.DependencyProperty.h"
 #include "UI.Thickness.h"
 
@@ -144,6 +155,14 @@ inline void HR( HRESULT hr )
 #include "Time.h"
 #include "Input.h"
 #include "GameObject.h"
+#include "Component.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "MeshFilter.h"
+#include "MeshRenderer.h"
+#include "Behaviour.h"
+#include "Asset.h"
+#include "Mesh.h"
 #include "UI.DependencyObject.h"
 #include "UI.Element.h"
 #include "UI.Page.h"
@@ -155,3 +174,33 @@ inline void HR( HRESULT hr )
 #include "UI.RelativePanel.h"
 #include "UI.TextFormat.h"
 #include "UI.TextBlock.h"
+
+inline void Assign( XMFLOAT4X4& left, System::Numerics::Matrix4x4% right )
+{
+	left._11 = right.M11;
+	left._12 = right.M12;
+	left._13 = right.M13;
+	left._14 = right.M14;
+
+	left._21 = right.M21;
+	left._22 = right.M22;
+	left._23 = right.M23;
+	left._24 = right.M24;
+
+	left._31 = right.M31;
+	left._32 = right.M32;
+	left._33 = right.M33;
+	left._34 = right.M34;
+
+	left._41 = right.M41;
+	left._42 = right.M42;
+	left._43 = right.M43;
+	left._44 = right.M44;
+}
+
+inline void Assign( XMFLOAT3& left, System::Numerics::Vector3% right )
+{
+	left.x = right.X;
+	left.y = right.Y;
+	left.z = right.Z;
+}

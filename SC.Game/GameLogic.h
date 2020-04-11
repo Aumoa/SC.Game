@@ -7,9 +7,16 @@ namespace SC::Game
 	class GameLogic abstract
 	{
 	public:
-		static CDeviceContext mDeviceContext;
 		static gcroot<Scene^> mCurrentScene;
 		static gcroot<Scene^> mRemovedScenes[2];
+
+		static CDeviceContext mDeviceContext;
+
+		static GeometryBuffer mGeometryBuffer;
+		static HDRBuffer mHDRBuffer;
+
+		static D3D12_RECT mScissorRect;
+		static D3D12_VIEWPORT mViewport;
 
 	public:
 		static void Initialize();
@@ -19,7 +26,9 @@ namespace SC::Game
 
 	private:
 		static void OnDisposing();
+		static void OnResizing( int width, int height );
 
+		static void GeometryWriting();
 		static void Present();
 	};
 }

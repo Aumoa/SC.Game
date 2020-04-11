@@ -8,6 +8,8 @@ using namespace std;
 HWND App::hWnd;
 Event<DisposingDelegate> App::Disposing;
 Event<ResizingDelegate> App::Resizing;
+int App::mWidth;
+int App::mHeight;
 
 wstring App::mAppName;
 int App::mPhysicsHz;
@@ -83,6 +85,11 @@ void App::CoreLoop()
 	}
 }
 
+void App::GCAdd( ComPtr<IUnknown> pUnknown )
+{
+	mHeapCommitDCAndGC.GCAdd( move( pUnknown ) );
+}
+
 void App::OnDisposing()
 {
 	if ( mFence && mFence->GetCompletedValue() < mFenceValue )
@@ -139,6 +146,9 @@ void App::OnSize( int width, int height )
 		{
 			i( width, height );
 		}
+
+		mWidth = width;
+		mHeight = height;
 
 		mDisablePresent = false;
 	}

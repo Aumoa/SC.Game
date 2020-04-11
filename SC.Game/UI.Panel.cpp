@@ -3,14 +3,9 @@ using namespace SC::Game::UI;
 
 using namespace System;
 using namespace System::Collections::Generic;
+using namespace System::Drawing;
 
 using namespace std;
-
-Panel::Panel( String^ xName ) : Element( xName )
-{
-	mContentType = gcnew ContentType();
-	Content = mContentType;
-}
 
 void Panel::Render( CDeviceContext& deviceContext )
 {
@@ -46,6 +41,22 @@ void Panel::Render( CDeviceContext& deviceContext )
 System::Collections::IEnumerator^ Panel::GetEnumerator2()
 {
 	return mContentType->GetEnumerator();
+}
+
+RectangleF Panel::OnUpdate( RectangleF clientRect )
+{
+	for each ( auto item in this )
+	{
+		item->Update( clientRect );
+	}
+
+	return clientRect;
+}
+
+Panel::Panel( String^ xName ) : Element( xName )
+{
+	mContentType = gcnew ContentType();
+	Content = mContentType;
 }
 
 IEnumerator<Element^>^ Panel::GetEnumerator()

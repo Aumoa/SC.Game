@@ -27,6 +27,9 @@ namespace THHourai
 		{
 			totalSeconds += Time.DeltaTime;
 
+#if DEBUG
+			DemoEnd = true;
+#else
 			if ( totalSeconds >= 5.0 )
 			{
 				DemoEnd = true;
@@ -64,6 +67,7 @@ namespace THHourai
 
 				gameTextBrush.Opacity = ( float )( myEase.CurrentValue - 0.5 ) * 2.0f;
 			}
+#endif
 
 			return base.OnUpdate( clientRect );
 		}

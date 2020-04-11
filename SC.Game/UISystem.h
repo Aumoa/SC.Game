@@ -25,6 +25,9 @@ namespace SC::Game
 		static gcroot<UI::SolidColorBrush^> mDefaultBlackBrush;
 		static gcroot<UI::TextFormat^> mDefaultTextFormat;
 
+		static float mWidth;
+		static float mHeight;
+
 		static ComPtr<Heap> mConstantBuffer;
 		static D3D12_VIEWPORT mViewport;
 		static D3D12_RECT mScissorRect;
