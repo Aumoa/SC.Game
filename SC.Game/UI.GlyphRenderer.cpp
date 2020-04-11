@@ -55,7 +55,57 @@ HRESULT STDMETHODCALLTYPE GlyphRenderer::DrawGlyphRun( void* clientDrawingContex
 {
     if ( glyphRun->glyphCount )
     {
+        if ( clientDrawingContext )
+        {
+            auto& deviceContext = *( CDeviceContext* )clientDrawingContext;
+
+            //
+            // 브러시를 선택합니다.
+            Brush^ brush = mFillBrush;
+            if ( clientDrawingEffect )
+            {
+                brush = ( ( RichTextColorUnknown* )clientDrawingEffect )->mBrush;
+            }
+
+            deviceContext.SetGraphicsRootConstantBufferView( ( UINT )Slot_UI_Brush, brush->mConstantBuffer->GetGPUVirtualAddress() );
+
+            //
+            // 렌더 타입을 설정합니다.
+            struct
+            {
+                UINT renderType;
+                float opacity;
+            } v;
+            v.renderType = 0;
+            v.opacity = mOpacity;
+            deviceContext.SetGraphicsRoot32BitConstants( ( UINT )Slot_UI_RenderType, 2, &v );
+
+            mGlyphBuffer->DrawGlyphRun( &deviceContext, baselineOriginX, baselineOriginY, glyphRun );
+        }
+        else
+        {
+            mGlyphBuffer->PushGlyphRun( glyphRun );
+        }
+    }
+
+    return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE GlyphRenderer::DrawUnderline( void* clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_UNDERLINE const* underline, IUnknown* clientDrawingEffect )
+{
+    if ( clientDrawingContext )
+    {
         auto& deviceContext = *( CDeviceContext* )clientDrawingContext;
+
+        tag_Rect output;
+
+        output.left = baselineOriginX;
+        output.top = baselineOriginY + underline->offset - underline->thickness;
+        output.width = underline->width;
+        output.height = underline->thickness;
+
+        tag_ShaderInfo shaderInfo;
+        shaderInfo.output = output;;
 
         //
         // 브러시를 선택합니다.
@@ -65,111 +115,74 @@ HRESULT STDMETHODCALLTYPE GlyphRenderer::DrawGlyphRun( void* clientDrawingContex
             brush = ( ( RichTextColorUnknown* )clientDrawingEffect )->mBrush;
         }
 
-        deviceContext.SetGraphicsRootConstantBufferView( ( UINT )Slot_UI_Brush, brush->mConstantBuffer->GetGPUVirtualAddress() );
-
         //
         // 렌더 타입을 설정합니다.
-        struct
-        {
-            UINT renderType;
-            float opacity;
-        } v;
-        v.renderType = 0;
-        v.opacity = mOpacity;
-        deviceContext.SetGraphicsRoot32BitConstants( ( UINT )Slot_UI_RenderType, 2, &v );
+        deviceContext.SetGraphicsRoot32BitConstant( ( UINT )Slot_UI_RenderType, 1 );
 
-        mGlyphBuffer->DrawGlyphRun( &deviceContext, baselineOriginX, baselineOriginY, glyphRun );
+        D3D12_RANGE range;
+        range.Begin = sizeof( tag_ShaderInfo ) * UISystem::mShaderDispatchInfoIndex;
+        range.End = range.Begin + sizeof( tag_ShaderInfo ) * 1;
+
+        auto block = ( tag_ShaderInfo* )UISystem::mShaderDispatchInfo->Map();
+        memcpy( block + UISystem::mShaderDispatchInfoIndex, &output, sizeof( tag_ShaderInfo ) * 1 );
+        UISystem::mShaderDispatchInfo->Unmap( range );
+
+        auto gpuAddr = UISystem::mShaderDispatchInfo->GetGPUVirtualAddress();
+        gpuAddr += UISystem::mShaderDispatchInfoIndex * sizeof( tag_ShaderInfo );
+
+        deviceContext.SetGraphicsRootShaderResourceView( Slot_UI_ShaderInfo, gpuAddr );
+
+        // 셰이더 정보 개체의 위치를 넘깁니다.
+        UISystem::mShaderDispatchInfoIndex += 1;
     }
-
-    return S_OK;
-}
-
-HRESULT STDMETHODCALLTYPE GlyphRenderer::DrawUnderline( void* clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_UNDERLINE const* underline, IUnknown* clientDrawingEffect )
-{
-    auto& deviceContext = *( CDeviceContext* )clientDrawingContext;
-
-    tag_Rect output;
-
-    output.left = baselineOriginX;
-    output.top = baselineOriginY + underline->offset - underline->thickness;
-    output.width = underline->width;
-    output.height = underline->thickness;
-
-    tag_ShaderInfo shaderInfo;
-    shaderInfo.output = output;;
-
-    //
-    // 브러시를 선택합니다.
-    Brush^ brush = mFillBrush;
-    if ( clientDrawingEffect )
-    {
-        brush = ( ( RichTextColorUnknown* )clientDrawingEffect )->mBrush;
-    }
-
-    //
-    // 렌더 타입을 설정합니다.
-    deviceContext.SetGraphicsRoot32BitConstant( ( UINT )Slot_UI_RenderType, 1 );
-
-    D3D12_RANGE range;
-    range.Begin = sizeof( tag_ShaderInfo ) * UISystem::mShaderDispatchInfoIndex;
-    range.End = range.Begin + sizeof( tag_ShaderInfo ) * 1;
-
-    auto block = ( tag_ShaderInfo* )UISystem::mShaderDispatchInfo->Map();
-    memcpy( block + UISystem::mShaderDispatchInfoIndex, &output, sizeof( tag_ShaderInfo ) * 1 );
-    UISystem::mShaderDispatchInfo->Unmap( range );
-
-    auto gpuAddr = UISystem::mShaderDispatchInfo->GetGPUVirtualAddress();
-    gpuAddr += UISystem::mShaderDispatchInfoIndex * sizeof( tag_ShaderInfo );
-
-    deviceContext.SetGraphicsRootShaderResourceView( Slot_UI_ShaderInfo, gpuAddr );
-
-    // 셰이더 정보 개체의 위치를 넘깁니다.
-    UISystem::mShaderDispatchInfoIndex += 1;
 
     return S_OK;
 }
 
 HRESULT STDMETHODCALLTYPE GlyphRenderer::DrawStrikethrough( void* clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_STRIKETHROUGH const* strikethrough, IUnknown* clientDrawingEffect )
 {
-    auto& deviceContext = *( CDeviceContext* )clientDrawingContext;
-
-    tag_Rect output;
-
-    output.left = baselineOriginX;
-    output.top = baselineOriginY + strikethrough->offset - strikethrough->thickness;
-    output.width = strikethrough->width;
-    output.height = strikethrough->thickness;
-
-    tag_ShaderInfo shaderInfo;
-    shaderInfo.output = output;;
-
-    //
-    // 브러시를 선택합니다.
-    Brush^ brush = mFillBrush;
-    if ( clientDrawingEffect )
+    if ( clientDrawingContext )
     {
-        brush = ( ( RichTextColorUnknown* )clientDrawingEffect )->mBrush;
+        auto& deviceContext = *( CDeviceContext* )clientDrawingContext;
+
+        tag_Rect output;
+
+        output.left = baselineOriginX;
+        output.top = baselineOriginY + strikethrough->offset - strikethrough->thickness;
+        output.width = strikethrough->width;
+        output.height = strikethrough->thickness;
+
+        tag_ShaderInfo shaderInfo;
+        shaderInfo.output = output;;
+
+        //
+        // 브러시를 선택합니다.
+        Brush^ brush = mFillBrush;
+        if ( clientDrawingEffect )
+        {
+            brush = ( ( RichTextColorUnknown* )clientDrawingEffect )->mBrush;
+        }
+
+        //
+        // 렌더 타입을 설정합니다.
+        deviceContext.SetGraphicsRoot32BitConstant( ( UINT )Slot_UI_RenderType, 1 );
+
+        D3D12_RANGE range;
+        range.Begin = sizeof( tag_ShaderInfo ) * UISystem::mShaderDispatchInfoIndex;
+        range.End = range.Begin + sizeof( tag_ShaderInfo ) * 1;
+
+        auto block = ( tag_ShaderInfo* )UISystem::mShaderDispatchInfo->Map();
+        memcpy( block + UISystem::mShaderDispatchInfoIndex, &output, sizeof( tag_ShaderInfo ) * 1 );
+        UISystem::mShaderDispatchInfo->Unmap( range );
+
+        auto gpuAddr = UISystem::mShaderDispatchInfo->GetGPUVirtualAddress();
+        gpuAddr += UISystem::mShaderDispatchInfoIndex * sizeof( tag_ShaderInfo );
+
+        deviceContext.SetGraphicsRootShaderResourceView( Slot_UI_ShaderInfo, gpuAddr );
+
+        // 셰이더 정보 개체의 위치를 넘깁니다.
+        UISystem::mShaderDispatchInfoIndex += 1;
     }
-
-    //
-    // 렌더 타입을 설정합니다.
-    deviceContext.SetGraphicsRoot32BitConstant( ( UINT )Slot_UI_RenderType, 1 );
-
-    D3D12_RANGE range;
-    range.Begin = sizeof( tag_ShaderInfo ) * UISystem::mShaderDispatchInfoIndex;
-    range.End = range.Begin + sizeof( tag_ShaderInfo ) * 1;
-
-    auto block = ( tag_ShaderInfo* )UISystem::mShaderDispatchInfo->Map();
-    memcpy( block + UISystem::mShaderDispatchInfoIndex, &output, sizeof( tag_ShaderInfo ) * 1 );
-    UISystem::mShaderDispatchInfo->Unmap( range );
-
-    auto gpuAddr = UISystem::mShaderDispatchInfo->GetGPUVirtualAddress();
-    gpuAddr += UISystem::mShaderDispatchInfoIndex * sizeof( tag_ShaderInfo );
-
-    deviceContext.SetGraphicsRootShaderResourceView( Slot_UI_ShaderInfo, gpuAddr );
-
-    // 셰이더 정보 개체의 위치를 넘깁니다.
-    UISystem::mShaderDispatchInfoIndex += 1;
 
     return S_OK;
 }

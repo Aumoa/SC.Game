@@ -2,7 +2,7 @@
   "profiles": {
     "THHourai": {
       "commandName": "Project",
-      "nativeDebugging": false
+      "nativeDebugging": true
     }
   }
 }

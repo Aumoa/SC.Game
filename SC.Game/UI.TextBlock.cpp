@@ -66,6 +66,9 @@ RectangleF TextBlock::OnUpdate( RectangleF clientRect )
 			HR( mLayout->SetMaxHeight( ( float )mComputed.Height ) );
 		}
 
+		// 글리프 사전에 글리프 데이터를 추가하기 위해 사전 Draw를 진행합니다.
+		mLayout->Draw( nullptr, mGlyphRenderer, mComputed.Left, mComputed.Top );
+
 		mContentChanged = false;
 	}
 
