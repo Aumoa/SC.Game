@@ -4,11 +4,16 @@ using namespace SC::Game;
 using namespace System;
 using namespace System::Collections::Generic;
 
+using namespace physx;
+
 bool GameObject::OnComponentAdd( Component^ component )
 {
-	if ( mSceneRef && component->GetType() == Camera::typeid )
+	if ( component->GetType() == Camera::typeid )
 	{
-		mSceneRef->mSceneUpdated = true;
+		if ( mSceneRef )
+		{
+			mSceneRef->mSceneUpdated = true;
+		}
 	}
 
 	else if ( component->GetType() == MeshRenderer::typeid )
@@ -21,26 +26,174 @@ bool GameObject::OnComponentAdd( Component^ component )
 		mTransform->CreateBuffer();
 	}
 
+	else if ( component->GetType() == Camera::typeid )
+	{
+		if ( mSceneRef )
+		{
+			mSceneRef->mSceneUpdated = true;
+		}
+	}
+
+	else if ( component->GetType() == Light::typeid )
+	{
+		if ( mSceneRef )
+		{
+			mSceneRef->mSceneUpdated = true;
+		}
+	}
+
+	else if ( component->GetType() == Rigidbody::typeid )
+	{
+		// 새로운 Dynamic 리지드바디를 생성합니다.
+		auto pos = Transform->Position;
+		auto quat = Transform->Rotation;
+
+		PxTransform gp;
+		Assign( gp.p, pos );
+		Assign( gp.q, quat );
+
+		auto pxRigid = Physics::mPhysics->createRigidDynamic( gp );
+		RigidSwap( pxRigid->is<PxRigidActor>() );
+		mIsStaticRigid = false;
+
+		// 기존 충돌체 컴포넌트가 있을 경우 추가합니다.
+		auto colliders = GetComponentsInChildren<Collider^>();
+		for each ( auto collider in colliders )
+		{
+			collider->AttachToActor( mRigidbody );
+		}
+
+		auto rigidbody = ( Rigidbody^ )component;
+		rigidbody->mRigidbody = pxRigid->is<PxRigidDynamic>();
+	}
+
+	else if ( Collider::typeid->IsAssignableFrom( component->GetType() ) )
+	{
+		if ( !mRigidbody )
+		{
+			PxTransform gp;
+			Assign( gp.p, Transform->Position );
+			Assign( gp.q, Transform->Rotation );
+
+			auto pRigid = Physics::mPhysics->createRigidStatic( gp );
+			RigidSwap( pRigid->is<PxRigidActor>() );
+			mIsStaticRigid = true;
+		}
+
+		auto pIsCol = safe_cast< Collider^ >( component );
+		pIsCol->AttachToActor( mRigidbody );
+	}
+
 	return true;
 }
 
-void GameObject::SetScene( Scene^ sceneRef )
+void GameObject::OnComponentRemove( Component^ component )
 {
-	if ( sceneRef )
+	if ( component->GetType() == Camera::typeid )
+	{
+		if ( mSceneRef )
+		{
+			mSceneRef->mSceneUpdated = true;
+		}
+	}
+
+	else if ( component->GetType() == MeshRenderer::typeid )
 	{
 		if ( mSceneRef )
 		{
 			mSceneRef->mSceneUpdated = true;
 		}
 
-		mSceneRef = sceneRef;
+		mTransform->CreateBuffer();
+	}
 
-		for each ( auto go in mGameObjects )
+	else if ( component->GetType() == Camera::typeid )
+	{
+		if ( mSceneRef )
 		{
-			go->SetScene( sceneRef );
+			mSceneRef->mSceneUpdated = true;
+		}
+	}
+
+	else if ( component->GetType() == Light::typeid )
+	{
+		if ( mSceneRef )
+		{
+			mSceneRef->mSceneUpdated = true;
+		}
+	}
+
+	else if ( component->GetType() == Rigidbody::typeid )
+	{
+		auto pos = Transform->Position;
+		auto quat = Transform->Rotation;
+
+		PxTransform gp;
+		Assign( gp.p, pos );
+		Assign( gp.q, quat );
+
+		auto pxRigid = Physics::mPhysics->createRigidStatic( gp );
+		RigidSwap( pxRigid );
+		mIsStaticRigid = true;
+
+		auto colliders = GetComponentsInChildren<Collider^>();
+		for each ( auto collider in colliders )
+		{
+			collider->AttachToActor( pxRigid );
+		}
+	}
+}
+
+void GameObject::RigidSwap( PxRigidActor* pRigidbody )
+{
+	if ( mRigidbody )
+	{
+		if ( mSceneRef )
+		{
+			// 장면에서 기존 리지드바디를 제거합니다.
+			mSceneRef->mPxScene->removeActor( *mRigidbody );
 		}
 
-		sceneRef->mSceneUpdated = true;
+		// 기존의 리지드바디를 제거합니다.
+		delete ( gcroot<GameObject^>* )mRigidbody->userData;
+		mRigidbody->release();
+		mRigidbody = nullptr;
+	}
+
+	mRigidbody = pRigidbody;
+	mRigidbody->userData = new gcroot<GameObject^>( this );
+
+	// 장면에 새 리지드바디를 추가합니다.
+	if ( mSceneRef )
+	{
+		mSceneRef->mPxScene->addActor( *mRigidbody );
+	}
+}
+
+void GameObject::SetScene( Scene^ sceneRef )
+{
+	if ( mSceneRef )
+	{
+		if ( mRigidbody )
+		{
+			mSceneRef->mPxScene->removeActor( *mRigidbody );
+		}
+		mSceneRef->Remove( this );
+	}
+
+	mSceneRef = sceneRef;
+
+	for each ( auto go in mGameObjects )
+	{
+		go->SetScene( sceneRef );
+	}
+
+	if ( sceneRef )
+	{
+		if ( mRigidbody )
+		{
+			mSceneRef->mPxScene->addActor( *mRigidbody );
+		}
 	}
 }
 
@@ -60,6 +213,20 @@ void GameObject::Update()
 	}
 }
 
+void GameObject::LateUpdate()
+{
+	auto behaviour = Behaviour::typeid;
+
+	for each ( auto comp in mComponents )
+	{
+		if ( comp->GetType()->IsSubclassOf( behaviour ) )
+		{
+			auto beh = ( Behaviour^ )comp;
+			beh->LateUpdate();
+		}
+	}
+}
+
 void GameObject::FixedUpdate()
 {
 	auto behaviour = Behaviour::typeid;
@@ -74,9 +241,78 @@ void GameObject::FixedUpdate()
 	}
 }
 
-GameObject::GameObject( String^ xName )
+void GameObject::OnCollisionEnter( Collision collision )
 {
-	mName = xName;
+	auto behaviour = Behaviour::typeid;
+
+	for each ( auto comp in mComponents )
+	{
+		if ( comp->GetType()->IsSubclassOf( behaviour ) )
+		{
+			auto beh = ( Behaviour^ )comp;
+			beh->OnCollisionEnter( collision );
+		}
+	}
+}
+
+void GameObject::OnCollisionExit( Collision collision )
+{
+	auto behaviour = Behaviour::typeid;
+
+	for each ( auto comp in mComponents )
+	{
+		if ( comp->GetType()->IsSubclassOf( behaviour ) )
+		{
+			auto beh = ( Behaviour^ )comp;
+			beh->OnCollisionExit( collision );
+		}
+	}
+}
+
+void GameObject::OnCollisionStay( Collision collision )
+{
+	auto behaviour = Behaviour::typeid;
+
+	for each ( auto comp in mComponents )
+	{
+		if ( comp->GetType()->IsSubclassOf( behaviour ) )
+		{
+			auto beh = ( Behaviour^ )comp;
+			beh->OnCollisionStay( collision );
+		}
+	}
+}
+
+void GameObject::OnTriggerEnter( Collider^ collider )
+{
+	auto behaviour = Behaviour::typeid;
+
+	for each ( auto comp in mComponents )
+	{
+		if ( comp->GetType()->IsSubclassOf( behaviour ) )
+		{
+			auto beh = ( Behaviour^ )comp;
+			beh->OnTriggerEnter( collider );
+		}
+	}
+}
+
+void GameObject::OnTriggerExit( Collider^ collider )
+{
+	auto behaviour = Behaviour::typeid;
+
+	for each ( auto comp in mComponents )
+	{
+		if ( comp->GetType()->IsSubclassOf( behaviour ) )
+		{
+			auto beh = ( Behaviour^ )comp;
+			beh->OnTriggerExit( collider );
+		}
+	}
+}
+
+GameObject::GameObject( String^ xName ) : Asset( xName )
+{
 	mTransform = gcnew Game::Transform();
 	mTransform->mGameObject = this;
 
@@ -84,9 +320,29 @@ GameObject::GameObject( String^ xName )
 	mGameObjects = gcnew List<GameObject^>();
 }
 
+GameObject::~GameObject()
+{
+	this->!GameObject();
+}
+
+GameObject::!GameObject()
+{
+	if ( mRigidbody )
+	{
+		if ( mSceneRef && mRigidbody )
+		{
+			mSceneRef->mPxScene->removeActor( *mRigidbody );
+		}
+
+		delete ( gcroot<GameObject^>* )mRigidbody->userData;
+		mRigidbody->release();
+		mRigidbody = nullptr;
+	}
+}
+
 Object^ GameObject::Clone()
 {
-	auto clone = gcnew GameObject( mName + L" Clone" );
+	auto clone = gcnew GameObject( Name + L" Clone" );
 
 	for each ( auto gameObject in mGameObjects )
 	{
@@ -119,7 +375,7 @@ T GameObject::AddComponent()
 	}
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 T GameObject::GetComponent()
 {
 	auto type = T::typeid;
@@ -148,7 +404,7 @@ T GameObject::GetComponent()
 	}
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 bool GameObject::RemoveComponent()
 {
 	auto type = T::typeid;
@@ -176,6 +432,7 @@ bool GameObject::RemoveComponent()
 
 		if ( candidate != -1 )
 		{
+			OnComponentRemove( mComponents[candidate] );
 			mComponents->RemoveAt( candidate );
 			return true;
 		}
@@ -184,21 +441,50 @@ bool GameObject::RemoveComponent()
 	}
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 T GameObject::GetComponentInChildren()
 {
-	throw gcnew NotImplementedException();
+	T component = GetComponent<T>();
+	if ( component != nullptr ) return component;
+	else
+	{
+		for each ( auto go in mGameObjects )
+		{
+			component = GetComponentInChildren<T>();
+			if ( component != nullptr ) return component;
+		}
+	}
+
+	return component;
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 IList<T>^ GameObject::GetComponentsInChildren()
 {
-	throw gcnew NotImplementedException();
-}
+	List<T>^ list = gcnew List<T>();
+	auto ttypeid = T::typeid;
 
-String^ GameObject::Name::get()
-{
-	return mName;
+	if ( ttypeid == Game::Transform::typeid )
+	{
+		list->Add( ( T )mTransform );
+	}
+
+	for each ( auto component in mComponents )
+	{
+		auto ctypeid = component->GetType();
+		if ( ttypeid == ctypeid || ttypeid->IsAssignableFrom( ctypeid ) )
+		{
+			list->Add( ( T )component );
+		}
+	}
+
+	for each ( auto go in mGameObjects )
+	{
+		auto glist = go->GetComponentsInChildren<T>();
+		list->AddRange( glist );
+	}
+
+	return list;
 }
 
 Transform^ GameObject::Transform::get()

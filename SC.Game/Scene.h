@@ -5,6 +5,8 @@ namespace SC::Game
 	ref class GameObject;
 	ref class Camera;
 	ref class MeshRenderer;
+	ref class Light;
+	ref class Collider;
 
 	/// <summary>
 	/// 게임의 한 장면을 표현합니다.
@@ -12,6 +14,8 @@ namespace SC::Game
 	public ref class Scene abstract : public System::Collections::Generic::IList<GameObject^>
 	{
 	internal:
+		using MyList = System::Collections::Generic::List<GameObject^>;
+
 		Diagnostics::StepTimer^ mUpdateTimer;
 		Diagnostics::StepTimer^ mFixedUpdateTimer;
 
@@ -20,22 +24,35 @@ namespace SC::Game
 		System::Collections::Generic::List<GameObject^>^ mSceneGraph;
 		System::Collections::Generic::List<Camera^>^ mSceneCameras;
 		System::Collections::Generic::List<MeshRenderer^>^ mSceneMeshRenderers;
+		System::Collections::Generic::List<Light^>^ mSceneLights;
+		System::Collections::Generic::List<Collider^>^ mSceneColliders;
+
+		System::Collections::Generic::IDictionary<int, MyList^>^ mThreadSceneGraph;
+
+		ContactCallback* mSimulationEventCallback = nullptr;
+		physx::PxScene* mPxScene = nullptr;
+		bool mFetchResults = true;
+		bool mFixedUpdate = false;
 
 	private:
 		virtual System::Collections::IEnumerator^ GetEnumerator2() sealed = System::Collections::IEnumerable::GetEnumerator;
 		void PopulateSceneGraph();
-		void IncludeChilds( GameObject^ gameObject );
+		void IncludeChilds( GameObject^ gameObject, int thread );
+		void UpdateSpecialComponents();
 
 	internal:
 		bool mSceneUpdated = true;
 
-	protected:
+		void UpdateThread( MyList^ list );
+
+	public:
 		/// <summary>
 		/// <see cref="Scene"/> 클래스의 새 인스턴스를 초기화합니다.
 		/// </summary>
 		Scene();
+		~Scene();
+		!Scene();
 
-	public:
 		/// <summary>
 		/// (<see cref="System::Collections::Generic::IEnumerable"/> 인터페이스에서 구현 됨.) 컬렉션 전체를 반복하는 열거자를 반환합니다.
 		/// </summary>

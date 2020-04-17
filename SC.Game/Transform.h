@@ -27,6 +27,9 @@ namespace SC::Game
 
 		bool mBufferUpdated = false;
 
+	private:
+		void WriteRigid( System::Numerics::Vector3 p, System::Numerics::Quaternion q );
+
 	internal:
 		void CreateBuffer();
 		void Update();

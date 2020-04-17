@@ -5,6 +5,36 @@ using namespace SC::Game;
 using namespace System;
 using namespace System::Diagnostics;
 using namespace System::Collections::Generic;
+using namespace System::Threading::Tasks;
+
+using namespace std;
+using namespace physx;
+
+#pragma unmanaged
+PxFilterFlags ContactReportFilterShader(
+	PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+	PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+	PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize
+)
+{
+	auto ret = PxDefaultSimulationFilterShader( attributes0, filterData0, attributes1, filterData1, pairFlags, constantBlock, constantBlockSize );
+
+	// all initial and persisting reports for everything, with per-point data
+	pairFlags
+		= PxPairFlag::eSOLVE_CONTACT
+		| PxPairFlag::eDETECT_DISCRETE_CONTACT
+		| PxPairFlag::eNOTIFY_TOUCH_FOUND
+		| PxPairFlag::eNOTIFY_TOUCH_LOST
+		| PxPairFlag::eNOTIFY_CONTACT_POINTS;
+
+	if ( !PxFilterObjectIsTrigger( attributes0 ) && !PxFilterObjectIsTrigger( attributes1 ) )
+	{
+		pairFlags |= PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
+	}
+
+	return ret;
+}
+#pragma managed
 
 Scene::Scene()
 {
@@ -13,6 +43,49 @@ Scene::Scene()
 	mSceneGraph = gcnew List<GameObject^>();
 	mSceneCameras = gcnew List<Camera^>();
 	mSceneMeshRenderers = gcnew List<MeshRenderer^>();
+	mSceneLights = gcnew List<Light^>();
+	mSceneColliders = gcnew List<Collider^>();
+	mThreadSceneGraph = gcnew Dictionary<int, MyList^>();
+
+	mSimulationEventCallback = new ContactCallback();
+	auto pxSceneDesc = PxSceneDesc( PxTolerancesScale() );
+	pxSceneDesc.gravity = PxVec3( 0.0f, -9.8f, 0.0f );
+	pxSceneDesc.cpuDispatcher = Physics::mDispatcher;
+	pxSceneDesc.filterShader = ContactReportFilterShader;
+	pxSceneDesc.cudaContextManager = Physics::mCudaManager;
+	pxSceneDesc.simulationEventCallback = mSimulationEventCallback;
+	pxSceneDesc.staticKineFilteringMode = PxPairFilteringMode::eSUPPRESS;
+	mPxScene = Physics::mPhysics->createScene( pxSceneDesc );
+}
+
+Scene::~Scene()
+{
+	this->!Scene();
+}
+
+Scene::!Scene()
+{
+	for each ( auto go in mGameObjects )
+	{
+		go->SetScene( nullptr );
+	}
+
+	if ( mSimulationEventCallback )
+	{
+		delete mSimulationEventCallback;
+		mSimulationEventCallback = nullptr;
+	}
+
+	if ( mPxScene )
+	{
+		if ( !mFetchResults )
+		{
+			mFetchResults = mPxScene->fetchResults( true );
+		}
+
+		mPxScene->release();
+		mPxScene = nullptr;
+	}
 }
 
 System::Collections::IEnumerator^ Scene::GetEnumerator2()
@@ -27,26 +100,73 @@ void Scene::PopulateSceneGraph()
 		mSceneGraph->Clear();
 		mSceneCameras->Clear();
 		mSceneMeshRenderers->Clear();
+		mSceneLights->Clear();
+		mSceneColliders->Clear();
+		mThreadSceneGraph->Clear();
 
 		for each ( auto i in mGameObjects )
 		{
-			IncludeChilds( i );
+			IncludeChilds( i, 0 );
 		}
 
 		mSceneUpdated = false;
 	}
 }
 
-void Scene::IncludeChilds( GameObject^ gameObject )
+void Scene::IncludeChilds( GameObject^ gameObject, int thread )
 {
 	mSceneGraph->Add( gameObject );
 
 	if ( auto cam = gameObject->GetComponent<Camera^>(); cam ) mSceneCameras->Add( cam );
 	if ( auto meshRenderer = gameObject->GetComponent<MeshRenderer^>(); meshRenderer ) mSceneMeshRenderers->Add( meshRenderer );
+	if ( auto light = gameObject->GetComponent<Light^>(); light ) mSceneLights->Add( light );
+	if ( auto collider = gameObject->GetComponent<Collider^>(); collider ) mSceneColliders->Add( collider );
+
+	if ( auto threadDispatcher = gameObject->GetComponent<ThreadDispatcher^>(); threadDispatcher )
+	{
+		thread = threadDispatcher->ID;
+	}
+
+	if ( MyList^ value; mThreadSceneGraph->TryGetValue( thread, value ) )
+	{
+		value->Add( gameObject );
+	}
+	else
+	{
+		auto mylist = gcnew MyList();
+		mylist->Add( gameObject );
+		mThreadSceneGraph->Add( thread, mylist );
+	}
 
 	for each ( auto child in gameObject->mGameObjects )
 	{
-		IncludeChilds( child );
+		IncludeChilds( child, thread );
+	}
+}
+
+void Scene::UpdateSpecialComponents()
+{
+	for each ( auto light in mSceneLights )
+	{
+		light->UpdateBuffer();
+	}
+
+	for each ( auto cam in mSceneCameras )
+	{
+		cam->Update();
+	}
+}
+
+void Scene::UpdateThread( MyList^ list )
+{
+	for each ( auto go in list )
+	{
+		go->Update();
+	}
+
+	for each ( auto go in list )
+	{
+		go->LateUpdate();
 	}
 }
 
@@ -58,6 +178,7 @@ IEnumerator<GameObject^>^ Scene::GetEnumerator()
 void Scene::Add( GameObject^ value )
 {
 	mGameObjects->Add( value );
+	value->SetScene( this );
 	mSceneUpdated = true;
 }
 
@@ -116,6 +237,21 @@ int Scene::IndexOf( String^ xName )
 	return -1;
 }
 
+namespace
+{
+	ref class TaskLambda
+	{
+	public:
+		Scene^ Caller;
+		Scene::MyList^ Arg;
+
+		void Task()
+		{
+			Caller->UpdateThread( Arg );
+		}
+	};
+}
+
 void Scene::Update()
 {
 	// 프레임 최초 업데이트에서 타이머를 시작합니다.
@@ -136,17 +272,44 @@ void Scene::Update()
 	mUpdateTimer->Tick( nullptr );
 	Time::DeltaTime = ( float )mUpdateTimer->ElapsedSeconds;
 
-	for each ( auto cam in mSceneCameras )
+	if ( !mFetchResults )
 	{
-		cam->Update();
+		mFetchResults = mPxScene->fetchResults( true );
 	}
 
-	for each ( auto go in mSceneGraph )
+	// 컬라이더 개체를 업데이트합니다.
+	for each ( auto collider in mSceneColliders )
 	{
-		go->Update();
+		collider->Update();
 	}
+
+	// 동작 업데이트를 수행합니다.
+	auto tasks = gcnew cli::array<Task^>( mThreadSceneGraph->Count - 1 );
+	int i = 0;
+	for each ( auto list in mThreadSceneGraph )
+	{
+		if ( list.Key != 0 )
+		{
+			auto lambda = gcnew TaskLambda();
+			lambda->Caller = this;
+			lambda->Arg = list.Value;
+			tasks[i++] = Task::Run( gcnew Action( lambda, &TaskLambda::Task ) );
+		}
+	}
+	UpdateThread( mThreadSceneGraph[0] );
+
+	Task::WaitAll( tasks );
 
 	mFixedUpdateTimer->Tick( gcnew StepTimerCallbackDelegate( this, &Scene::FixedUpdate ) );
+
+	// 특수 컴포넌트를 업데이트합니다.
+	UpdateSpecialComponents();
+
+	// 모든 트랜스폼을 슬립 상태로 변경합니다.
+	for each ( auto go in mSceneGraph )
+	{
+		go->mTransform->mBufferUpdated = false;
+	}
 }
 
 void Scene::FixedUpdate()
@@ -158,6 +321,9 @@ void Scene::FixedUpdate()
 	{
 		go->FixedUpdate();
 	}
+
+	mPxScene->simulate( 1.0f / ApplicationCore::mConfiguration.PhysicsUpdatesPerSecond );
+	mFetchResults = mPxScene->fetchResults( false );
 }
 
 int Scene::Count::get()

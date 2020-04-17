@@ -12,6 +12,8 @@ namespace SC::Game
 		void Initialize();
 	};
 
+	ref class Texture2D;
+
 	/// <summary>
 	/// 개체에 카메라 구성 요소 렌더링 기능을 제공합니다. 이 클래스는 상속될 수 없습니다.
 	/// </summary>
@@ -25,6 +27,9 @@ namespace SC::Game
 		float mMaxDepth = 1000.0f;
 
 		cli::array<System::Numerics::Plane>^ mPlanes;
+		bool mUpdated = true;
+
+		Texture2D^ mSkyboxTexture;
 
 	internal:
 		void Update();
@@ -55,6 +60,15 @@ namespace SC::Game
 		{
 			float get();
 			void set( float value );
+		}
+
+		/// <summary>
+		/// 카메라의 전경을 설정하거나 가져옵니다.
+		/// </summary>
+		property Texture2D^ Skybox
+		{
+			Texture2D^ get();
+			void set( Texture2D^ value );
 		}
 	};
 }

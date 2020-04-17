@@ -9,31 +9,36 @@ Component::Component()
 
 }
 
+Object^ Component::Clone()
+{
+	return MemberwiseClone();
+}
+
 generic< class T > where T : Component, gcnew()
 T Component::AddComponent()
 {
 	return mGameObject->AddComponent<T>();
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 T Component::GetComponent()
 {
 	return mGameObject->GetComponent<T>();
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 bool Component::RemoveComponent()
 {
 	return mGameObject->RemoveComponent<T>();
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 T Component::GetComponentInChildren()
 {
 	return mGameObject->GetComponentInChildren<T>();
 }
 
-generic< class T > where T : Component, gcnew()
+generic< class T > where T : Component
 IList<T>^ Component::GetComponentsInChildren()
 {
 	return mGameObject->GetComponentsInChildren<T>();

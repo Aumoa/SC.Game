@@ -46,5 +46,35 @@ namespace SC::Game
 		/// 행동 컴포넌트가 활성화 상태일 때 매 프레임 장면의 모든 개체의 Update가 완료된 후 호출됩니다.
 		/// </summary>
 		virtual void LateUpdate();
+
+		/// <summary>
+		/// 다른 개체와 충돌이 시작되었을 경우 호출됩니다.
+		/// </summary>
+		/// <param name="collision"> 충돌 정보가 전달됩니다. </param>
+		virtual void OnCollisionEnter( Collision collision );
+
+		/// <summary>
+		/// 다른 개체와 충돌이 종료되었을 경우 호출됩니다.
+		/// </summary>
+		/// <param name="collision"> 충돌 정보가 전달됩니다. </param>
+		virtual void OnCollisionExit( Collision collision );
+
+		/// <summary>
+		/// 다른 개체와 충돌중일 경우 호출됩니다.
+		/// </summary>
+		/// <param name="collision"> 충돌 정보가 전달됩니다. </param>
+		virtual void OnCollisionStay( Collision collision );
+
+		/// <summary>
+		/// 다른 트리거 발생 컬라이더 개체와 충돌하였을 경우 발생합니다.
+		/// </summary>
+		/// <param name="collider"> 충돌한 컬라이더 개체가 전달됩니다. </param>
+		virtual void OnTriggerEnter( Collider^ collider );
+
+		/// <summary>
+		/// 다른 트리거 발생 컬라이더 개체와 충돌이 종료되었을 경우 발생합니다.
+		/// </summary>
+		/// <param name="collider"> 충돌한 컬라이더 개체가 전달됩니다. </param>
+		virtual void OnTriggerExit( Collider^ collider );
 	};
 }

@@ -73,5 +73,72 @@ namespace SC::Game
 		/// </summary>
 		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
 		static Mesh^ CreateCube( System::String^ xName );
+
+		/// <summary>
+		/// 구형 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="tessellation"> 메쉬의 테셀레이션 횟수를 전달합니다. </param>
+		static Mesh^ CreateSphere( System::String^ xName, int tessellation );
+
+		/// <summary>
+		/// 구형 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="tessellation"> 메쉬의 테셀레이션 횟수를 전달합니다. </param>
+		static Mesh^ CreateGeosphere( System::String^ xName, int tessellation );
+
+		/// <summary>
+		/// 원통 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="tessellation"> 메쉬의 테셀레이션 횟수를 전달합니다. </param>
+		static Mesh^ CreateCylinder( System::String^ xName, int tessellation );
+
+		/// <summary>
+		/// 원뿔 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="tessellation"> 메쉬의 테셀레이션 횟수를 전달합니다. </param>
+		static Mesh^ CreateCone( System::String^ xName, int tessellation );
+
+		/// <summary>
+		/// 원환면 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="tessellation"> 메쉬의 테셀레이션 횟수를 전달합니다. </param>
+		/// <param name="thickness"> 굵기를 전달합니다. </param>
+		static Mesh^ CreateTorus( System::String^ xName, int tessellation, float thickness );
+
+		/// <summary>
+		/// 사면체 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		static Mesh^ CreateTetrahedron( System::String^ xName );
+
+		/// <summary>
+		/// 팔면체 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		static Mesh^ CreateOctahedron( System::String^ xName );
+
+		/// <summary>
+		/// 십이면체 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		static Mesh^ CreateDodecahedron( System::String^ xName );
+
+		/// <summary>
+		/// 이십면체 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		static Mesh^ CreateIcosahedron( System::String^ xName );
+
+		/// <summary>
+		/// 이십면체 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="tessellation"> 메쉬의 테셀레이션 횟수를 전달합니다. </param>
+		static Mesh^ CreateTeapot( System::String^ xName, int tessellation );
 	};
 }

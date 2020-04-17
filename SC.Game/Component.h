@@ -18,9 +18,9 @@ namespace SC::Game
 
 	public:
 		/// <summary>
-		/// (<see cref="System::ICloneable"/> 인터페이스에서 구현 됨.) 해당 컴포넌트의 완전 복사본을 생성하여 반환합니다.
+		/// (<see cref="System::ICloneable"/> 인터페이스에서 구현 됨.) 해당 컴포넌트의 완전 복사본을 생성하여 반환합니다. 재정의하지 않을 경우 <see cref="System::Object::MemberwiseClone"/> 기본 함수가 사용됩니다.
 		/// </summary>
-		virtual System::Object^ Clone() = 0;
+		virtual System::Object^ Clone();
 
 		/// <summary>
 		/// 연결된 개체에 확장 컴포넌트를 추가합니다.
@@ -35,7 +35,7 @@ namespace SC::Game
 		/// </summary>
 		/// <typeparam name="T"> 가져올 확장 컴포넌트 클래스 타입을 전달합니다. 이 클래스는 Component 클래스를 상속 받아야 합니다. </typeparam>
 		/// <returns> 컴포넌트가 존재할 경우 컴포넌트 개체를, 그렇지 않을 경우 null을 반환합니다. </returns>
-		generic< class T > where T : Component, gcnew()
+		generic< class T > where T : Component
 		T GetComponent();
 
 		/// <summary>
@@ -43,7 +43,7 @@ namespace SC::Game
 		/// </summary>
 		/// <typeparam name="T"> 제거할 확장 컴포넌트 클래스 타입을 전달합니다. 이 클래스는 Component 클래스를 상속 받아야 합니다. </typeparam>
 		/// <returns> 컴포넌트 제거에 성공하였을 경우 <c>true</c>를, 그렇지 않을 경우 <c>false</c>를 반환합니다. </returns>
-		generic< class T > where T : Component, gcnew()
+		generic< class T > where T : Component
 		bool RemoveComponent();
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace SC::Game
 		/// </summary>
 		/// <typeparam name="T"> 가져올 확장 컴포넌트 클래스 타입을 전달합니다. 이 클래스는 Component 클래스를 상속 받아야 합니다. </typeparam>
 		/// <returns> 컴포넌트가 모든 개체에서 하나 이상 존재할 경우 컴포넌트 개체를, 그렇지 않을 경우 null을 반환합니다. </returns>
-		generic< class T > where T : Component, gcnew()
+		generic< class T > where T : Component
 		T GetComponentInChildren();
 
 		/// <summary>
@@ -59,7 +59,7 @@ namespace SC::Game
 		/// </summary>
 		/// <typeparam name="T"> 가져올 확장 컴포넌트 클래스 타입을 전달합니다. 이 클래스는 Component 클래스를 상속 받아야 합니다. </typeparam>
 		/// <returns> 컴포넌트가 모든 개체에서 하나 이상 존재할 경우 컴포넌트 개체 목록을, 그렇지 않을 경우 null을 반환합니다. </returns>
-		generic< class T > where T : Component, gcnew()
+		generic< class T > where T : Component
 		System::Collections::Generic::IList<T>^ GetComponentsInChildren();
 
 		/// <summary>

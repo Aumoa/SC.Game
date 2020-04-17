@@ -22,6 +22,17 @@ void CCommandQueue::Execute( CDeviceContext& deviceContext )
 	pCommandQueue->ExecuteCommandLists( 1, ppCommandLists );
 }
 
+void CCommandQueue::Execute( int numContexts, CDeviceContext* pDeviceContexts )
+{
+	vector<ID3D12CommandList*> ppCommandLists( numContexts );
+	for ( int i = 0; i < numContexts; ++i )
+	{
+		ppCommandLists[i] = pDeviceContexts[i].mCommandList.Get();
+	}
+
+	pCommandQueue->ExecuteCommandLists( ( UINT )numContexts, ppCommandLists.data() );
+}
+
 void CCommandQueue::Execute( int numContexts, CDeviceContext** ppDeviceContexts )
 {
 	vector<ID3D12CommandList*> ppCommandLists( numContexts );

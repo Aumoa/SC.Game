@@ -34,7 +34,7 @@ void HDRBuffer::SetGraphicsRootShaderResources( CDeviceContext& deviceContext )
 
 void HDRBuffer::SetComputeRootShaderResources( CDeviceContext& deviceContext )
 {
-	//deviceContext->SetComputeRootShaderResources( deviceContext->Slot["HDRBuffer"], 1, ppShaderResourceViews );
+	deviceContext.SetComputeRootShaderResource( Slot_HDRCompute_HDRBuffer, ppShaderResourceViews[0] );
 }
 
 void HDRBuffer::EndDraw( CDeviceContext& deviceContext )

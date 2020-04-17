@@ -2,7 +2,8 @@
   "profiles": {
     "THHourai": {
       "commandName": "Project",
-      "nativeDebugging": true
+      "workingDirectory": "$(ProjectDir)",
+      "nativeDebugging": false
     }
   }
 }

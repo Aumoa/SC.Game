@@ -48,6 +48,27 @@ CShaderResourceView DescriptorAllocator::CreateShaderResourceView( ID3D12Resourc
 	return index;
 }
 
+CShaderResourceView DescriptorAllocator::CreateUnorderedAccessView( ID3D12Resource* pResource, const D3D12_UNORDERED_ACCESS_VIEW_DESC* pUAVDesc )
+{
+	auto lock = mLocker.Lock();
+	auto pDevice = Graphics::mDevice->pDevice.Get();
+
+	if ( mQueue.empty() )
+	{
+		Realloc( mCapacity + 512 );
+	}
+
+	auto index = mQueue.front();
+	mQueue.pop();
+
+	auto handle = mHandleBase;
+	handle.ptr += mHandleStride * index;
+
+	pDevice->CreateUnorderedAccessView( pResource, nullptr, pUAVDesc, handle );
+
+	return index;
+}
+
 D3D12_CPU_DESCRIPTOR_HANDLE DescriptorAllocator::GetHandle( UINT index )
 {
 	auto handle = mHandleBase;

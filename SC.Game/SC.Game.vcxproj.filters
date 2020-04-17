@@ -146,15 +146,6 @@
     <ClInclude Include="Input.h">
       <Filter>Managed</Filter>
     </ClInclude>
-    <ClInclude Include="KeyCode.h">
-      <Filter>Managed</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Managed</Filter>
-    </ClInclude>
-    <ClInclude Include="Asset.h">
-      <Filter>Managed</Filter>
-    </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Unmanaged</Filter>
     </ClInclude>
@@ -190,6 +181,94 @@
     </ClInclude>
     <ClInclude Include="HDRBuffer.h">
       <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCode.h">
+      <Filter>Managed\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureFormat.h">
+      <Filter>Managed\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="LightType.h">
+      <Filter>Managed\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HDRComputedBuffer.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Packages</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraClearMode.h">
+      <Filter>Managed\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="MDLParser.h">
+      <Filter>Managed\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="TextParser.h">
+      <Filter>Managed\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMeshRenderer.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactCallback.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidbodyConstraints.h">
+      <Filter>Managed\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentDisconnectedException.h">
+      <Filter>Managed\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Assignable.h" />
+    <ClInclude Include="Collider.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CapsuleCollider.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX.Geometry.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="Bezier.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsMaterial.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactPoint.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadDispatcher.h">
+      <Filter>Managed\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,12 +403,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>Managed</Filter>
     </ClCompile>
-    <ClCompile Include="Asset.cpp">
-      <Filter>Managed</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Managed</Filter>
-    </ClCompile>
     <ClCompile Include="ImmutableHeap.cpp">
       <Filter>DXHelper</Filter>
     </ClCompile>
@@ -369,6 +442,75 @@
     <ClCompile Include="ShaderBuilder.PostProcess.cpp">
       <Filter>Shaders\PostProcess</Filter>
     </ClCompile>
+    <ClCompile Include="Asset.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderBuilder.HDR.cpp">
+      <Filter>Shaders\HDR</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="HDRComputedBuffer.cpp">
+      <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderBuilder.HDRCompute.cpp">
+      <Filter>Shaders\HDRCompute</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Packages</Filter>
+    </ClCompile>
+    <ClCompile Include="TextParser.cpp">
+      <Filter>Managed\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMeshRenderer.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderBuilder.SkinningShader.cpp">
+      <Filter>Shaders\Skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactCallback.cpp">
+      <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentDisconnectedException.cpp">
+      <Filter>Managed\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CapsuleCollider.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX.Geometry.cpp">
+      <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsMaterial.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadDispatcher.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Managed">
@@ -392,9 +534,6 @@
     <Filter Include="WinHelper">
       <UniqueIdentifier>{a8f29893-c5dd-456e-882d-3ccf9c097bb4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Managed\UI">
-      <UniqueIdentifier>{b7d8585d-3e0d-4cde-9ed9-33049914a225}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Unmanaged">
       <UniqueIdentifier>{09f5b671-823e-4cdf-85b5-59e5e801141f}</UniqueIdentifier>
     </Filter>
@@ -409,6 +548,30 @@
     </Filter>
     <Filter Include="Shaders\PostProcess">
       <UniqueIdentifier>{ca601ba5-c122-41b7-8b21-36a186ecfdce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managed\UI">
+      <UniqueIdentifier>{b7d8585d-3e0d-4cde-9ed9-33049914a225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managed\Assets">
+      <UniqueIdentifier>{f0aa3f7b-aeb2-46cb-9e13-d8387b0cd940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managed\Enum">
+      <UniqueIdentifier>{9fbc9284-1d09-4ba9-847e-8a9ab51c431d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\HDR">
+      <UniqueIdentifier>{d7c9db1c-c7b5-4642-b177-0778ce5197a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\HDRCompute">
+      <UniqueIdentifier>{3d715f7c-c17d-414c-a664-a27b577ff430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managed\Parser">
+      <UniqueIdentifier>{1ab4a23b-cb4e-41dc-b89d-c64ef1b6110f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Skinning">
+      <UniqueIdentifier>{976bced8-97bf-4b4d-8e2e-554cb89cf4f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managed\Exceptions">
+      <UniqueIdentifier>{5e17f7b2-b755-4be7-b616-bd0e53be2fef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +592,36 @@
     </FxCompile>
     <FxCompile Include="ToneMappingPixelShader.hlsl">
       <Filter>Shaders\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="HDRVertexShader.hlsl">
+      <Filter>Shaders\HDR</Filter>
+    </FxCompile>
+    <FxCompile Include="HDRColorShader.hlsl">
+      <Filter>Shaders\HDR</Filter>
+    </FxCompile>
+    <FxCompile Include="HDRLightShader.hlsl">
+      <Filter>Shaders\HDR</Filter>
+    </FxCompile>
+    <FxCompile Include="ShadowCastVertexShader.hlsl">
+      <Filter>Shaders\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="HDRAverageLumComputeShader.hlsl">
+      <Filter>Shaders\HDRCompute</Filter>
+    </FxCompile>
+    <FxCompile Include="HDRLumCompressComputeShader.hlsl">
+      <Filter>Shaders\HDRCompute</Filter>
+    </FxCompile>
+    <FxCompile Include="HDRSamplingComputeShader.hlsl">
+      <Filter>Shaders\HDRCompute</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinningComputeShader.hlsl">
+      <Filter>Shaders\Skinning</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyboxVertexShader.hlsl">
+      <Filter>Shaders\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyboxPixelShader.hlsl">
+      <Filter>Shaders\3D</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,6 +17,10 @@ void MeshRenderer::Render( CDeviceContext& deviceContext )
 			deviceContext.SetGraphicsRootConstantBufferView( ( UINT )Slot_3D_Transform, Transform->mConstants->GetGPUVirtualAddress() );
 
 			// 렌더러가 사용하는 재질을 설정합니다.
+			auto mat = mMaterial;
+			if ( mat == nullptr )
+				mat = Game::Material::mDefault;
+			mat->SetConstantBuffer( deviceContext );
 
 			// 메쉬를 렌더링합니다.
 			mesh->DrawIndexed( deviceContext );
@@ -33,4 +37,14 @@ Object^ MeshRenderer::Clone()
 {
 	auto clone = gcnew MeshRenderer();
 	return clone;
+}
+
+Material^ MeshRenderer::Material::get()
+{
+	return mMaterial;
+}
+
+void MeshRenderer::Material::set( Game::Material^ value )
+{
+	mMaterial = value;
 }

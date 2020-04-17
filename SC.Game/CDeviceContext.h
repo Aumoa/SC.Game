@@ -57,9 +57,19 @@ namespace SC::Game
 		void CopyResource( ID3D12Resource* pDstResource, ID3D12Resource* pSrcResource );
 		void ClearDepthStencilView( const D3D12_CPU_DESCRIPTOR_HANDLE& depthStencilView, D3D12_CLEAR_FLAGS clearFlags = D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, float depth = 1.0f, UINT8 stencil = 0, UINT numRects = 0, const D3D12_RECT* pRects = nullptr );
 		void SetGraphicsRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView* pShaderResourceViews );
+		void SetGraphicsRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView** ppShaderResourceViews );
 		void IASetVertexBuffers( UINT startSlot, UINT numViews, const D3D12_VERTEX_BUFFER_VIEW* pViews );
 		void IASetIndexBuffer( const D3D12_INDEX_BUFFER_VIEW* pView );
 		void DrawIndexedInstanced( UINT indexCountPerInstance, UINT instanceCount, UINT startIndexLocation, INT baseVertexLocation, UINT startInstanceLocation );
+		void CopyTextureRegion( const D3D12_TEXTURE_COPY_LOCATION* pDst, UINT dstX, UINT dstY, UINT dstZ, const D3D12_TEXTURE_COPY_LOCATION* pSrc, const D3D12_BOX* pSrcBox );
+		void SetComputeRoot32BitConstant( UINT index, UINT srcData, UINT destOffsetIn32BitValues = 0 );
+		void SetComputeRoot32BitConstants( UINT index, UINT num32BitValuesToSet, const void* pSrcData, UINT destOffsetIn32BitValues );
+		void SetComputeRootShaderResource( UINT index, CShaderResourceView& shaderResourceView );
+		void SetComputeRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView* pShaderResourceViews );
+		void SetComputeRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView** ppShaderResourceViews );
+		void Dispatch( UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ = 1 );
+		void SetComputeRootShaderResourceView( UINT index, D3D12_GPU_VIRTUAL_ADDRESS bufferLocation );
+		void SetComputeRootUnorderedAccessView( UINT index, D3D12_GPU_VIRTUAL_ADDRESS bufferLocation );
 
 		void ClearRenderTargetView( D3D12_CPU_DESCRIPTOR_HANDLE renderTargetView, const std::array<FLOAT, 4>& colorRGBA, UINT numRects = 0, const D3D12_RECT* pRects = nullptr )
 		{

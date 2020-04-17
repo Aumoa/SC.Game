@@ -18,6 +18,11 @@ namespace SC::Game
 
 	public:
 		/// <summary>
+		/// (<see cref="System::Object"/> 클래스에서 상속 됨.) 개체의 간단한 정보를 텍스트 형식으로 생성하여 반환합니다.
+		/// </summary>
+		System::String^ ToString() override;
+
+		/// <summary>
 		/// 식별자 이름을 가져옵니다.
 		/// </summary>
 		property System::String^ Name

@@ -306,3 +306,123 @@ Mesh^ Mesh::CreateCube( String^ xName )
 	mesh->Initialize( vertexBuffer, indexBuffer );
 	return mesh;
 }
+
+Mesh^ Mesh::CreateSphere( String^ xName, int tessellation )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeSphere( vertexBuffer, indexBuffer, 2.0f, tessellation, false, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateGeosphere( String^ xName, int tessellation )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeGeoSphere( vertexBuffer, indexBuffer, 2.0f, tessellation, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateCylinder( String^ xName, int tessellation )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeCylinder( vertexBuffer, indexBuffer, 1.0f, 2.0f, tessellation, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateCone( String^ xName, int tessellation )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeCone( vertexBuffer, indexBuffer, 2.0f, 1.0f, tessellation, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateTorus( String^ xName, int tessellation, float thickness )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeTorus( vertexBuffer, indexBuffer, 2.0f, thickness, tessellation, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateTetrahedron( String^ xName )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeTetrahedron( vertexBuffer, indexBuffer, 1.0f, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateOctahedron( String^ xName )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeOctahedron( vertexBuffer, indexBuffer, 1.0f, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateDodecahedron( String^ xName )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeDodecahedron( vertexBuffer, indexBuffer, 1.0f, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateIcosahedron( String^ xName )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeIcosahedron( vertexBuffer, indexBuffer, 1.0f, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}
+
+Mesh^ Mesh::CreateTeapot( String^ xName, int tessellation )
+{
+	vector<Vertex> vertexBuffer;
+	vector<UINT> indexBuffer;
+
+	ComputeTeapot( vertexBuffer, indexBuffer, 1.0f, tessellation, false );
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( vertexBuffer, indexBuffer );
+	return mesh;
+}

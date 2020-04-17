@@ -13,6 +13,7 @@ struct Material_Constants
 	int NormalMap;
 	int AlphaClip;
 	row_major matrix TexWorld;
+	float4 Color;
 };
 
 ConstantBuffer<Camera> gCamera : register( b0 );

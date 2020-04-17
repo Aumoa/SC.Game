@@ -9,32 +9,37 @@ using namespace std;
 
 void Camera::Update()
 {
-	float asp = mAspectRatio;
-	if ( asp == 0 )
+	if ( Transform->IsUpdated || mUpdated )
 	{
-		asp = ( float )App::mWidth / ( float )App::mHeight;
+		float asp = mAspectRatio;
+		if ( asp == 0 )
+		{
+			asp = ( float )App::mWidth / ( float )App::mHeight;
+		}
+
+		auto rot = Transform->Rotation;
+
+		auto eye = Transform->Position;
+		auto dir = Vector3::Transform( Vector3::UnitZ, rot );
+		auto up = Vector3::Transform( Vector3::UnitY, rot );
+
+		auto view = LookToLH( eye, dir, up );
+		Matrix4x4 viewInv; Matrix4x4::Invert( view, viewInv );
+		auto proj = PerspectiveFovLH( 0.25f * 3.14f, asp, mMaxDepth * 0.0001f, mMaxDepth );
+		Matrix4x4 projInv; Matrix4x4::Invert( proj, projInv );
+		auto viewproj = Matrix4x4::Multiply( view, proj );
+
+		Assign( mFrameResource->ViewProj, viewproj );
+		Assign( mFrameResource->ViewInv, viewInv );
+		Assign( mFrameResource->ProjInv, projInv );
+		Assign( mFrameResource->Pos, Transform->Position );
+
+		auto block = mConstantBuffer->Map();
+		memcpy( block, mFrameResource, sizeof( *mFrameResource ) );
+		mConstantBuffer->Unmap();
+
+		mUpdated = false;
 	}
-
-	auto rot = Transform->Rotation;
-
-	auto eye = Transform->Position;
-	auto dir = Vector3::Transform( Vector3::UnitZ, rot );
-	auto up = Vector3::Transform( Vector3::UnitY, rot );
-
-	auto view = Matrix4x4::CreateLookAt( eye, eye + dir, up );
-	Matrix4x4 viewInv; Matrix4x4::Invert( view, viewInv );
-	auto proj = Matrix4x4::CreatePerspectiveFieldOfView( 0.25f * 3.14f, asp, mMaxDepth * 0.0001f, mMaxDepth );
-	Matrix4x4 projInv; Matrix4x4::Invert( proj, projInv );
-	auto viewproj = Matrix4x4::Multiply( view, proj );
-
-	Assign( mFrameResource->ViewProj, viewproj );
-	Assign( mFrameResource->ViewInv, viewInv );
-	Assign( mFrameResource->ProjInv, projInv );
-	Assign( mFrameResource->Pos, Transform->Position );
-
-	auto block = mConstantBuffer->Map();
-	memcpy( block, mFrameResource, sizeof( *mFrameResource ) );
-	mConstantBuffer->Unmap();
 }
 
 Camera::Camera() : Component()
@@ -130,4 +135,15 @@ float Camera::AspectRatio::get()
 void Camera::AspectRatio::set( float value )
 {
 	mAspectRatio = value;
+	mUpdated = true;
+}
+
+Texture2D^ Camera::Skybox::get()
+{
+	return mSkyboxTexture;
+}
+
+void Camera::Skybox::set( Texture2D^ value )
+{
+	mSkyboxTexture = value;
 }

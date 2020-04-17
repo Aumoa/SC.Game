@@ -209,6 +209,9 @@ UINT64 AlignedHeap::Expand()
 	) );
 
 	// 데이터 업로드 공간을 생성합니다.
+	ComPtr<ID3D12Resource> pUploadHeapsBack[2];
+	pUploadHeapsBack[0].Swap( pUploadHeaps[0] );
+	pUploadHeapsBack[1].Swap( pUploadHeaps[1] );
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 	HR( pDevice->CreateCommittedResource( &heapProp, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS( &pUploadHeaps[0] ) ) );
 	HR( pDevice->CreateCommittedResource( &heapProp, D3D12_HEAP_FLAG_NONE, &bufferDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS( &pUploadHeaps[1] ) ) );
@@ -225,10 +228,10 @@ UINT64 AlignedHeap::Expand()
 	{
 		memcpy( pUploadAddress[0], pUploadAddressBack[0], mAlign * mCount );
 		memcpy( pUploadAddress[1], pUploadAddressBack[1], mAlign * mCount );
-	}
 
-	pUploadHeaps[0].Reset();
-	pUploadHeaps[1].Reset();
+		App::GCAdd( move( pUploadHeapsBack[0] ) );
+		App::GCAdd( move( pUploadHeapsBack[1] ) );
+	}
 
 	// 힙 큐에 목록을 채웁니다.
 	for ( UINT64 i = 1; i < mAllocUnit; ++i )

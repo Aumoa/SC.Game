@@ -107,6 +107,9 @@ void VisibleDescriptorAllocator::Realloc( UINT newCapacity )
 	mGPUHandleBase = mDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
 	mCPUHandleBase = mDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 
+	// 기존 서술자 힙을 가비지 컬렉터로 보냅니다.
+	App::GCAdd( pDescriptorHeap );
+
 	mCapacity = newCapacity;
 	mDescriptorIndexes.resize( mCapacity );
 }

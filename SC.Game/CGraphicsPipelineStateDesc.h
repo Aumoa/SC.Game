@@ -6,7 +6,7 @@ namespace SC::Game
 {
 	struct CGraphicsPipelineStateDesc
 	{
-	private:
+	public:
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC desc{ };
 		std::vector<D3D12_INPUT_ELEMENT_DESC> inputElementDescs;
 

@@ -1,3 +1,5 @@
+//
+// Copyright (c) 2019-2020 Aumoa.lib. All right reserved.
 #pragma once
 
 #pragma push_macro( "_MANAGED" )
@@ -10,6 +12,8 @@
 #include <crtdbg.h>
 #include <wrl/client.h>
 
+#pragma warning( disable: 4635 )
+
 #include <dxgi1_6.h>
 #include <d3d12.h>
 #include <d3d11.h>
@@ -18,6 +22,7 @@
 #include <dwrite.h>
 #include <wincodec.h>
 #include <DirectXMath.h>
+#include "physx/PxPhysicsAPI.h"
 
 using namespace DirectX;
 
@@ -33,6 +38,7 @@ using namespace DirectX;
 #include <unordered_set>
 #include <stack>
 #include <chrono>
+#include <filesystem>
 
 using Microsoft::WRL::ComPtr;
 
@@ -63,12 +69,18 @@ using Microsoft::WRL::ComPtr;
 #include "tag_ShaderInfo.h"
 #include "GlyphBuffer.h"
 #include "Vertex.h"
+#include "ContactCallback.h"
+#include "Bezier.h"
+#include "TextParser.h"
+#include "MDLParser.h"
 #include "UI.GlyphRenderer.h"
 #include "UI.RichTextColorUnknown.h"
+#include "DirectX.Geometry.h"
 
 /* Buffers */
 #include "GeometryBuffer.h"
 #include "HDRBuffer.h"
+#include "HDRComputedBuffer.h"
 
 /* Packages */
 #include "App.h"
@@ -81,7 +93,8 @@ using Microsoft::WRL::ComPtr;
 #include "DescriptorAllocator.h"
 #include "VisibleDescriptorAllocator.h"
 
-inline std::string FormatMessage( HRESULT hr )
+#pragma managed
+inline System::String^ FormatMessage( HRESULT hr )
 {
 	using namespace std;
 
@@ -97,6 +110,8 @@ inline std::string FormatMessage( HRESULT hr )
 		return "WINCODEC_ERR_WRONGSTATE(0x88982F04): The codec is in the wrong state.";
 	case __HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND ):
 		return "HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND): The system cannot find the file specified.";
+	case __HRESULT_FROM_WIN32( ERROR_PATH_NOT_FOUND ):
+		return "HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND): The system cannot find the path specified.";
 	case E_ACCESSDENIED:
 		return "E_ACCESSDENIED(0x80070005): General access denied error.";
 	case DXGI_ERROR_DEVICE_REMOVED:
@@ -105,25 +120,28 @@ inline std::string FormatMessage( HRESULT hr )
 		return "DXGI_ERROR_DEVICE_HUNG(0x887A0006): The GPU will not respond to more commands, most likely because of an invalid command passed by the calling application.";
 	case DXGI_ERROR_DEVICE_RESET:
 		return "DXGI_ERROR_DEVICE_RESET(0x887A0007): The GPU will not respond to more commands, most likely because some other application submitted invalid commands. The calling application should re-create the device and continue.";
+	case 0x8007007B:
+		return "(0x8007007B): The filename, directory name or volume label syntax is incorrect.";
 	default:
-		return "Unknown HRESULT Error: "s + to_string( hr );
+		return System::String::Format( "Unknown HRESULT Error: {0}", hr );
 	}
 }
 
+inline void ThrowHR( HRESULT hr )
+{
+	auto exception = gcnew System::Exception( FormatMessage( hr ) );
+	exception->HResult = ( int )hr;
+	throw exception;
+}
+
+#pragma unmanaged
 inline void HR( HRESULT hr )
 {
 	using namespace SC;
 
 	if ( FAILED( hr ) )
 	{
-		if ( hr == DXGI_ERROR_DEVICE_REMOVED )
-		{
-			throw new std::exception( FormatMessage( hr ).c_str() );
-		}
-		else
-		{
-			throw new std::exception( FormatMessage( hr ).c_str() );
-		}
+		ThrowHR( hr );
 	}
 }
 
@@ -135,6 +153,8 @@ inline void HR( HRESULT hr )
 
 /* Enum */
 #include "KeyCode.h"
+#include "TextureFormat.h"
+#include "RigidbodyConstraints.h"
 #include "UI.Anchor.h"
 #include "UI.TextAlignment.h"
 #include "UI.TextVerticalAlignment.h"
@@ -151,18 +171,32 @@ inline void HR( HRESULT hr )
 #include "AppConfiguration.h"
 #include "Application.h"
 #include "SceneManager.h"
-#include "Scene.h"
 #include "Time.h"
 #include "Input.h"
+#include "Scene.h"
+#include "Collision.h"
+#include "ContactPoint.h"
+#include "Asset.h"
+#include "Mesh.h"
+#include "Texture2D.h"
+#include "Material.h"
+#include "PhysicsMaterial.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "Transform.h"
 #include "Camera.h"
 #include "MeshFilter.h"
 #include "MeshRenderer.h"
+#include "Light.h"
+#include "Bone.h"
+#include "SkinnedMeshRenderer.h"
+#include "Rigidbody.h"
+#include "Collider.h"
+#include "BoxCollider.h"
+#include "CapsuleCollider.h"
+#include "SphereCollider.h"
+#include "ThreadDispatcher.h"
 #include "Behaviour.h"
-#include "Asset.h"
-#include "Mesh.h"
 #include "UI.DependencyObject.h"
 #include "UI.Element.h"
 #include "UI.Page.h"
@@ -175,32 +209,13 @@ inline void HR( HRESULT hr )
 #include "UI.TextFormat.h"
 #include "UI.TextBlock.h"
 
-inline void Assign( XMFLOAT4X4& left, System::Numerics::Matrix4x4% right )
-{
-	left._11 = right.M11;
-	left._12 = right.M12;
-	left._13 = right.M13;
-	left._14 = right.M14;
+/* Exceptions */
+#include "ComponentDisconnectedException.h"
 
-	left._21 = right.M21;
-	left._22 = right.M22;
-	left._23 = right.M23;
-	left._24 = right.M24;
+/* Packages */
+#include "Physics.h"
 
-	left._31 = right.M31;
-	left._32 = right.M32;
-	left._33 = right.M33;
-	left._34 = right.M34;
+#include "Assignable.h"
 
-	left._41 = right.M41;
-	left._42 = right.M42;
-	left._43 = right.M43;
-	left._44 = right.M44;
-}
-
-inline void Assign( XMFLOAT3& left, System::Numerics::Vector3% right )
-{
-	left.x = right.X;
-	left.y = right.Y;
-	left.z = right.Z;
-}
+#undef min
+#undef max

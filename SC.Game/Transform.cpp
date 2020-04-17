@@ -4,6 +4,8 @@ using namespace SC::Game;
 using namespace System;
 using namespace System::Numerics;
 
+using namespace physx;
+
 #pragma unmanaged
 void Transform_Constants::Initialize()
 {
@@ -12,6 +14,17 @@ void Transform_Constants::Initialize()
 	XMStoreFloat4x4( &WorldInvTranspose, identity );
 }
 #pragma managed
+
+void Transform::WriteRigid( Vector3 p, Quaternion q )
+{
+	if ( mGameObject->mRigidbody )
+	{
+		PxTransform gp;
+		Assign( gp.p, p );
+		Assign( gp.q, q );
+		mGameObject->mRigidbody->setGlobalPose( gp );
+	}
+}
 
 void Transform::CreateBuffer()
 {
@@ -23,19 +36,46 @@ void Transform::CreateBuffer()
 
 void Transform::Update()
 {
-	if ( mConstants )
+	if ( IsUpdated )
 	{
-		Matrix4x4 world = World;
-		Matrix4x4 invert;
-		Matrix4x4::Invert( world, invert );
-		auto worldInvTrp = Matrix4x4::Transpose( invert );
+		// 리지드바디가 존재할 경우 물리 계산이 완료된 리지드바디에서 위치와 회전 벡터를 가져옵니다.
+		if ( mGameObject->mRigidbody && !mGameObject->mIsStaticRigid )
+		{
+			auto gp = mGameObject->mRigidbody->getGlobalPose();
+			Vector3 pos;
+			Quaternion quat;
+			Assign( pos, gp.p );
+			Assign( quat, gp.q );
 
-		Assign( mFrameResource->World, world );
-		Assign( mFrameResource->WorldInvTranspose, worldInvTrp );
+			// 리지드바디의 정보를 트랜스폼 정보로 가져옵니다.
+			Vector3 identity1 = Vector3::Zero;
+			if ( mParent )
+			{
+				identity1 = mParent->Position;
+			}
+			mLocalPosition = Vector3::operator-( pos, identity1 );
+			Quaternion identity2 = Quaternion::Identity;
+			if ( mParent )
+			{
+				identity2 = mParent->Rotation;
+			}
+			mLocalRotation = quat * Quaternion::Conjugate( identity2 );
+		}
 
-		auto block = mConstants->Map();
-		memcpy( block, mFrameResource, sizeof( *mFrameResource ) );
-		mConstants->Unmap();
+		if ( mConstants )
+		{
+			Matrix4x4 world = World;
+			Matrix4x4 invert;
+			Matrix4x4::Invert( world, invert );
+			auto worldInvTrp = Matrix4x4::Transpose( invert );
+
+			Assign( mFrameResource->World, world );
+			Assign( mFrameResource->WorldInvTranspose, worldInvTrp );
+
+			auto block = mConstants->Map();
+			memcpy( block, mFrameResource, sizeof( *mFrameResource ) );
+			mConstants->Unmap();
+		}
 	}
 }
 
@@ -104,6 +144,7 @@ void Transform::LookAt( Vector3 target, Vector3 up )
 	world.Translation = pos;
 
 	World = world;
+	mBufferUpdated = true;
 }
 
 void Transform::LookTo( Vector3 direction, Vector3 up )
@@ -135,6 +176,7 @@ void Transform::LocalLookAt( Vector3 target, Vector3 up )
 	world.Translation = pos;
 
 	LocalWorld = world;
+	mBufferUpdated = true;
 }
 
 void Transform::LocalLookTo( Vector3 direction, Vector3 up )
@@ -197,6 +239,9 @@ void Transform::World::set( Matrix4x4 value )
 
 	auto world = value * worldInv;
 	Matrix4x4::Decompose( world, mLocalScale, mLocalRotation, mLocalPosition );
+
+	WriteRigid( Position, Rotation );
+	mBufferUpdated = true;
 }
 
 Matrix4x4 Transform::LocalWorld::get()
@@ -207,6 +252,7 @@ Matrix4x4 Transform::LocalWorld::get()
 void Transform::LocalWorld::set( Matrix4x4 value )
 {
 	Matrix4x4::Decompose( value, mLocalScale, mLocalRotation, mLocalPosition );
+	mBufferUpdated = true;
 }
 
 Vector3 Transform::Position::get()
@@ -227,6 +273,9 @@ void Transform::Position::set( Vector3 value )
 		identity = mParent->Position;
 	}
 	mLocalPosition = Vector3::operator-( value, identity );
+
+	WriteRigid( value, Rotation );
+	mBufferUpdated = true;
 }
 
 Vector3 Transform::LocalPosition::get()
@@ -237,6 +286,8 @@ Vector3 Transform::LocalPosition::get()
 void Transform::LocalPosition::set( Vector3 value )
 {
 	mLocalPosition = value;
+	WriteRigid( Position, Rotation );
+	mBufferUpdated = true;
 }
 
 Vector3 Transform::Scale::get()
@@ -257,6 +308,7 @@ void Transform::Scale::set( Vector3 value )
 		identity = mParent->Scale;
 	}
 	mLocalScale = value / identity;
+	mBufferUpdated = true;
 }
 
 Vector3 Transform::LocalScale::get()
@@ -267,6 +319,7 @@ Vector3 Transform::LocalScale::get()
 void Transform::LocalScale::set( Vector3 value )
 {
 	mLocalScale = value;
+	mBufferUpdated = true;
 }
 
 Quaternion Transform::Rotation::get()
@@ -287,6 +340,9 @@ void Transform::Rotation::set( Quaternion value )
 		identity = mParent->Rotation;
 	}
 	mLocalRotation = value * Quaternion::Conjugate( identity );
+
+	WriteRigid( Position, value );
+	mBufferUpdated = true;
 }
 
 Quaternion Transform::LocalRotation::get()
@@ -297,6 +353,8 @@ Quaternion Transform::LocalRotation::get()
 void Transform::LocalRotation::set( Quaternion value )
 {
 	mLocalRotation = value;
+	WriteRigid( Position, Rotation );
+	mBufferUpdated = true;
 }
 
 Vector3 Transform::Forward::get()
@@ -307,9 +365,22 @@ Vector3 Transform::Forward::get()
 void Transform::Forward::set( Vector3 value )
 {
 	LookTo( value );
+	mBufferUpdated = true;
 }
 
 bool Transform::IsUpdated::get()
 {
-	throw gcnew NotImplementedException();
+	bool v = mBufferUpdated;
+
+	if ( !v && mParent != nullptr )
+	{
+		v = v || mParent->IsUpdated;
+	}
+
+	if ( !v && mGameObject->mRigidbody && !mGameObject->mIsStaticRigid )
+	{
+		v = true;
+	}
+
+	return v;
 }

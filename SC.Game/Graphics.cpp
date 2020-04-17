@@ -11,6 +11,7 @@ unique_ptr<CCommandQueue> Graphics::mCoreQueue;
 unique_ptr<CCommandQueue> Graphics::mHighPriorityQueue;
 unique_ptr<CCommandQueue> Graphics::mUIQueue;
 unique_ptr<CCommandQueue> Graphics::mCopyQueue;
+unique_ptr<CCommandQueue> Graphics::mComputeQueue;
 unique_ptr<CSwapChain> Graphics::mSwapChain;
 
 void Graphics::Initialize()
@@ -25,6 +26,7 @@ void Graphics::Initialize()
 	mHighPriorityQueue = make_unique<CCommandQueue>( D3D12_COMMAND_LIST_TYPE_DIRECT, D3D12_COMMAND_QUEUE_PRIORITY_HIGH );
 	mUIQueue = make_unique<CCommandQueue>( D3D12_COMMAND_LIST_TYPE_DIRECT );
 	mCopyQueue = make_unique<CCommandQueue>( D3D12_COMMAND_LIST_TYPE_COPY );
+	mComputeQueue = make_unique<CCommandQueue>( D3D12_COMMAND_LIST_TYPE_COMPUTE );
 	mDevice->InitializeInterop( mUIQueue.get() );
 	mSwapChain = make_unique<CSwapChain>();
 }

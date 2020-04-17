@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "PathFinder": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)\\",
+      "nativeDebugging": false
+    }
+  }
+}

@@ -5,9 +5,14 @@ using namespace SC::Game;
 
 #include "CompiledShader/ColorVertexShader"
 #include "CompiledShader/ColorPixelShader"
+#include "CompiledShader/ShadowCastVertexShader"
+#include "CompiledShader/SkyboxVertexShader"
+#include "CompiledShader/SkyboxPixelShader"
 
 ComPtr<ID3D12RootSignature> ShaderBuilder::pRootSignature3D;
 ComPtr<ID3D12PipelineState> ShaderBuilder::pPipelineStateColor;
+ComPtr<ID3D12PipelineState> ShaderBuilder::pPipelineStateShadowCast;
+ComPtr<ID3D12PipelineState> ShaderBuilder::pPipelineStateSkybox;
 
 void ShaderBuilder::Load3DShader()
 {
@@ -30,7 +35,7 @@ void ShaderBuilder::Load3DShader()
 
 	rootSignatureDesc.AddDescriptorTable( textures );
 
-	rootSignatureDesc.AddStaticSampler( D3D12_FILTER_ANISOTROPIC, D3D12_TEXTURE_ADDRESS_MODE_BORDER, 8 );
+	rootSignatureDesc.AddStaticSampler( D3D12_FILTER_ANISOTROPIC, D3D12_TEXTURE_ADDRESS_MODE_WRAP, 8 );
 
 	ComPtr<ID3DBlob> pRSBlob;
 	HR( D3D12SerializeRootSignature( rootSignatureDesc.Get(), D3D_ROOT_SIGNATURE_VERSION_1_0, &pRSBlob, nullptr ) );
@@ -50,4 +55,26 @@ void ShaderBuilder::Load3DShader()
 	//pipelineDesc.WireframeMode = true;
 	pipelineDesc.SetBlendState( 0, true, D3D12_BLEND_SRC_ALPHA, D3D12_BLEND_INV_SRC_ALPHA, D3D12_BLEND_OP_ADD );
 	HR( pDevice->CreateGraphicsPipelineState( pipelineDesc.Get(), IID_PPV_ARGS( &pPipelineStateColor ) ) );
+
+	pipelineDesc.SetVertexShader( pShadowCastVertexShader, ARRAYSIZE( pShadowCastVertexShader ) );
+	pipelineDesc.SetPixelShader( nullptr, 0 );
+	pipelineDesc.RTVCount = 0;
+	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_UNKNOWN;
+	pipelineDesc.RTVFormats[1] = DXGI_FORMAT_UNKNOWN;
+	pipelineDesc.RTVFormats[2] = DXGI_FORMAT_UNKNOWN;
+	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	pipelineDesc.SlopeScaledDepthBias = 3.0;
+	pipelineDesc.SetBlendState( 0, false, D3D12_BLEND_SRC_ALPHA, D3D12_BLEND_INV_SRC_ALPHA );
+	HR( pDevice->CreateGraphicsPipelineState( pipelineDesc.Get(), IID_PPV_ARGS( &pPipelineStateShadowCast ) ) );
+
+	pipelineDesc = CGraphicsPipelineStateDesc( pRootSignature3D.Get() );
+	pipelineDesc.RTVCount = 1;
+	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	pipelineDesc.SetVertexShader( pSkyboxVertexShader, ARRAYSIZE( pSkyboxVertexShader ) );
+	pipelineDesc.SetPixelShader( pSkyboxPixelShader, ARRAYSIZE( pSkyboxPixelShader ) );
+	pipelineDesc.AddInputLayout( Vertex::InputElements );
+	pipelineDesc.CullMode = D3D12_CULL_MODE_FRONT;
+	pipelineDesc.SetDepthStencilState( true );
+	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+	HR( pDevice->CreateGraphicsPipelineState( pipelineDesc.Get(), IID_PPV_ARGS( &pPipelineStateSkybox ) ) );
 }

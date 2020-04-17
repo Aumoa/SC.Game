@@ -24,6 +24,7 @@ HANDLE App::mFenceEvent;
 
 CDeviceContext App::mHeapCommitDCAndGC;
 
+#pragma managed
 void App::Initialize()
 {
 	Disposing.push_front( OnDisposing );
@@ -31,9 +32,11 @@ void App::Initialize()
 	CreateWindow1();
 
 	Graphics::Initialize();
+	Physics::Initialize();
 	ShaderBuilder::Initialize();
 	GC::Initialize();
 	HeapAllocator::Initialize();
+	Material::Initialize();
 	GameLogic::Initialize();
 	UISystem::Initialize();
 
@@ -46,6 +49,7 @@ void App::Initialize()
 	debug_name( App::mHeapCommitDCAndGC.mCommandList );
 #endif
 }
+#pragma unmanaged
 
 void App::DisposeAll()
 {

@@ -204,6 +204,20 @@ void CDeviceContext::SetGraphicsRootShaderResource( UINT index, UINT numShaderRe
 	mCommandList->SetGraphicsRootDescriptorTable( index, handle );
 }
 
+void CDeviceContext::SetGraphicsRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView** ppShaderResourceViews )
+{
+	UINT start = -1;
+
+	for ( UINT i = 0; i < numShaderResources; ++i )
+	{
+		auto idx = mVisibleDescriptorAllocators[mFrameIndex].CopyFrom( ppShaderResourceViews[i]->mIndex, *this );
+		if ( start == -1 ) start = idx;
+	}
+
+	auto handle = mVisibleDescriptorAllocators[mFrameIndex].GetGPUHandle( start );
+	mCommandList->SetGraphicsRootDescriptorTable( index, handle );
+}
+
 void CDeviceContext::IASetVertexBuffers( UINT startSlot, UINT numViews, const D3D12_VERTEX_BUFFER_VIEW* pViews )
 {
 	mCommandList->IASetVertexBuffers( startSlot, numViews, pViews );
@@ -217,6 +231,72 @@ void CDeviceContext::IASetIndexBuffer( const D3D12_INDEX_BUFFER_VIEW* pView )
 void CDeviceContext::DrawIndexedInstanced( UINT indexCountPerInstance, UINT instanceCount, UINT startIndexLocation, INT baseVertexLocation, UINT startInstanceLocation )
 {
 	mCommandList->DrawIndexedInstanced( indexCountPerInstance, instanceCount, startIndexLocation, baseVertexLocation, startInstanceLocation );
+}
+
+void CDeviceContext::CopyTextureRegion( const D3D12_TEXTURE_COPY_LOCATION* pDst, UINT dstX, UINT dstY, UINT dstZ, const D3D12_TEXTURE_COPY_LOCATION* pSrc, const D3D12_BOX* pSrcBox )
+{
+	mCommandList->CopyTextureRegion( pDst, dstX, dstY, dstZ, pSrc, pSrcBox );
+}
+
+void CDeviceContext::SetComputeRoot32BitConstant( UINT index, UINT srcData, UINT destOffsetIn32BitValues )
+{
+	mCommandList->SetComputeRoot32BitConstant( index, srcData, destOffsetIn32BitValues );
+}
+
+void CDeviceContext::SetComputeRoot32BitConstants( UINT index, UINT num32BitValuesToSet, const void* pSrcData, UINT destOffsetIn32BitValues )
+{
+	mCommandList->SetComputeRoot32BitConstants( index, num32BitValuesToSet, pSrcData, destOffsetIn32BitValues );
+}
+
+void CDeviceContext::SetComputeRootShaderResource( UINT index, CShaderResourceView& shaderResourceView )
+{
+	auto idx = mVisibleDescriptorAllocators[mFrameIndex].CopyFrom( shaderResourceView.mIndex, *this );
+	auto handle = mVisibleDescriptorAllocators[mFrameIndex].GetGPUHandle( idx );
+
+	mCommandList->SetComputeRootDescriptorTable( index, handle );
+}
+
+void CDeviceContext::SetComputeRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView* pShaderResourceViews )
+{
+	UINT start = -1;
+
+	for ( UINT i = 0; i < numShaderResources; ++i )
+	{
+		auto idx = mVisibleDescriptorAllocators[mFrameIndex].CopyFrom( pShaderResourceViews[i].mIndex, *this );
+		if ( start == -1 ) start = idx;
+	}
+
+	auto handle = mVisibleDescriptorAllocators[mFrameIndex].GetGPUHandle( start );
+	mCommandList->SetComputeRootDescriptorTable( index, handle );
+}
+
+void CDeviceContext::SetComputeRootShaderResource( UINT index, UINT numShaderResources, CShaderResourceView** ppShaderResourceViews )
+{
+	UINT start = -1;
+
+	for ( UINT i = 0; i < numShaderResources; ++i )
+	{
+		auto idx = mVisibleDescriptorAllocators[mFrameIndex].CopyFrom( ppShaderResourceViews[i]->mIndex, *this );
+		if ( start == -1 ) start = idx;
+	}
+
+	auto handle = mVisibleDescriptorAllocators[mFrameIndex].GetGPUHandle( start );
+	mCommandList->SetComputeRootDescriptorTable( index, handle );
+}
+
+void CDeviceContext::Dispatch( UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ )
+{
+	mCommandList->Dispatch( threadGroupCountX, threadGroupCountY, threadGroupCountZ );
+}
+
+void CDeviceContext::SetComputeRootShaderResourceView( UINT index, D3D12_GPU_VIRTUAL_ADDRESS bufferLocation )
+{
+	mCommandList->SetComputeRootShaderResourceView( index, bufferLocation );
+}
+
+void CDeviceContext::SetComputeRootUnorderedAccessView( UINT index, D3D12_GPU_VIRTUAL_ADDRESS bufferLocation )
+{
+	mCommandList->SetComputeRootUnorderedAccessView( index, bufferLocation );
 }
 
 CDeviceContext& CDeviceContext::operator=( CDeviceContext&& from )

@@ -5,6 +5,11 @@ using namespace System;
 
 Application::Application( AppConfiguration configuration )
 {
+	if ( configuration.PhysicsUpdatesPerSecond <= 0 )
+	{
+		configuration.PhysicsUpdatesPerSecond = 60;
+	}
+
 	ApplicationCore::mApp = this;
 	ApplicationCore::mConfiguration = configuration;
 

@@ -14,8 +14,15 @@ namespace THHourai
 			cam.AddComponent<Camera>();
 			cam.AddComponent<CameraAction>();
 			cam.Transform.Parent = Transform;
+			Cam = cam;
 
 			AddComponent<CameraWalk>();
+		}
+
+		public GameObject Cam
+		{
+			get;
+			private set;
 		}
 
 		public static GameCamera Instance

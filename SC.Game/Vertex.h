@@ -11,6 +11,20 @@ namespace SC::Game
 		XMFLOAT3 Normal;
 		XMFLOAT3 Tangent;
 
+		Vertex()
+		{
+
+		}
+
+		Vertex( FXMVECTOR pos, FXMVECTOR normal, FXMVECTOR tex )
+		{
+			XMStoreFloat3( &Pos, pos );
+			Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			XMStoreFloat3( &Normal, normal );
+			XMStoreFloat2( &Tex, tex );
+			Tangent = {  };
+		}
+
 		bool operator==( const Vertex& copy ) const
 		{
 			return memcmp( this, &copy, sizeof( Vertex ) ) == 0;

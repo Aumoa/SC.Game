@@ -18,6 +18,7 @@ namespace SC::Game
 		static void Push( UINT index );
 
 		static CShaderResourceView CreateShaderResourceView( ID3D12Resource* pResource, const D3D12_SHADER_RESOURCE_VIEW_DESC* pSRVDesc );
+		static CShaderResourceView CreateUnorderedAccessView( ID3D12Resource* pResource, const D3D12_UNORDERED_ACCESS_VIEW_DESC* pUAVDesc );
 		static D3D12_CPU_DESCRIPTOR_HANDLE GetHandle( UINT index );
 
 	private:

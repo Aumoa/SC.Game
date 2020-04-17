@@ -11,6 +11,7 @@ namespace SC::Game
 		static std::unique_ptr<CCommandQueue> mHighPriorityQueue;
 		static std::unique_ptr<CCommandQueue> mUIQueue;
 		static std::unique_ptr<CCommandQueue> mCopyQueue;
+		static std::unique_ptr<CCommandQueue> mComputeQueue;
 		static std::unique_ptr<CSwapChain> mSwapChain;
 
 	public:

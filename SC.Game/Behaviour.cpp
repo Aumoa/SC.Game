@@ -41,3 +41,28 @@ void Behaviour::LateUpdate()
 {
 
 }
+
+void Behaviour::OnCollisionEnter( Collision collision )
+{
+
+}
+
+void Behaviour::OnCollisionExit( Collision collision )
+{
+
+}
+
+void Behaviour::OnCollisionStay( Collision collision )
+{
+
+}
+
+void Behaviour::OnTriggerEnter( Collider^ collider )
+{
+
+}
+
+void Behaviour::OnTriggerExit( Collider^ collider )
+{
+
+}
