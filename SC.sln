@@ -58,8 +58,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{CC7B
 		ExternalLib\x64\Release\SimulationController_static.lib = ExternalLib\x64\Release\SimulationController_static.lib
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFinder", "PathFinder\PathFinder.csproj", "{44EA1785-333B-42FD-9960-867EACE5AF09}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,18 +102,6 @@ Global
 		{BFD0FBC3-4EA7-424B-BE06-9A4ECFC16D87}.Release|x64.Build.0 = Release|Any CPU
 		{BFD0FBC3-4EA7-424B-BE06-9A4ECFC16D87}.Release|x86.ActiveCfg = Release|Any CPU
 		{BFD0FBC3-4EA7-424B-BE06-9A4ECFC16D87}.Release|x86.Build.0 = Release|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Debug|x64.Build.0 = Debug|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Debug|x86.Build.0 = Debug|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Release|x64.ActiveCfg = Release|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Release|x64.Build.0 = Release|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Release|x86.ActiveCfg = Release|Any CPU
-		{44EA1785-333B-42FD-9960-867EACE5AF09}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

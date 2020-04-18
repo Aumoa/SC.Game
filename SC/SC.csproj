@@ -9,4 +9,8 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\wkdgh\source\repos\SC.Game\SC\SC.xml</DocumentationFile>
+  </PropertyGroup>
+
 </Project>
