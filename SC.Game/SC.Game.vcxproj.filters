@@ -270,6 +270,45 @@
     <ClInclude Include="ThreadDispatcher.h">
       <Filter>Managed\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationState.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationClip.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyframes.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyframePair.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyframe.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyframeQ.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatorController.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Trigger.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationTransitionCondition.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetBundle.h">
+      <Filter>Managed\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMeshRendererQueue.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -510,6 +549,30 @@
     </ClCompile>
     <ClCompile Include="ThreadDispatcher.cpp">
       <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationClip.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationState.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatorController.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="MDLParser.cpp">
+      <Filter>Managed\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetBundle.cpp">
+      <Filter>Managed\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMeshRendererQueue.cpp">
+      <Filter>Unmanaged</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

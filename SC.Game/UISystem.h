@@ -35,6 +35,7 @@ namespace SC::Game
 		static UINT mShaderDispatchInfoIndex;
 
 		static std::set<GlyphBuffer*> mGlyphBuffers;
+		static Mutex mMutex;
 		static bool mDisposed;
 
 	public:

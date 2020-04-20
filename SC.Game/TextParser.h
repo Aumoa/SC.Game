@@ -17,12 +17,12 @@ namespace SC::Game
 		char ReadChar();
 		std::string ReadString( bool removeQuotes = true );
 		int ReadInt();
-		double ReadDouble();
+		float ReadDouble();
 
-		vs_property( int, Seekpos );
+		__declspec( property( get = Seekpos_get, put = Seekpos_set ) ) int Seekpos;
 		int Seekpos_get();
 		void Seekpos_set( int value );
-		vs_property_get( bool, Eof );
+		__declspec( property( get = Eof_get ) ) bool Eof;
 		bool Eof_get();
 
 	private:

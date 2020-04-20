@@ -26,10 +26,10 @@ Pixel main( Fragment pIn )
 
 	if ( gMaterial.DiffuseMap == 2 )
 	{
-		color.xyz += gDiffuseMap1.Sample( gSampler, pIn.Tex ).xyz;
+		color.xyz += pow( gDiffuseMap1.Sample( gSampler, pIn.Tex ).xyz, 2.2f );
 	}
 	
-	color = gMaterial.Color;
+	color *= gMaterial.Color;
 
 	if ( true || gMaterial.AlphaClip )
 		clip( color.a - 0.9f );

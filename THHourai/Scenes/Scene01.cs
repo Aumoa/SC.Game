@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 
 using SC.Game;
 using SC.Game.UI;
@@ -10,6 +11,7 @@ namespace THHourai.Scene01
 	{
 		Page page;
 		bool isStart = false;
+		Task<GameObject> mokou;
 
 		public Scene()
 		{
@@ -27,6 +29,12 @@ namespace THHourai.Scene01
 			{
 				Start();
 				isStart = true;
+			}
+
+			if ( mokou != null && mokou.IsCompleted )
+			{
+				var go = mokou.Result;
+				mokou = null;
 			}
 
 			base.Update();
@@ -61,6 +69,13 @@ namespace THHourai.Scene01
 			sf.Target = instance.Transform;
 
 			page = new Page();
+
+			mokou = AssetBundle.LoadAssetAsync( @"Assets\Model\Syameimaru_Aya\Syameimaru_Aya.mdl" );
+			var results = mokou.Result;
+			results.Transform.Scale = new Vector3( 0.01f, 0.01f, 0.01f );
+			results.Transform.Position = new Vector3( 0.0f, 1.0f, 0.0f );
+			results.Transform.Rotation = Quaternion.CreateFromAxisAngle( Vector3.UnitY, 3.1415f * 0.5f );
+			Add( results );
 		}
 
 		public override void Unload()

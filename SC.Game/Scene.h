@@ -26,6 +26,7 @@ namespace SC::Game
 		System::Collections::Generic::List<MeshRenderer^>^ mSceneMeshRenderers;
 		System::Collections::Generic::List<Light^>^ mSceneLights;
 		System::Collections::Generic::List<Collider^>^ mSceneColliders;
+		SkinnedMeshRendererQueue* mSkinnedMeshRendererQueue = nullptr;
 
 		System::Collections::Generic::IDictionary<int, MyList^>^ mThreadSceneGraph;
 
@@ -37,6 +38,7 @@ namespace SC::Game
 	private:
 		virtual System::Collections::IEnumerator^ GetEnumerator2() sealed = System::Collections::IEnumerable::GetEnumerator;
 		void PopulateSceneGraph();
+		void ReadComponent( GameObject^ gameObject );
 		void IncludeChilds( GameObject^ gameObject, int thread );
 		void UpdateSpecialComponents();
 

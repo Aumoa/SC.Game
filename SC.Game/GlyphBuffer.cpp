@@ -87,13 +87,17 @@ GlyphBuffer::GlyphBuffer( const wstring_view& fontFamilyName, float fontSize )
 	);
 	mDeviceContext.Close();
 
-	UISystem::mGlyphBuffers.insert( this );
+	{
+		auto lock = UISystem::mMutex.Lock();
+		UISystem::mGlyphBuffers.insert( this );
+	}
 }
 
 GlyphBuffer::~GlyphBuffer()
 {
 	if ( !UISystem::mDisposed )
 	{
+		auto lock = UISystem::mMutex.Lock();
 		UISystem::mGlyphBuffers.erase( this );
 	}
 

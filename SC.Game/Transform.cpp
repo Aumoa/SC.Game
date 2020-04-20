@@ -191,10 +191,6 @@ Transform^ Transform::Parent::get()
 
 void Transform::Parent::set( Transform^ value )
 {
-	auto prevPos = Position;
-	auto prevScale = Scale;
-	auto prevRot = Rotation;
-
 	if ( mParent )
 	{
 		auto index = mParent->mGameObject->mGameObjects->IndexOf( mGameObject );
@@ -210,10 +206,6 @@ void Transform::Parent::set( Transform^ value )
 	{
 		mParent->mGameObject->mGameObjects->Add( mGameObject );
 	}
-
-	Position = prevPos;
-	Scale = prevScale;
-	Rotation = prevRot;
 }
 
 Matrix4x4 Transform::World::get()

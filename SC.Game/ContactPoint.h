@@ -2,6 +2,8 @@
 
 namespace SC::Game
 {
+	ref class Collider;
+
 	/// <summary>
 	/// 충돌이 발생한 충돌점을 나타냅니다.
 	/// </summary>

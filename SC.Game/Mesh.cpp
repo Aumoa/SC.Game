@@ -95,6 +95,7 @@ Mesh::!Mesh()
 		ComPtr<IUnknown> pUnknown;
 		pUnknown.Attach( mVertexBuffer );
 		App::GCAdd( move( pUnknown ) );
+		mVertexBuffer = nullptr;
 	}
 
 	if ( mIndexBuffer )
@@ -102,6 +103,7 @@ Mesh::!Mesh()
 		ComPtr<IUnknown> pUnknown;
 		pUnknown.Attach( mIndexBuffer );
 		App::GCAdd( move( pUnknown ) );
+		mIndexBuffer = nullptr;
 	}
 }
 

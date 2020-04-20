@@ -91,11 +91,24 @@ namespace SC::Game
 		System::Collections::Generic::IList<T>^ GetComponentsInChildren();
 
 		/// <summary>
+		/// 개체의 하위 개체를 가져옵니다.
+		/// </summary>
+		GameObject^ GetChild( int index );
+
+		/// <summary>
 		/// 개체의 변환 개체를 가져옵니다.
 		/// </summary>
 		property Game::Transform^ Transform
 		{
 			Game::Transform^ get();
+		}
+
+		/// <summary>
+		/// 개체의 하위 개체 개수를 가져옵니다.
+		/// </summary>
+		property int NumChilds
+		{
+			int get();
 		}
 	};
 }

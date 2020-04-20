@@ -13,6 +13,7 @@ gcroot<Scene^> GameLogic::mCurrentScene;
 gcroot<Scene^> GameLogic::mRemovedScenes[2];
 
 CDeviceContext GameLogic::mDeviceContext;
+CDeviceContext GameLogic::mDeviceContextMeshSkinning;
 CDeviceContext GameLogic::mDeviceContextGeometryWriting;
 CDeviceContext GameLogic::mDeviceContextShadowCast[8];
 CDeviceContext GameLogic::mDeviceContextHDR;
@@ -50,6 +51,7 @@ void GameLogic::Initialize()
 	App::Resizing.push_back( OnResizing );
 
 	mDeviceContext = CDeviceContext( D3D12_COMMAND_LIST_TYPE_DIRECT );
+	mDeviceContextMeshSkinning = CDeviceContext( D3D12_COMMAND_LIST_TYPE_COMPUTE );
 	mDeviceContextGeometryWriting = CDeviceContext( D3D12_COMMAND_LIST_TYPE_DIRECT );
 	mDeviceContextShadowCast[0] = CDeviceContext( D3D12_COMMAND_LIST_TYPE_DIRECT );
 	mDeviceContextShadowCast[1] = CDeviceContext( D3D12_COMMAND_LIST_TYPE_DIRECT );
@@ -103,6 +105,8 @@ void GameLogic::Render()
 	// 카메라 컬렉션이 존재할 경우에만 3D 렌더링을 수행합니다.
 	if ( mCurrentScene && mCurrentScene->mSceneCameras->Count )
 	{
+		MeshSkinning();
+
 		auto threadCount = ShadowCast();
 		GeometryWriting();
 
@@ -110,13 +114,19 @@ void GameLogic::Render()
 		HDRRender();
 		HDRCompute();
 
+		computeQueue->Execute( mDeviceContextMeshSkinning );
+		auto signal = computeQueue->Signal();
+
+		HR( directQueue->pCommandQueue->Wait( computeQueue->pFence.Get(), signal ) );
 		directQueue->Execute( mDeviceContextGeometryWriting );
 		directQueue->Execute( threadCount->Length, mDeviceContextShadowCast );
 		directQueue->Execute( mDeviceContextHDR );
-		auto signal = directQueue->Signal();
+		signal = directQueue->Signal();
+
 		HR( computeQueue->pCommandQueue->Wait( directQueue->pFence.Get(), signal ) );
 		computeQueue->Execute( mDeviceContextHDRCompute );
 		signal = computeQueue->Signal();
+
 		HR( directQueue->pCommandQueue->Wait( computeQueue->pFence.Get(), signal ) );
 	}
 
@@ -163,6 +173,25 @@ void GameLogic::OnResizing( int width, int height )
 }
 
 #pragma managed
+void GameLogic::MeshSkinning()
+{
+	auto& dc = mDeviceContextMeshSkinning;
+
+	dc.Reset( App::mFrameIndex, ShaderBuilder::pPipelineState_Skinning.Get() );
+	dc.SetComputeRootSignature( ShaderBuilder::pRootSignature_Skinning.Get() );
+
+	for each ( auto pair in mCurrentScene->mSkinnedMeshRendererQueue->mSkinnedPair )
+	{
+		pair.pAnimator->SetInput( dc );
+		for each ( auto skin in pair.SkinnedMeshRenderers )
+		{
+			skin->Skinning( dc );
+		}
+	}
+
+	dc.Close();
+}
+
 void GameLogic::GeometryWriting()
 {
 	auto& dc = mDeviceContextGeometryWriting;
@@ -186,6 +215,13 @@ void GameLogic::GeometryWriting()
 		for each ( auto meshRenderer in mCurrentScene->mSceneMeshRenderers )
 		{
 			meshRenderer->Render( dc );
+		}
+		for each ( auto pair in mCurrentScene->mSkinnedMeshRendererQueue->mSkinnedPair )
+		{
+			for each ( auto skin in pair.SkinnedMeshRenderers )
+			{
+				skin->Render( dc );
+			}
 		}
 
 		mGeometryBuffer.EndDraw( dc );

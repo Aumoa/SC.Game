@@ -46,6 +46,7 @@ Scene::Scene()
 	mSceneLights = gcnew List<Light^>();
 	mSceneColliders = gcnew List<Collider^>();
 	mThreadSceneGraph = gcnew Dictionary<int, MyList^>();
+	mSkinnedMeshRendererQueue = new SkinnedMeshRendererQueue();
 
 	mSimulationEventCallback = new ContactCallback();
 	auto pxSceneDesc = PxSceneDesc( PxTolerancesScale() );
@@ -86,6 +87,12 @@ Scene::!Scene()
 		mPxScene->release();
 		mPxScene = nullptr;
 	}
+
+	if ( mSkinnedMeshRendererQueue )
+	{
+		delete mSkinnedMeshRendererQueue;
+		mSkinnedMeshRendererQueue = nullptr;
+	}
 }
 
 System::Collections::IEnumerator^ Scene::GetEnumerator2()
@@ -103,24 +110,34 @@ void Scene::PopulateSceneGraph()
 		mSceneLights->Clear();
 		mSceneColliders->Clear();
 		mThreadSceneGraph->Clear();
+		mSkinnedMeshRendererQueue->Clear();
 
 		for each ( auto i in mGameObjects )
 		{
 			IncludeChilds( i, 0 );
 		}
 
+		mSkinnedMeshRendererQueue->PushAnimator( nullptr );
+
 		mSceneUpdated = false;
 	}
+}
+
+void Scene::ReadComponent( GameObject^ gameObject )
+{
+	if ( auto cam = gameObject->GetComponent<Camera^>(); cam ) mSceneCameras->Add( cam );
+	if ( auto meshRenderer = gameObject->GetComponent<MeshRenderer^>(); meshRenderer ) mSceneMeshRenderers->Add( meshRenderer );
+	if ( auto meshRenderer = gameObject->GetComponent<SkinnedMeshRenderer^>(); meshRenderer ) mSkinnedMeshRendererQueue->AddRenderer( meshRenderer );
+	if ( auto light = gameObject->GetComponent<Light^>(); light ) mSceneLights->Add( light );
+	if ( auto collider = gameObject->GetComponent<Collider^>(); collider ) mSceneColliders->Add( collider );
+	if ( auto animator = gameObject->GetComponent<Animator^>(); animator ) mSkinnedMeshRendererQueue->PushAnimator( animator );
 }
 
 void Scene::IncludeChilds( GameObject^ gameObject, int thread )
 {
 	mSceneGraph->Add( gameObject );
 
-	if ( auto cam = gameObject->GetComponent<Camera^>(); cam ) mSceneCameras->Add( cam );
-	if ( auto meshRenderer = gameObject->GetComponent<MeshRenderer^>(); meshRenderer ) mSceneMeshRenderers->Add( meshRenderer );
-	if ( auto light = gameObject->GetComponent<Light^>(); light ) mSceneLights->Add( light );
-	if ( auto collider = gameObject->GetComponent<Collider^>(); collider ) mSceneColliders->Add( collider );
+	ReadComponent( gameObject );
 
 	if ( auto threadDispatcher = gameObject->GetComponent<ThreadDispatcher^>(); threadDispatcher )
 	{
@@ -284,21 +301,24 @@ void Scene::Update()
 	}
 
 	// 동작 업데이트를 수행합니다.
-	auto tasks = gcnew cli::array<Task^>( mThreadSceneGraph->Count - 1 );
-	int i = 0;
-	for each ( auto list in mThreadSceneGraph )
+	if ( mThreadSceneGraph->Count != 0 )
 	{
-		if ( list.Key != 0 )
+		auto tasks = gcnew cli::array<Task^>( mThreadSceneGraph->Count - 1 );
+		int i = 0;
+		for each ( auto list in mThreadSceneGraph )
 		{
-			auto lambda = gcnew TaskLambda();
-			lambda->Caller = this;
-			lambda->Arg = list.Value;
-			tasks[i++] = Task::Run( gcnew Action( lambda, &TaskLambda::Task ) );
+			if ( list.Key != 0 )
+			{
+				auto lambda = gcnew TaskLambda();
+				lambda->Caller = this;
+				lambda->Arg = list.Value;
+				tasks[i++] = Task::Run( gcnew Action( lambda, &TaskLambda::Task ) );
+			}
 		}
-	}
-	UpdateThread( mThreadSceneGraph[0] );
+		UpdateThread( mThreadSceneGraph[0] );
 
-	Task::WaitAll( tasks );
+		Task::WaitAll( tasks );
+	}
 
 	mFixedUpdateTimer->Tick( gcnew StepTimerCallbackDelegate( this, &Scene::FixedUpdate ) );
 
@@ -316,6 +336,11 @@ void Scene::FixedUpdate()
 {
 	// FixedUpdate에 대한 Time 클래스 개체를 갱신합니다.
 	Time::FixedDeltaTime = ( float )mFixedUpdateTimer->ElapsedSeconds;
+
+	for each ( auto pair in mSkinnedMeshRendererQueue->mSkinnedPair )
+	{
+		pair.pAnimator->FixedUpdate();
+	}
 
 	for each ( auto go in mSceneGraph )
 	{

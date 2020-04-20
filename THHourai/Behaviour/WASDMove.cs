@@ -7,6 +7,8 @@ namespace THHourai
 {
 	class WASDMove : Behaviour
 	{
+		Rigidbody rigidbody;
+
 		public WASDMove() : base()
 		{
 
@@ -17,35 +19,42 @@ namespace THHourai
 			return new WASDMove();
 		}
 
+		public override void Start()
+		{
+			rigidbody = GetComponent<Rigidbody>();
+
+			base.Start();
+		}
+
 		public override void Update()
 		{
-			var forward = -Vector3.UnitZ;
+			var forward = Vector3.UnitZ;
 			var right = Vector3.UnitX;
 
 			Vector3 mov = Vector3.Zero;
 			if ( Input.GetKey( KeyCode.D ) )
 			{
-				mov += right * Time.DeltaTime * Speed;
+				mov += right * Speed;
 			}
 
 			if ( Input.GetKey( KeyCode.A ) )
 			{
-				mov -= right * Time.DeltaTime * Speed;
+				mov -= right * Speed;
 			}
 
 			if ( Input.GetKey( KeyCode.W ) )
 			{
-				mov += forward * Time.DeltaTime * Speed;
+				mov += forward * Speed;
 			}
 
 			if ( Input.GetKey( KeyCode.S ) )
 			{
-				mov -= forward * Time.DeltaTime * Speed;
+				mov -= forward * Speed;
 			}
 
 			if ( mov.Length() > 0.001f )
 			{
-				Transform.LocalPosition += mov;
+				rigidbody.Velocity = mov;
 			}
 		}
 

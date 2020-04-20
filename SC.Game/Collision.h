@@ -3,6 +3,7 @@
 namespace SC::Game
 {
 	value struct ContactPoint;
+	ref class GameObject;
 
 	/// <summary>
 	/// 충돌 정보를 나타냅니다.

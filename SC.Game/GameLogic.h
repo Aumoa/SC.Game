@@ -13,6 +13,7 @@ namespace SC::Game
 		static gcroot<Scene^> mRemovedScenes[2];
 
 		static CDeviceContext mDeviceContext;
+		static CDeviceContext mDeviceContextMeshSkinning;
 		static CDeviceContext mDeviceContextGeometryWriting;
 		static CDeviceContext mDeviceContextShadowCast[8];
 		static CDeviceContext mDeviceContextHDR;
@@ -37,6 +38,7 @@ namespace SC::Game
 		static void OnDisposing();
 		static void OnResizing( int width, int height );
 
+		static void MeshSkinning();
 		static void GeometryWriting();
 		static cli::array<System::Threading::Tasks::Task^>^ ShadowCast();
 		static void HDRRender();

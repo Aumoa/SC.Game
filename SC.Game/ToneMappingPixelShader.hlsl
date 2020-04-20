@@ -16,28 +16,26 @@ Texture2D<float4> gHDRSource : register( t0 );
 SamplerState gSampler : register( s0 );
 ConstantBuffer<HDRConstants> gHDRConstants : register( b0 );
 
-float4 ToneMapping( float4 Color, float AvgLum, float GammaValue = 2.2f, float GammaInv = 2.2f )
+float3 ToneMapping( float3 Color, float AvgLum )
 {
-	float MiddleGrey = 1.5f;
-	float LumWhiteSqr = 3.0f;
+	float MiddleGrey = AvgLum;
+	float LumWhiteSqr = AvgLum;
 
 	float LScale = CalcLum( Color.xyz );
 	LScale *= MiddleGrey / AvgLum;
 	LScale = ( LScale + LScale * LScale / LumWhiteSqr ) / ( 1.0f + LScale );
 
-	float3 color = pow( Color.xyz, GammaValue );
-	color.xyz = color.xyz * LScale;
-	color = pow( color, GammaInv );
-	return float4( color, Color.w );
+	Color.xyz = Color.xyz * LScale;
+	Color = pow( Color, 1.0f / 2.2f );
+	return float3( Color );
 }
-
 Pixel main( Fragment pIn )
 {
 	Pixel px;
 
 	px.Color = gHDRSource.Sample( gSampler, pIn.Tex );
-	//if ( px.Color.w < 0.5f )
-		//px.Color = ToneMapping( px.Color, gHDRConstants.AverageLum, 1.0f, 1.0f );
+	if ( px.Color.w < 0.5f )
+		px.Color.xyz = ToneMapping( px.Color.xyz, gHDRConstants.AverageLum );
 	
 	return px;
 }

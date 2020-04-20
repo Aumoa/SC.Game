@@ -7,7 +7,7 @@ namespace THHourai
 {
 	class CameraAction : Behaviour
 	{
-		readonly Vector3 initialPos = new Vector3( 0, 16.0f, 8.0f );
+		readonly Vector3 initialPos = new Vector3( 0, 16.0f, -8.0f );
 
 		float range = 1.0f;
 		float distance = 1.0f;
@@ -42,7 +42,7 @@ namespace THHourai
 			if ( Input.GetKey( KeyCode.End ) )
 			{
 				// 180 * 0.15의 회전 각도로 회전합니다.
-				quat = Quaternion.CreateFromAxisAngle( Vector3.UnitX, 3.14f * 0.15f );
+				quat = Quaternion.CreateFromAxisAngle( Vector3.UnitX, -3.14f * 0.15f );
 
 				// 거리를 0.5배로 낮춥니다.
 				range = 0.5f;

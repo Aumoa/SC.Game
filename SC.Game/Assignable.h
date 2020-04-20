@@ -147,6 +147,30 @@ inline XMFLOAT4X4 XMOrthographicLH( float width, float height, float nearZ, floa
 	XMStoreFloat4x4( &result, proj );
 	return result;
 }
+
+inline XMFLOAT4X4 XMMatrixScaling( float scaleX, float scaleY, float scaleZ )
+{
+	XMFLOAT4X4 dest;
+	auto scaling = DirectX::XMMatrixScaling( scaleX, scaleY, scaleZ );
+	XMStoreFloat4x4( &dest, scaling );
+	return dest;
+}
+
+inline XMFLOAT4X4 XMMatrixRotationQuaternion( float x, float y, float z, float w )
+{
+	XMFLOAT4X4 dest;
+	auto quat = DirectX::XMMatrixRotationQuaternion( XMVectorSet( x, y, z, w ) );
+	XMStoreFloat4x4( &dest, quat );
+	return dest;
+}
+
+inline XMFLOAT4X4 XMMatrixTranslation( float x, float y, float z )
+{
+	XMFLOAT4X4 dest;
+	auto trans = DirectX::XMMatrixTranslation( x, y, z );
+	XMStoreFloat4x4( &dest, trans );
+	return dest;
+}
 #pragma managed( pop )
 
 inline System::Numerics::Matrix4x4 LookToLH( System::Numerics::Vector3% eye, System::Numerics::Vector3% dir, System::Numerics::Vector3% up )
@@ -168,6 +192,27 @@ inline System::Numerics::Matrix4x4 OrthographicLH( float width, float height, fl
 	System::Numerics::Matrix4x4 proj;
 	Assign( proj, XMOrthographicLH( width, height, nearZ, farZ ) );
 	return proj;
+}
+
+inline System::Numerics::Matrix4x4 Scaling( float x, float y, float z )
+{
+	System::Numerics::Matrix4x4 scale;
+	Assign( scale, ::XMMatrixScaling( x, y, z ) );
+	return scale;
+}
+
+inline System::Numerics::Matrix4x4 RotationQuaternion( float x, float y, float z, float w )
+{
+	System::Numerics::Matrix4x4 quat;
+	Assign( quat, ::XMMatrixRotationQuaternion( x, y, z, w ) );
+	return quat;
+}
+
+inline System::Numerics::Matrix4x4 Translation( float x, float y, float z )
+{
+	System::Numerics::Matrix4x4 trans;
+	Assign( trans, ::XMMatrixTranslation( x, y, z ) );
+	return trans;
 }
 
 inline void Assign( System::Drawing::Color% left, XMFLOAT4& right )

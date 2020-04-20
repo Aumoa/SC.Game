@@ -19,7 +19,7 @@ namespace THHourai
 
 		public override void Update()
 		{
-			var forward = -Vector3.UnitZ;
+			var forward = Vector3.UnitZ;
 			var right = Vector3.UnitX;
 
 			Vector3 mov = Vector3.Zero;
@@ -53,6 +53,6 @@ namespace THHourai
 		{
 			get;
 			set;
-		} = 1.0f;
+		} = 3.0f;
 	}
 }

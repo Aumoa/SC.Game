@@ -39,6 +39,8 @@ using namespace DirectX;
 #include <stack>
 #include <chrono>
 #include <filesystem>
+#include <variant>
+#include <fstream>
 
 using Microsoft::WRL::ComPtr;
 
@@ -73,6 +75,7 @@ using Microsoft::WRL::ComPtr;
 #include "Bezier.h"
 #include "TextParser.h"
 #include "MDLParser.h"
+#include "SkinnedMeshRendererQueue.h"
 #include "UI.GlyphRenderer.h"
 #include "UI.RichTextColorUnknown.h"
 #include "DirectX.Geometry.h"
@@ -150,6 +153,8 @@ inline void HR( HRESULT hr )
 #pragma pop_macro( "_MANAGED" )
 
 #include <msclr/marshal.h>
+#undef min
+#undef max
 
 /* Enum */
 #include "KeyCode.h"
@@ -161,6 +166,15 @@ inline void HR( HRESULT hr )
 
 /* Struct */
 #include "Ray.h"
+#include "Keyframe.h"
+#include "KeyframeQ.h"
+#include "KeyframePair.h"
+#include "Keyframes.h"
+#include "Collision.h"
+#include "ContactPoint.h"
+#include "Trigger.h"
+#include "AnimationTransitionCondition.h"
+#include "StateMachine.h"
 #include "UI.DependencyProperty.h"
 #include "UI.Thickness.h"
 
@@ -174,13 +188,17 @@ inline void HR( HRESULT hr )
 #include "Time.h"
 #include "Input.h"
 #include "Scene.h"
-#include "Collision.h"
-#include "ContactPoint.h"
+
 #include "Asset.h"
 #include "Mesh.h"
 #include "Texture2D.h"
 #include "Material.h"
 #include "PhysicsMaterial.h"
+#include "AnimationClip.h"
+#include "AnimationState.h"
+#include "AnimatorController.h"
+#include "AssetBundle.h"
+
 #include "GameObject.h"
 #include "Component.h"
 #include "Transform.h"
@@ -196,7 +214,9 @@ inline void HR( HRESULT hr )
 #include "CapsuleCollider.h"
 #include "SphereCollider.h"
 #include "ThreadDispatcher.h"
+#include "Animator.h"
 #include "Behaviour.h"
+
 #include "UI.DependencyObject.h"
 #include "UI.Element.h"
 #include "UI.Page.h"

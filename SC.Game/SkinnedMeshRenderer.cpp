@@ -22,9 +22,16 @@ void SkinnedMeshRenderer::Render( CDeviceContext& deviceContext )
 {
 	if ( mMesh )
 	{
-		auto material = mMaterial;
-		if ( material == nullptr ) material = Game::Material::mDefault;
+		// 개체의 트랜스폼을 설정합니다.
+		deviceContext.SetGraphicsRootConstantBufferView( ( UINT )Slot_3D_Transform, Transform->mConstants->GetGPUVirtualAddress() );
 
+		// 렌더러가 사용하는 재질을 설정합니다.
+		auto mat = mMaterial;
+		if ( mat == nullptr )
+			mat = Game::Material::mDefault;
+		mat->SetConstantBuffer( deviceContext );
+
+		// 메쉬를 렌더링합니다.
 		mMesh->DrawSkinnedIndexed( mVertexBuffer->GetGPUVirtualAddress(), deviceContext );
 	}
 }

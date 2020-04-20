@@ -52,7 +52,7 @@ void main( uint3 tid : SV_DispatchThreadID )
 			v.Normal += mul( sv.Normal, ( float3x3 )bone ) * weight;
 			v.Tangent += mul( sv.Tangent, ( float3x3 )bone ) * weight;
 		}
-
+		
 		gVertexBuffer[tid.x] = v;
 	}
 }

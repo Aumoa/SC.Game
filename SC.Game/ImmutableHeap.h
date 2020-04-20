@@ -4,7 +4,7 @@ namespace SC::Game
 {
 	class ImmutableHeap : public IUnknown
 	{
-		UINT64 mRefCount = 0;
+		UINT64 mRefCount = 1;
 
 	public:
 		ComPtr<ID3D12Resource> mResource;

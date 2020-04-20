@@ -26,6 +26,24 @@ bool GameObject::OnComponentAdd( Component^ component )
 		mTransform->CreateBuffer();
 	}
 
+	else if ( component->GetType() == SkinnedMeshRenderer::typeid )
+	{
+		if ( mSceneRef )
+		{
+			mSceneRef->mSceneUpdated = true;
+		}
+
+		mTransform->CreateBuffer();
+	}
+
+	else if ( component->GetType() == Animator::typeid )
+	{
+		if ( mSceneRef )
+		{
+			mSceneRef->mSceneUpdated = true;
+		}
+	}
+
 	else if ( component->GetType() == Camera::typeid )
 	{
 		if ( mSceneRef )
@@ -487,7 +505,17 @@ IList<T>^ GameObject::GetComponentsInChildren()
 	return list;
 }
 
+GameObject^ GameObject::GetChild( int index )
+{
+	return mGameObjects[index];
+}
+
 Transform^ GameObject::Transform::get()
 {
 	return mTransform;
+}
+
+int GameObject::NumChilds::get()
+{
+	return mGameObjects->Count;
 }

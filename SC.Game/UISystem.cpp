@@ -23,6 +23,7 @@ ComPtr<LargeHeap> UISystem::mShaderDispatchInfo;
 UINT UISystem::mShaderDispatchInfoIndex;
 
 set<GlyphBuffer*> UISystem::mGlyphBuffers;
+Mutex UISystem::mMutex;
 bool UISystem::mDisposed;
 
 #pragma managed
@@ -77,10 +78,13 @@ void UISystem::Update( int frameIndex )
 void UISystem::Render( int frameIndex )
 {
 	// 글리프 렌더링을 시작합니다.
-	for ( auto i : mGlyphBuffers )
 	{
-		i->LockGlyphs();
-		i->Restart();
+		auto lock = mMutex.Lock();
+		for ( auto i : mGlyphBuffers )
+		{
+			i->LockGlyphs();
+			i->Restart();
+		}
 	}
 
 	// 주 렌더링 컨텍스트는 글리프 렌더링이 완료될 때까지 대기해야 합니다.

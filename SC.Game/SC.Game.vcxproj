@@ -166,10 +166,16 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationClip.h" />
+    <ClInclude Include="AnimationState.h" />
+    <ClInclude Include="AnimationTransitionCondition.h" />
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="AnimatorController.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="AppConfiguration.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Asset.h" />
+    <ClInclude Include="AssetBundle.h" />
     <ClInclude Include="Assignable.h" />
     <ClInclude Include="Behaviour.h" />
     <ClInclude Include="Bone.h" />
@@ -207,6 +213,10 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="IntegratedFactory.h" />
     <ClInclude Include="KeyCode.h" />
+    <ClInclude Include="Keyframe.h" />
+    <ClInclude Include="KeyframePair.h" />
+    <ClInclude Include="KeyframeQ.h" />
+    <ClInclude Include="Keyframes.h" />
     <ClInclude Include="LargeHeap.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightType.h" />
@@ -226,7 +236,9 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ShaderBuilder.h" />
     <ClInclude Include="SkinnedMeshRenderer.h" />
+    <ClInclude Include="SkinnedMeshRendererQueue.h" />
     <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="tag_ShaderInfo.h" />
     <ClInclude Include="TextParser.h" />
     <ClInclude Include="Texture2D.h" />
@@ -234,6 +246,7 @@
     <ClInclude Include="ThreadDispatcher.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Trigger.h" />
     <ClInclude Include="UI.Anchor.h" />
     <ClInclude Include="UI.Brush.h" />
     <ClInclude Include="UI.DependencyObject.h" />
@@ -259,11 +272,16 @@
     <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationClip.cpp" />
+    <ClCompile Include="AnimationState.cpp" />
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AnimatorController.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AppConfiguration.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="AssetBundle.cpp" />
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Bone.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
@@ -299,6 +317,7 @@
     <ClCompile Include="LargeHeap.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MDLParser.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
@@ -323,7 +342,9 @@
     <ClCompile Include="ShaderBuilder.SkinningShader.cpp" />
     <ClCompile Include="ShaderBuilder.UI.cpp" />
     <ClCompile Include="SkinnedMeshRenderer.cpp" />
+    <ClCompile Include="SkinnedMeshRendererQueue.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="TextParser.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="ThreadDispatcher.cpp" />

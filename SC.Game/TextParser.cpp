@@ -79,11 +79,11 @@ int TextParser::ReadInt()
 	return parsed;
 }
 
-double TextParser::ReadDouble()
+float TextParser::ReadDouble()
 {
 	auto context = ReadString();
 	stringstream ss( context );
-	double parsed = 0;
+	float parsed = 0;
 	ss >> parsed;
 	return parsed;
 }
