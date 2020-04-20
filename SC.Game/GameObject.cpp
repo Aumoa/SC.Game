@@ -519,3 +519,13 @@ int GameObject::NumChilds::get()
 {
 	return mGameObjects->Count;
 }
+
+Tag GameObject::Tag::get()
+{
+	return mTag;
+}
+
+void GameObject::Tag::set( Game::Tag value )
+{
+	mTag = value;
+}

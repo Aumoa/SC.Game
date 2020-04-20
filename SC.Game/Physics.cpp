@@ -102,3 +102,87 @@ void Physics::Initialize()
 	// 기초 물리 재질 개체를 생성합니다.
 	mDefaultMat = mPhysics->createMaterial( 0.5f, 0.5f, 0.6f );
 }
+
+class QueryFilterCallback : public PxQueryFilterCallback
+{
+	Tag mTag;
+	bool mExactly;
+
+public:
+	QueryFilterCallback( Tag tag, bool exactly )
+	{
+		mTag = tag;
+		mExactly = exactly;
+	}
+
+	PxQueryHitType::Enum preFilter( const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags ) override
+	{
+		Collider^ col = *( gcroot<Collider^>* )shape->userData;
+		if ( mExactly )
+		{
+			if ( col->mGameObject->Tag == mTag )
+			{
+				return PxQueryHitType::eBLOCK;
+			}
+			else
+			{
+				return PxQueryHitType::eNONE;
+			}
+		}
+		else
+		{
+			if ( mTag == Tag::All )
+			{
+				return PxQueryHitType::eBLOCK;
+			}
+			else if ( ( col->mGameObject->Tag & mTag ) == mTag )
+			{
+				return PxQueryHitType::eBLOCK;
+			}
+			else
+			{
+				return PxQueryHitType::eNONE;
+			}
+		}
+	}
+
+	PxQueryHitType::Enum postFilter( const PxFilterData& filterData, const PxQueryHit& hit ) override
+	{
+		return PxQueryHitType::eBLOCK;
+	}
+};
+
+RaycastHit Physics::RayCast( Ray ray, Tag tag, bool exactly )
+{
+	Scene^ scene = GameLogic::mCurrentScene;
+	RaycastHit hit;
+	hit.Hit = false;
+
+	if ( scene )
+	{
+		PxVec3 origin;
+		PxVec3 direction;
+
+		Assign( origin, ray.Origin );
+		Assign( direction, ray.Direction );
+		hit.Distance = ray.MaxDepth == 0 ? D3D12_FLOAT32_MAX : ray.MaxDepth;
+
+		PxRaycastBuffer hits;
+		PxQueryFilterData queryFilterData;
+		QueryFilterCallback queryFilterCallback( tag, exactly );
+		queryFilterData.flags |= PxQueryFlag::ePREFILTER;
+		if ( scene->mPxScene->raycast( origin, direction, hit.Distance, hits, PxHitFlag::eDEFAULT, queryFilterData, &queryFilterCallback ) )
+		{
+			auto anyhit = hits.block;
+			auto col = *( gcroot<Collider^>* )anyhit.shape->userData;
+
+			hit.Collider = col;
+			hit.Distance = anyhit.distance;
+			hit.Hit = true;
+			Assign( hit.Normal, anyhit.normal );
+			Assign( hit.Point, anyhit.position );
+		}
+	}
+
+	return hit;
+}

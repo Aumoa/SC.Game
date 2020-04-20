@@ -43,6 +43,26 @@ void Input::Update()
 	}
 }
 
+void Input::LateUpdate()
+{
+	mScrollDelta = System::Drawing::PointF( 0, 0 );
+
+	switch ( Cursor::mLockMode )
+	{
+	case CursorLockMode::Locked:
+		RECT rect;
+		GetClientRect( App::hWnd, &rect );
+		ClientToScreen( App::hWnd, ( POINT* )&rect );
+		ClientToScreen( App::hWnd, ( POINT* )&rect + 1 );
+		POINT point;
+		point.x = ( rect.left + rect.right ) / 2;
+		point.y = ( rect.top + rect.bottom ) / 2;
+		SetCursorPos( point.x, point.y );
+
+		break;
+	}
+}
+
 bool Input::GetKeyDown( KeyCode keyCode )
 {
 	int index = ( int )keyCode;
@@ -74,4 +94,17 @@ Point Input::MousePosition::get()
 PointF Input::MouseScrollDelta::get()
 {
 	return mScrollDelta;
+}
+
+Point Input::CenterMousePosition::get()
+{
+	RECT rect;
+	GetClientRect( App::hWnd, &rect );
+	auto width = rect.right - rect.left;
+	auto height = rect.bottom - rect.top;
+	POINT point;
+	point.x = width / 2;
+	point.y = height / 2;
+
+	return Point( point.x, point.y );
 }

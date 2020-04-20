@@ -14,6 +14,8 @@ namespace THHourai.Scene01
 			AddComponent<MeshRenderer>().Material = material;
 			Transform.Scale = new Vector3( 100.0f, 1.0f, 100.0f );
 			Transform.LocalPosition = new Vector3( 90.0f, 0.0f, 90.0f );
+
+			Tag = ( Tag )CustomTag.CameraBlocker;
 		}
 
 		static Terrain()

@@ -196,6 +196,8 @@
     <ClInclude Include="CRootSignatureDesc.h" />
     <ClInclude Include="CShaderResourceView.h" />
     <ClInclude Include="CSwapChain.h" />
+    <ClInclude Include="Cursor.h" />
+    <ClInclude Include="CursorLockMode.h" />
     <ClInclude Include="DescriptorAllocator.h" />
     <ClInclude Include="Bezier.h" />
     <ClInclude Include="DirectX.Geometry.h" />
@@ -230,6 +232,8 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsMaterial.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="RaycastCallback.h" />
+    <ClInclude Include="RaycastHit.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="RigidbodyConstraints.h" />
     <ClInclude Include="Scene.h" />
@@ -239,6 +243,7 @@
     <ClInclude Include="SkinnedMeshRendererQueue.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="Tag.h" />
     <ClInclude Include="tag_ShaderInfo.h" />
     <ClInclude Include="TextParser.h" />
     <ClInclude Include="Texture2D.h" />
@@ -298,6 +303,7 @@
     <ClCompile Include="CRootSignatureDesc.cpp" />
     <ClCompile Include="CShaderResourceView.cpp" />
     <ClCompile Include="CSwapChain.cpp" />
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="DescriptorAllocator.cpp" />
     <ClCompile Include="DirectX.Geometry.cpp" />
     <ClCompile Include="GameLogic.cpp" />

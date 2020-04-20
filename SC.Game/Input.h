@@ -16,6 +16,7 @@ namespace SC::Game
 
 	internal:
 		static void Update();
+		static void LateUpdate();
 
 	public:
 		static Input();
@@ -52,6 +53,14 @@ namespace SC::Game
 		static property System::Drawing::PointF MouseScrollDelta
 		{
 			System::Drawing::PointF get();
+		}
+
+		/// <summary>
+		/// 화면의 가운데 위치 커서 좌표를 가져옵니다.
+		/// </summary>
+		static property System::Drawing::Point CenterMousePosition
+		{
+			System::Drawing::Point get();
 		}
 	};
 }

@@ -70,14 +70,6 @@ namespace THHourai
 					debugText.Margin = new Thickness( 10 );
 					debugText.Fill = new SolidColorBrush( Color.White );
 					debugText.AddDependencyProperty( "Panel.ZOrder=100" );
-
-					App.Disposing += () =>
-					{
-						// 전역 개체는 명시적으로 참조를 제거합니다.
-						// 이후 App의 OnExit 단계에서 GC.Collect를 통해 수집됩니다.
-						fpsText = null;
-						debugText = null;
-					};
 				}
 
 				relativePanel.Add( fpsText );
@@ -85,6 +77,14 @@ namespace THHourai
 			}
 
 			Content = relativePanel;
+		}
+
+		public static TextBlock Debug
+		{
+			get
+			{
+				return debugText;
+			}
 		}
 	}
 }

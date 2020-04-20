@@ -92,7 +92,7 @@ void GameLogic::Update()
 		mCurrentScene->Update();
 	}
 
-	Input::mScrollDelta = System::Drawing::PointF( 0, 0 );
+	Input::LateUpdate();
 }
 
 void GameLogic::Render()

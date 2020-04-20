@@ -309,6 +309,21 @@
     <ClInclude Include="SkinnedMeshRendererQueue.h">
       <Filter>Unmanaged</Filter>
     </ClInclude>
+    <ClInclude Include="RaycastHit.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="RaycastCallback.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorLockMode.h">
+      <Filter>Managed\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Tag.h">
+      <Filter>Managed\Enum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -573,6 +588,9 @@
     </ClCompile>
     <ClCompile Include="SkinnedMeshRendererQueue.cpp">
       <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>Managed</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

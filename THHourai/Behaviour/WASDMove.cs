@@ -28,8 +28,22 @@ namespace THHourai
 
 		public override void Update()
 		{
-			var forward = Vector3.UnitZ;
-			var right = Vector3.UnitX;
+			Vector3 up = Vector3.UnitY;
+			Vector3 forward;
+			Vector3 right;
+
+			Physics.RayCast( new Ray( new Vector3( 0.0f, 5.0f, 0.0f ), new Vector3( 0.0f, -1.0f, 0.0f ) ) );
+
+			if ( cam != null )
+			{
+				forward = cam.Direction;
+				right = Vector3.Cross( up, forward );
+			}
+			else
+			{
+				forward = Vector3.UnitZ;
+				right = Vector3.UnitX;
+			}
 
 			Vector3 mov = Vector3.Zero;
 			if ( Input.GetKey( KeyCode.D ) )
@@ -63,5 +77,7 @@ namespace THHourai
 			get;
 			set;
 		} = 1.0f;
+
+		public static CameraFollow cam;
 	}
 }

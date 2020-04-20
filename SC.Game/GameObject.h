@@ -19,6 +19,7 @@ namespace SC::Game
 
 		physx::PxRigidActor* mRigidbody = nullptr;
 		bool mIsStaticRigid = false;
+		Game::Tag mTag;
 
 	private:
 		bool OnComponentAdd( Component^ component );
@@ -109,6 +110,15 @@ namespace SC::Game
 		property int NumChilds
 		{
 			int get();
+		}
+
+		/// <summary>
+		/// 개체의 태그를 설정하거나 가져옵니다.
+		/// </summary>
+		property Tag Tag
+		{
+			Game::Tag get();
+			void set( Game::Tag value );
 		}
 	};
 }

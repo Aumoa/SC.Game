@@ -69,6 +69,7 @@ using Microsoft::WRL::ComPtr;
 
 /* Unmanaged */
 #include "tag_ShaderInfo.h"
+#include "RaycastCallback.h"
 #include "GlyphBuffer.h"
 #include "Vertex.h"
 #include "ContactCallback.h"
@@ -160,6 +161,8 @@ inline void HR( HRESULT hr )
 #include "KeyCode.h"
 #include "TextureFormat.h"
 #include "RigidbodyConstraints.h"
+#include "CursorLockMode.h"
+#include "Tag.h"
 #include "UI.Anchor.h"
 #include "UI.TextAlignment.h"
 #include "UI.TextVerticalAlignment.h"
@@ -175,6 +178,7 @@ inline void HR( HRESULT hr )
 #include "Trigger.h"
 #include "AnimationTransitionCondition.h"
 #include "StateMachine.h"
+#include "RaycastHit.h"
 #include "UI.DependencyProperty.h"
 #include "UI.Thickness.h"
 
@@ -188,6 +192,7 @@ inline void HR( HRESULT hr )
 #include "Time.h"
 #include "Input.h"
 #include "Scene.h"
+#include "Cursor.h"
 
 #include "Asset.h"
 #include "Mesh.h"

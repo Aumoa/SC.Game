@@ -12,11 +12,14 @@ namespace THHourai
 		{
 			var cam = new GameObject( xName + ".Camera" );
 			cam.AddComponent<Camera>();
-			cam.AddComponent<CameraAction>();
+			var rotate = cam.AddComponent<CameraRotate>();
 			cam.Transform.Parent = Transform;
 			Cam = cam;
 
-			AddComponent<CameraWalk>();
+			var follow = AddComponent<CameraFollow>();
+			rotate.target = follow;
+
+			WASDMove.cam = follow;
 		}
 
 		public GameObject Cam
