@@ -24,7 +24,7 @@ namespace SC::Game
 		System::Object^ Clone() override;
 
 		/// <summary>
-		/// 박스의 확장 크기를 나타내는 값을 설정하거나 가져옵니다.
+		/// 박스의 확장 크기를 나타내는 값을 설정하거나 가져옵니다. 개체의 로컬 좌표로 측정됩니다.
 		/// </summary>
 		property System::Numerics::Vector3 HalfExtents
 		{

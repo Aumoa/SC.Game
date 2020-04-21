@@ -27,6 +27,7 @@ namespace SC::Game
 		System::Collections::Generic::List<Light^>^ mSceneLights;
 		System::Collections::Generic::List<Collider^>^ mSceneColliders;
 		SkinnedMeshRendererQueue* mSkinnedMeshRendererQueue = nullptr;
+		physx::PxControllerManager* mCharacterControllerManager = nullptr;
 
 		System::Collections::Generic::IDictionary<int, MyList^>^ mThreadSceneGraph;
 

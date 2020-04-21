@@ -204,3 +204,23 @@ void Rigidbody::Mass::set( float value )
 {
 	mRigidbody->setMass( value );
 }
+
+float Rigidbody::Drag::get()
+{
+	return mRigidbody->getLinearDamping();
+}
+
+void Rigidbody::Drag::set( float value )
+{
+	mRigidbody->setLinearDamping( value );
+}
+
+float Rigidbody::AngularDrag::get()
+{
+	return mRigidbody->getAngularDamping();
+}
+
+void Rigidbody::AngularDrag::set( float value )
+{
+	mRigidbody->setAngularDamping( value );
+}

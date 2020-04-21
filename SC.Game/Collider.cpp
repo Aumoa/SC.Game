@@ -30,7 +30,7 @@ void Collider::Update()
 	if ( mHasUpdate && mActor )
 	{
 		PxTransform localPose;
-		Assign( localPose.p, mCenter );
+		Assign( localPose.p, mCenter * Transform->Scale );
 		Assign( localPose.q, mRotation );
 		if ( mShape && !mMaterialUpdated )
 		{

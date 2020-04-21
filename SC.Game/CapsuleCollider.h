@@ -25,7 +25,7 @@ namespace SC::Game
 		System::Object^ Clone() override;
 
 		/// <summary>
-		/// 캡슐의 X축 높이를 나타내는 값을 설정하거나 가져옵니다.
+		/// 캡슐의 X축 높이를 나타내는 값을 설정하거나 가져옵니다. 개체의 로컬 좌표로 측정됩니다.
 		/// </summary>
 		/// <remarks> Y축을 높이로 사용하는 좌표계에선 <see cref="Collider::Rotation"/> 속성을 사용하여 회전시켜 사용합니다. </remarks>
 		property float Height
@@ -35,7 +35,7 @@ namespace SC::Game
 		}
 
 		/// <summary>
-		/// 캡슐의 반지름을 나타내는 값을 설정하거나 가져옵니다.
+		/// 캡슐의 반지름을 나타내는 값을 설정하거나 가져옵니다. 개체의 로컬 좌표로 측정됩니다.
 		/// </summary>
 		/// <remarks> 캡슐의 반지름의 0.25배만큼 캡슐의 높이가 커집니다. </remarks>
 		property float Radius

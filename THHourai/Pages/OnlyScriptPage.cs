@@ -57,7 +57,7 @@ namespace THHourai
 			dropdownText.AddDependencyProperty( string.Format( "RelativePanel.RightOf={0}", currentText.Name ) );
 			dropdownText.AddDependencyProperty( string.Format( "RelativePanel.AlignBottomWith={0}", currentText.Name ) );
 
-			if ( Input.GetKeyDown( KeyCode.Mouse0 ) )
+			if ( Input.GetKeyDown( KeyCode.Mouse0 ) || Input.GetKeyDown( KeyCode.Mouse1 ) )
 			{
 				MoveNext();
 			}

@@ -57,6 +57,8 @@ Scene::Scene()
 	pxSceneDesc.simulationEventCallback = mSimulationEventCallback;
 	pxSceneDesc.staticKineFilteringMode = PxPairFilteringMode::eSUPPRESS;
 	mPxScene = Physics::mPhysics->createScene( pxSceneDesc );
+
+	mCharacterControllerManager = PxCreateControllerManager( *mPxScene );
 }
 
 Scene::~Scene()
@@ -66,6 +68,12 @@ Scene::~Scene()
 
 Scene::!Scene()
 {
+	if ( mCharacterControllerManager )
+	{
+		mCharacterControllerManager->release();
+		mCharacterControllerManager = nullptr;
+	}
+
 	for each ( auto go in mGameObjects )
 	{
 		go->SetScene( nullptr );

@@ -15,8 +15,10 @@ namespace THHourai.Scene01
 			light.Diffuse = 0.8f;
 			light.Specular = 1.5f;
 			light.IsShadowCast = true;
+			light.Width = 60.0f;
+			light.Height = 60.0f;
 
-			Transform.Position = new Vector3( -16.0f, 16.0f, -8.0f );
+			Transform.Position = new Vector3( -8.0f, 16.0f, -4.0f );
 			Transform.LookAt( Vector3.Zero );
 		}
 

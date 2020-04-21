@@ -32,6 +32,9 @@ namespace SC::Game
 		ID3D12DescriptorHeap* mDSVHeap = nullptr;
 		CShaderResourceView* mShaderResourceView = nullptr;
 
+		float mWidth = 30.0f;
+		float mHeight = 30.0f;
+
 	private:
 		void InitializeDepthBuffer();
 
@@ -105,6 +108,24 @@ namespace SC::Game
 		{
 			System::Drawing::Size get();
 			void set( System::Drawing::Size value );
+		}
+
+		/// <summary>
+		/// 조명이 그림자를 생성할 경우, 그림자 맵이 개체를 포함하는 크기를 설정하거나 가져옵니다.
+		/// </summary>
+		property float Width
+		{
+			float get();
+			void set( float value );
+		}
+
+		/// <summary>
+		/// 조명이 그림자를 생성할 경우, 그림자 맵이 개체를 포함하는 크기를 설정하거나 가져옵니다.
+		/// </summary>
+		property float Height
+		{
+			float get();
+			void set( float value );
 		}
 	};
 }

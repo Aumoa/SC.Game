@@ -468,7 +468,7 @@ T GameObject::GetComponentInChildren()
 	{
 		for each ( auto go in mGameObjects )
 		{
-			component = GetComponentInChildren<T>();
+			component = go->GetComponentInChildren<T>();
 			if ( component != nullptr ) return component;
 		}
 	}

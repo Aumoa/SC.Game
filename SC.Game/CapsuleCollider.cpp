@@ -8,11 +8,15 @@ using namespace physx;
 
 void CapsuleCollider::Update()
 {
-	if ( mHasUpdate )
+	if ( mHasUpdate || Transform->IsUpdated )
 	{
+		auto scale = Transform->Scale;
+
 		auto geo = static_cast< PxCapsuleGeometry* >( mGeometry );
-		geo->radius = ( PxReal )( mRadius );
-		geo->halfHeight = ( PxReal )( mHalfHeight );
+		geo->radius = ( PxReal )( mRadius * ( scale.Y + scale.Z ) * 0.5f );
+		geo->halfHeight = ( PxReal )( mHalfHeight * scale.X );
+
+		mHasUpdate = true;
 	}
 
 	Collider::Update();

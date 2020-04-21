@@ -357,6 +357,13 @@ void GameLogic::ShadowRender( Light^ light, int threadIdx )
 		{
 			meshRenderer->Render( dc );
 		}
+		for each ( auto pair in mCurrentScene->mSkinnedMeshRendererQueue->mSkinnedPair )
+		{
+			for each ( auto skin in pair.SkinnedMeshRenderers )
+			{
+				skin->Render( dc );
+			}
+		}
 
 		light->EndDraw( dc );
 	}

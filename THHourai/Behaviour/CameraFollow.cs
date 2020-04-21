@@ -7,9 +7,9 @@ namespace THHourai
 	class CameraFollow : Behaviour
 	{
 		CameraRotate cameraRotate;
-		float minDistance = 1.0f;
-		float distance = 3.0f;
-		float maxDistance = 5.0f;
+		float minDistance = 2.0f;
+		float distance = 4.0f;
+		float maxDistance = 6.0f;
 		Vector3 direction;
 
 		public CameraFollow()

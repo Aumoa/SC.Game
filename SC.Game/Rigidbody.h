@@ -3,7 +3,7 @@
 namespace SC::Game
 {
 	/// <summary>
-	/// 연결된 게임 오브젝트가 물리 제어로 동작하도록 합니다. 이 클래스는 상속될 수 없습니다.
+	/// 연결된 게임 오브젝트가 물리 제어로 동작하도록 합니다.
 	/// </summary>
 	public ref class Rigidbody sealed : public Component
 	{
@@ -92,6 +92,24 @@ namespace SC::Game
 		/// 리지드바디의 질량을 설정하거나 가져옵니다.
 		/// </summary>
 		property float Mass
+		{
+			float get();
+			void set( float value );
+		}
+
+		/// <summary>
+		/// 리지드바디의 저항 값을 설정하거나 가져옵니다.
+		/// </summary>
+		property float Drag
+		{
+			float get();
+			void set( float value );
+		}
+
+		/// <summary>
+		/// 리지드바디의 회전 저항 값을 설정하거나 가져옵니다.
+		/// </summary>
+		property float AngularDrag
 		{
 			float get();
 			void set( float value );

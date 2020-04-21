@@ -8,10 +8,12 @@ using namespace physx;
 
 void BoxCollider::Update()
 {
-	if ( mHasUpdate )
+	if ( mHasUpdate || Transform->IsUpdated )
 	{
 		auto geo = static_cast< PxBoxGeometry* >( mGeometry );
-		Assign( geo->halfExtents, mHalfExtents );
+		Assign( geo->halfExtents, mHalfExtents * Transform->Scale );
+
+		mHasUpdate = true;
 	}
 
 	Collider::Update();

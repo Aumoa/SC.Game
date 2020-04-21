@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 using SC.Game;
@@ -8,6 +10,7 @@ namespace THHourai
 	class WASDMove : Behaviour
 	{
 		Rigidbody rigidbody;
+		Animator animator;
 
 		public WASDMove() : base()
 		{
@@ -22,11 +25,12 @@ namespace THHourai
 		public override void Start()
 		{
 			rigidbody = GetComponent<Rigidbody>();
+			animator = GetComponentInChildren<Animator>();
 
 			base.Start();
 		}
 
-		public override void Update()
+		public override void FixedUpdate()
 		{
 			Vector3 up = Vector3.UnitY;
 			Vector3 forward;
@@ -48,35 +52,50 @@ namespace THHourai
 			Vector3 mov = Vector3.Zero;
 			if ( Input.GetKey( KeyCode.D ) )
 			{
-				mov += right * Speed;
+				mov += right;
 			}
 
 			if ( Input.GetKey( KeyCode.A ) )
 			{
-				mov -= right * Speed;
+				mov -= right;
 			}
 
 			if ( Input.GetKey( KeyCode.W ) )
 			{
-				mov += forward * Speed;
+				mov += forward;
 			}
 
 			if ( Input.GetKey( KeyCode.S ) )
 			{
-				mov -= forward * Speed;
+				mov -= forward;
 			}
 
 			if ( mov.Length() > 0.001f )
 			{
-				rigidbody.Velocity = mov;
+				mov = Vector3.Normalize( mov );
+
+				var rotateFrom = Transform.Rotation;
+				Transform.LookTo( mov );
+				var rotateTo = Transform.Rotation;
+
+				var rotate = Quaternion.Slerp( rotateFrom, rotateTo, Math.Clamp( Time.FixedDeltaTime * rotateSpeed, 0.0f, 1.0f ) );
+				Transform.Rotation = rotate;
+
+				var position = rigidbody.Position;
+				position += mov * speed * Time.FixedDeltaTime;
+				position.Y = 0.0f;
+				rigidbody.Position = position;
+
+				animator.SetVar( "walkSpeed", 1.0f );
+			}
+			else
+			{
+				animator.SetVar( "walkSpeed", 0.0f );
 			}
 		}
 
-		public float Speed
-		{
-			get;
-			set;
-		} = 1.0f;
+		public float speed = 4.0f;
+		public float rotateSpeed = 10.0f;
 
 		public static CameraFollow cam;
 	}

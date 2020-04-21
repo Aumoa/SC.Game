@@ -8,7 +8,7 @@ namespace THHourai
 	class CameraRotate : Behaviour
 	{
 		float rotX = 0;
-		float rotY = 0;
+		float rotY = 3.141592f * 0.25f;
 
 		public CameraRotate() : base()
 		{
@@ -17,6 +17,8 @@ namespace THHourai
 
 		public override void Start()
 		{
+			UpdateCamera();
+
 			base.Start();
 		}
 
@@ -54,14 +56,19 @@ namespace THHourai
 				this.rotX = this.rotX % ( 3.141592f * 2.0f );
 				this.rotY = Math.Clamp( this.rotY + rotY, -3.141592f * 0.5f, 3.141592f * 0.5f );
 
-				var rot = Quaternion.CreateFromAxisAngle( Vector3.UnitY, this.rotX );
-				rot = Quaternion.CreateFromAxisAngle( Vector3.Transform( Vector3.UnitX, rot ), this.rotY ) * rot;
-				Transform.Rotation = rot;
+				UpdateCamera();
 			}
 
 			target.DirectionUpdate();
 
 			base.LateUpdate();
+		}
+
+		void UpdateCamera()
+		{
+			var rot = Quaternion.CreateFromAxisAngle( Vector3.UnitY, this.rotX );
+			rot = Quaternion.CreateFromAxisAngle( Vector3.Transform( Vector3.UnitX, rot ), this.rotY ) * rot;
+			Transform.Rotation = rot;
 		}
 
 		public CameraFollow target;

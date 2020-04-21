@@ -50,14 +50,8 @@ namespace THHourai.Scene01
 			{
 				cubes[i] = new Cube( string.Format( "Scene01.cubes[{0}]", i ) );
 				cubes[i].Transform.Position = new Vector3( 2.0f + i * 2.0f, 1.0f, 0.0f );
-				cubes[i].AddComponent<Rigidbody>();
-				cubes[i].AddComponent<BoxCollider>();
 				Add( cubes[i] );
 			}
-
-			var boxCol = terrain.AddComponent<BoxCollider>();
-			boxCol.Center = new Vector3( 0, -1.0f, 0 );
-			boxCol.HalfExtents = new Vector3( 100.0f, 1.0f, 100.0f );
 
 			Add( instance );
 			Add( terrain );

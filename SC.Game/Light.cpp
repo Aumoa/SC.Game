@@ -80,7 +80,7 @@ void Light::UpdateBuffer()
 		auto up = Vector3::Transform( Vector3::UnitY, rot );
 
 		auto view = LookToLH( eye, dir, up );
-		auto proj = OrthographicLH( 30.0f, 30.0f, 0.1f, 1000.0f );
+		auto proj = OrthographicLH( mWidth, mHeight, 0.1f, 1000.0f );
 		Assign( mFrameResource->Direction, dir );
 
 		auto vp = Matrix4x4::Multiply( view, proj );
@@ -243,4 +243,28 @@ void Light::ShadowResolution::set( Size value )
 	mShadowResolution = value;
 	if ( mFrameResource->ShadowCast )
 		InitializeDepthBuffer();
+}
+
+float Light::Width::get()
+{
+	return mWidth;
+}
+
+void Light::Width::set( float value )
+{
+	mWidth = value;
+
+	mFrameUpdated = true;
+}
+
+float Light::Height::get()
+{
+	return mHeight;
+}
+
+void Light::Height::set( float value )
+{
+	mHeight = value;
+
+	mFrameUpdated = true;
 }

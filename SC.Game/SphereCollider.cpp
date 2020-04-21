@@ -8,10 +8,12 @@ using namespace physx;
 
 void SphereCollider::Update()
 {
-	if ( mHasUpdate )
+	if ( mHasUpdate || Transform->IsUpdated )
 	{
+		auto scale = Transform->Scale;
+
 		auto geo = static_cast< PxSphereGeometry* >( mGeometry );
-		geo->radius = ( PxReal )( mRadius );
+		geo->radius = ( PxReal )( mRadius * ( scale.X + scale.Y + scale.Z ) * 0.33333f );
 	}
 
 	Collider::Update();

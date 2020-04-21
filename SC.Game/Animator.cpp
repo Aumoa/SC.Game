@@ -3,6 +3,8 @@ using namespace SC::Game;
 
 using namespace System;
 using namespace System::Numerics;
+using namespace System::Collections::Generic;
+using namespace System::Linq;
 
 using namespace std;
 
@@ -325,14 +327,19 @@ void Animator::UpdateBlend( float timeDelta )
 		{
 			float t = mCurrentState.TimePos / mBlendTime;
 
-			for each ( auto i in mCurrentState.Keyframes )
-			{
-				if ( mPrevState.Keyframes->ContainsKey( i.Key ) )
-				{
-					auto key1 = mPrevState.Keyframes[i.Key];
-					auto key2 = i.Value;
+			List<String^>^ keyList = Enumerable::ToList<String^>( mCurrentState.Keyframes->Keys );
+			List<KeyframePair>^ valueList = Enumerable::ToList<KeyframePair>( mCurrentState.Keyframes->Values );
 
-					mCurrentState.Keyframes[i.Key] = key1.Interpolate( key2, t );
+			for ( int i = 0; i < keyList->Count; ++i )
+			{
+				auto key = keyList[i];
+
+				if ( mPrevState.Keyframes->ContainsKey( key ) )
+				{
+					auto key1 = mPrevState.Keyframes[key];
+					auto key2 = valueList[i];
+
+					mCurrentState.Keyframes[key] = key1.Interpolate( key2, t );
 				}
 			}
 		}
