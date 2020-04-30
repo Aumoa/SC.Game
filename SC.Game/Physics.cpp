@@ -83,7 +83,7 @@ void Physics::Initialize()
 #if defined( _DEBUG )
 	// 디버그 모드 빌드일 경우 Physics Visual Debugger 개체를 생성합니다.
 	mPVD = PxCreatePvd( *mFoundation );
-	mPVDTransport = PxDefaultPvdSocketTransportCreate( "localhost", 5425, 10000 );
+	mPVDTransport = PxDefaultPvdSocketTransportCreate( "localhost", 5425, INFINITE );
 	mPVD->connect( *mPVDTransport, PxPvdInstrumentationFlag::eALL );
 #endif
 
@@ -117,32 +117,41 @@ public:
 
 	PxQueryHitType::Enum preFilter( const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags ) override
 	{
-		Collider^ col = *( gcroot<Collider^>* )shape->userData;
-		if ( mExactly )
+		if ( shape && shape->userData )
 		{
-			if ( col->mGameObject->Tag == mTag )
+			Collider^ col = *( gcroot<Collider^>* )shape->userData;
+
+			if ( mExactly )
 			{
-				return PxQueryHitType::eBLOCK;
+				if ( col->mGameObject->Tag == mTag )
+				{
+					return PxQueryHitType::eBLOCK;
+				}
+				else
+				{
+					return PxQueryHitType::eNONE;
+				}
 			}
 			else
 			{
-				return PxQueryHitType::eNONE;
+				if ( mTag == Tag::All )
+				{
+					return PxQueryHitType::eBLOCK;
+				}
+				else if ( ( col->mGameObject->Tag & mTag ) == mTag )
+				{
+					return PxQueryHitType::eBLOCK;
+				}
+				else
+				{
+					return PxQueryHitType::eNONE;
+				}
 			}
 		}
+
 		else
 		{
-			if ( mTag == Tag::All )
-			{
-				return PxQueryHitType::eBLOCK;
-			}
-			else if ( ( col->mGameObject->Tag & mTag ) == mTag )
-			{
-				return PxQueryHitType::eBLOCK;
-			}
-			else
-			{
-				return PxQueryHitType::eNONE;
-			}
+			return PxQueryHitType::eNONE;
 		}
 	}
 

@@ -25,7 +25,7 @@ namespace SC::Game
 		Heap* mConstants = nullptr;
 		Transform_Constants* mFrameResource = nullptr;
 
-		bool mBufferUpdated = false;
+		bool mBufferUpdated = true;
 
 	private:
 		void WriteRigid( System::Numerics::Vector3 p, System::Numerics::Quaternion q );
@@ -33,6 +33,7 @@ namespace SC::Game
 	internal:
 		void CreateBuffer();
 		void Update();
+		void Clone( Game::Transform^ transform );
 
 	public:
 		/// <summary>

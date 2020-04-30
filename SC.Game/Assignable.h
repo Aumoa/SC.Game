@@ -100,6 +100,13 @@ inline void Assign( physx::PxVec3& left, System::Numerics::Vector3% right )
 	left.z = right.Z;
 }
 
+inline void Assign( physx::PxExtendedVec3& left, System::Numerics::Vector3% right )
+{
+	left.x = right.X;
+	left.y = right.Y;
+	left.z = right.Z;
+}
+
 inline void Assign( physx::PxQuat& left, System::Numerics::Quaternion% right )
 {
 	left.x = right.X;
@@ -113,6 +120,13 @@ inline void Assign( System::Numerics::Vector3% left, physx::PxVec3& right )
 	left.X = right.x;
 	left.Y = right.y;
 	left.Z = right.z;
+}
+
+inline void Assign( System::Numerics::Vector3% left, physx::PxExtendedVec3& right )
+{
+	left.X = ( float )right.x;
+	left.Y = ( float )right.y;
+	left.Z = ( float )right.z;
 }
 
 inline void Assign( System::Numerics::Quaternion% left, physx::PxQuat& right )

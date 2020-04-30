@@ -96,7 +96,7 @@
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>User32.lib;Ole32.lib;DXGI.lib;DWrite.lib;D3D12.lib;D3D11.lib;D2D1.lib;assimp.lib;LowLevel_static.lib;LowLevelAABB_static.lib;LowLevelDynamics_static.lib;PhysX.lib;PhysXCharacterKinematic_static.lib;PhysXCommon.lib;PhysXCooking.lib;PhysXExtensions_static.lib;PhysXFoundation.lib;PhysXPvdSDK_static.lib;PhysXTask_static.lib;PhysXVehicle_static.lib;SceneQuery_static.lib;SimulationController_static.lib</AdditionalDependencies>
+      <AdditionalDependencies>User32.lib;Ole32.lib;DXGI.lib;DWrite.lib;D3D12.lib;D3D11.lib;D2D1.lib;LowLevel_static.lib;LowLevelAABB_static.lib;LowLevelDynamics_static.lib;PhysX.lib;PhysXCharacterKinematic_static.lib;PhysXCommon.lib;PhysXCooking.lib;PhysXExtensions_static.lib;PhysXFoundation.lib;PhysXPvdSDK_static.lib;PhysXTask_static.lib;PhysXVehicle_static.lib;SceneQuery_static.lib;SimulationController_static.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)ExternalLib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
@@ -156,7 +156,7 @@
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>User32.lib;Ole32.lib;DXGI.lib;DWrite.lib;D3D12.lib;D3D11.lib;D2D1.lib;assimp.lib;LowLevel_static.lib;LowLevelAABB_static.lib;LowLevelDynamics_static.lib;PhysX.lib;PhysXCharacterKinematic_static.lib;PhysXCommon.lib;PhysXCooking.lib;PhysXExtensions_static.lib;PhysXFoundation.lib;PhysXPvdSDK_static.lib;PhysXTask_static.lib;PhysXVehicle_static.lib;SceneQuery_static.lib;SimulationController_static.lib</AdditionalDependencies>
+      <AdditionalDependencies>User32.lib;Ole32.lib;DXGI.lib;DWrite.lib;D3D12.lib;D3D11.lib;D2D1.lib;LowLevel_static.lib;LowLevelAABB_static.lib;LowLevelDynamics_static.lib;PhysX.lib;PhysXCharacterKinematic_static.lib;PhysXCommon.lib;PhysXCooking.lib;PhysXExtensions_static.lib;PhysXFoundation.lib;PhysXPvdSDK_static.lib;PhysXTask_static.lib;PhysXVehicle_static.lib;SceneQuery_static.lib;SimulationController_static.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)ExternalLib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
@@ -187,12 +187,14 @@
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CDeviceContext.h" />
     <ClInclude Include="CGraphicsPipelineStateDesc.h" />
+    <ClInclude Include="CharacterController.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentDisconnectedException.h" />
     <ClInclude Include="ContactCallback.h" />
     <ClInclude Include="ContactPoint.h" />
+    <ClInclude Include="ControllerBehaviourCallback.h" />
     <ClInclude Include="CRootSignatureDesc.h" />
     <ClInclude Include="CShaderResourceView.h" />
     <ClInclude Include="CSwapChain.h" />
@@ -253,15 +255,18 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Trigger.h" />
     <ClInclude Include="UI.Anchor.h" />
+    <ClInclude Include="UI.Border.h" />
     <ClInclude Include="UI.Brush.h" />
     <ClInclude Include="UI.DependencyObject.h" />
     <ClInclude Include="UI.DependencyProperty.h" />
     <ClInclude Include="UI.Element.h" />
     <ClInclude Include="UI.GlyphRenderer.h" />
+    <ClInclude Include="UI.Image.h" />
     <ClInclude Include="UI.NavigationEventArgs.h" />
     <ClInclude Include="UI.Page.h" />
     <ClInclude Include="UI.Panel.h" />
     <ClInclude Include="UI.RelativePanel.h" />
+    <ClInclude Include="UI.RevealBrush.h" />
     <ClInclude Include="UI.RichTextColorUnknown.h" />
     <ClInclude Include="UI.Shapes.Rectangle.h" />
     <ClInclude Include="UI.Shapes.Shape.h" />
@@ -296,10 +301,12 @@
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CDeviceContext.cpp" />
     <ClCompile Include="CGraphicsPipelineStateDesc.cpp" />
+    <ClCompile Include="CharacterController.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentDisconnectedException.cpp" />
     <ClCompile Include="ContactCallback.cpp" />
+    <ClCompile Include="ControllerBehaviourCallback.cpp" />
     <ClCompile Include="CRootSignatureDesc.cpp" />
     <ClCompile Include="CShaderResourceView.cpp" />
     <ClCompile Include="CSwapChain.cpp" />
@@ -356,14 +363,17 @@
     <ClCompile Include="ThreadDispatcher.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="UI.Border.cpp" />
     <ClCompile Include="UI.Brush.cpp" />
     <ClCompile Include="UI.DependencyObject.cpp" />
     <ClCompile Include="UI.Element.cpp" />
     <ClCompile Include="UI.GlyphRenderer.cpp" />
+    <ClCompile Include="UI.Image.cpp" />
     <ClCompile Include="UI.NavigationEventArgs.cpp" />
     <ClCompile Include="UI.Page.cpp" />
     <ClCompile Include="UI.Panel.cpp" />
     <ClCompile Include="UI.RelativePanel.cpp" />
+    <ClCompile Include="UI.RevealBrush.cpp" />
     <ClCompile Include="UI.RichTextColorUnknown.cpp" />
     <ClCompile Include="UI.Shapes.Rectangle.cpp" />
     <ClCompile Include="UI.Shapes.Shape.cpp" />

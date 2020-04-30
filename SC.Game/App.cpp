@@ -8,13 +8,12 @@ using namespace std;
 HWND App::hWnd;
 Event<DisposingDelegate> App::Disposing;
 Event<ResizingDelegate> App::Resizing;
-int App::mWidth;
-int App::mHeight;
 
 wstring App::mAppName;
 int App::mPhysicsHz;
 bool App::mVSync;
 bool App::mDisablePresent;
+bool App::mActivated;
 
 int App::mFrameIndex;
 ComPtr<ID3D12Fence> App::mFence;
@@ -134,6 +133,7 @@ void App::OnIdle()
 	}
 }
 
+#pragma managed
 void App::OnSize( int width, int height )
 {
 	if ( width * height != 0 )
@@ -151,8 +151,8 @@ void App::OnSize( int width, int height )
 			i( width, height );
 		}
 
-		mWidth = width;
-		mHeight = height;
+		Application::mWidth = width;
+		Application::mHeight = height;
 
 		mDisablePresent = false;
 	}
@@ -162,6 +162,7 @@ void App::OnSize( int width, int height )
 		mDisablePresent = true;
 	}
 }
+#pragma unmanaged
 
 void App::CreateWindow1()
 {
@@ -253,6 +254,10 @@ LRESULT CALLBACK App::WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 		break;
 	case WM_MOUSEWHEEL:
 		Input::mScrollDelta.Y += ( float )( short )HIWORD( wParam ) / ( float )WHEEL_DELTA;
+		break;
+	case WM_ACTIVATEAPP:
+		ApplicationCore::mApp->OnActive( ( bool )wParam );
+		mActivated = ( bool )wParam;
 		break;
 	}
 

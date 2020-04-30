@@ -36,6 +36,7 @@ MeshRenderer::MeshRenderer()
 Object^ MeshRenderer::Clone()
 {
 	auto clone = gcnew MeshRenderer();
+	clone->mMaterial = mMaterial;
 	return clone;
 }
 

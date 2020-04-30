@@ -8,24 +8,17 @@ namespace THHourai
 	{
 		static GameCamera instance;
 
+		GameObject cameraObject;
+
 		GameCamera( string xName ) : base( xName )
 		{
-			var cam = new GameObject( xName + ".Camera" );
-			cam.AddComponent<Camera>();
-			var rotate = cam.AddComponent<CameraRotate>();
-			cam.Transform.Parent = Transform;
-			Cam = cam;
+			cameraObject = new GameObject( xName + ".cameraObject" );
+			cameraObject.AddComponent<Camera>();
+			cameraObject.AddComponent<CameraAction>();
+			cameraObject.Transform.Parent = Transform;
 
-			var follow = AddComponent<CameraFollow>();
-			rotate.target = follow;
-
-			WASDMove.cam = follow;
-		}
-
-		public GameObject Cam
-		{
-			get;
-			private set;
+			AddComponent<CameraMove>();
+			AddComponent<ClickMove>();
 		}
 
 		public static GameCamera Instance

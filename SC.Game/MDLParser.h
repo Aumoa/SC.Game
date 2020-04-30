@@ -32,12 +32,12 @@ namespace SC::Game
 		struct tag_Model
 		{
 			std::string Name;
-			int NumGeosets;
-			int NumGeosetAnims;
-			int NumHelpers;
-			int NumBones;
-			int NumAttachments;
-			int BlendTime;
+			int NumGeosets = 0;
+			int NumGeosetAnims = 0;
+			int NumHelpers = 0;
+			int NumBones = 0;
+			int NumAttachments = 0;
+			int BlendTime = 0;
 			XMFLOAT3 MinimumExtent;
 			XMFLOAT3 MaximumExtent;
 		};

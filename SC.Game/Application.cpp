@@ -30,6 +30,11 @@ Application::Application( AppConfiguration configuration )
 	);
 }
 
+void Application::OnActive( bool activated )
+{
+
+}
+
 int Application::Start( Application^ app )
 {
 	app->OnStart();
@@ -47,7 +52,32 @@ void Application::Navigate( UI::Page^ page )
 	UISystem::mReservedPage = page;
 }
 
+void Application::Quit( int exitCode )
+{
+	PostQuitMessage( exitCode );
+}
+
 AppConfiguration Application::Configuration::get()
 {
 	return ApplicationCore::mConfiguration;
+}
+
+UInt32 Application::Width::get()
+{
+	return mWidth;
+}
+
+void Application::Width::set( UInt32 value )
+{
+	mWidth = value;
+}
+
+UInt32 Application::Height::get()
+{
+	return mHeight;
+}
+
+void Application::Height::set( UInt32 value )
+{
+	mHeight = value;
 }

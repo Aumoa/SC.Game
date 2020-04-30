@@ -49,6 +49,8 @@ Scene::Scene()
 	mSkinnedMeshRendererQueue = new SkinnedMeshRendererQueue();
 
 	mSimulationEventCallback = new ContactCallback();
+	mControllerBehaviourCallback = new ControllerBehaviourCallback();
+
 	auto pxSceneDesc = PxSceneDesc( PxTolerancesScale() );
 	pxSceneDesc.gravity = PxVec3( 0.0f, -9.8f, 0.0f );
 	pxSceneDesc.cpuDispatcher = Physics::mDispatcher;
@@ -100,6 +102,12 @@ Scene::!Scene()
 	{
 		delete mSkinnedMeshRendererQueue;
 		mSkinnedMeshRendererQueue = nullptr;
+	}
+
+	if ( mControllerBehaviourCallback )
+	{
+		delete mControllerBehaviourCallback;
+		mControllerBehaviourCallback = nullptr;
 	}
 }
 
@@ -357,6 +365,7 @@ void Scene::FixedUpdate()
 
 	mPxScene->simulate( 1.0f / ApplicationCore::mConfiguration.PhysicsUpdatesPerSecond );
 	mFetchResults = mPxScene->fetchResults( false );
+	mCharacterControllerManager->computeInteractions( 1.0f / ApplicationCore::mConfiguration.PhysicsUpdatesPerSecond );
 }
 
 int Scene::Count::get()

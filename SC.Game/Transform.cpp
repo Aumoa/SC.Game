@@ -38,10 +38,29 @@ void Transform::Update()
 {
 	if ( IsUpdated )
 	{
+		// 컨트롤러가 존재할 경우 물리 계산이 완료된 컨트롤러에서 위치와 회전 벡터를 가져옵니다.
+		if ( mGameObject->mController )
+		{
+			auto controller = mGameObject->mController->mController;
+
+			auto foot = controller->getFootPosition();
+			Vector3 pos;
+			Assign( pos, foot );
+
+			// 리지드바디의 정보를 트랜스폼 정보로 가져옵니다.
+			Vector3 identity1 = Vector3::Zero;
+			if ( mParent )
+			{
+				identity1 = mParent->Position;
+			}
+			mLocalPosition = Vector3::operator-( pos, identity1 );
+		}
+
 		// 리지드바디가 존재할 경우 물리 계산이 완료된 리지드바디에서 위치와 회전 벡터를 가져옵니다.
 		if ( mGameObject->mRigidbody && !mGameObject->mIsStaticRigid )
 		{
 			auto gp = mGameObject->mRigidbody->getGlobalPose();
+
 			Vector3 pos;
 			Quaternion quat;
 			Assign( pos, gp.p );
@@ -77,6 +96,15 @@ void Transform::Update()
 			mConstants->Unmap();
 		}
 	}
+}
+
+void Transform::Clone( Game::Transform^ transform )
+{
+	mLocalPosition = transform->mLocalPosition;
+	mLocalScale = transform->mLocalScale;
+	mLocalRotation = transform->mLocalRotation;
+
+	*mFrameResource = *transform->mFrameResource;
 }
 
 Transform::Transform()
@@ -369,7 +397,12 @@ bool Transform::IsUpdated::get()
 		v = v || mParent->IsUpdated;
 	}
 
-	if ( !v && mGameObject->mRigidbody && !mGameObject->mIsStaticRigid )
+	if ( mGameObject->mRigidbody && !mGameObject->mIsStaticRigid )
+	{
+		v = true;
+	}
+
+	if ( mGameObject->mController )
 	{
 		v = true;
 	}

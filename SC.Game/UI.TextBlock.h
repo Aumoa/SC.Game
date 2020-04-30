@@ -23,6 +23,8 @@ namespace SC::Game::UI
 		SC::Mutex* mMutex = nullptr;
 		System::String^ mPrevText;
 
+		bool mIsRichText = false;
+
 	internal:
 		void Render( CDeviceContext& deviceContext ) override;
 
@@ -94,6 +96,15 @@ namespace SC::Game::UI
 		{
 			float get();
 			void set( float value );
+		}
+
+		/// <summary>
+		/// 이 텍스트 형식이 서식 있는 텍스트임을 나타내는 값을 설정하거나 가져옵니다.
+		/// </summary>
+		property bool IsRichText
+		{
+			bool get();
+			void set( bool value );
 		}
 
 	private:

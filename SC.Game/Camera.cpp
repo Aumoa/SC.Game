@@ -14,7 +14,7 @@ void Camera::Update()
 		float asp = mAspectRatio;
 		if ( asp == 0 )
 		{
-			asp = ( float )App::mWidth / ( float )App::mHeight;
+			asp = ( float )Application::mWidth / ( float )Application::mHeight;
 		}
 
 		auto rot = Transform->Rotation;
@@ -92,20 +92,21 @@ Ray Camera::ScreenPointToRay( Point screenPoint )
 	auto world = Transform->World;
 	Matrix4x4 worldInv;
 	Matrix4x4::Invert( world, worldInv );
+	Matrix4x4::Invert( world, worldInv );
 
 	float asp = mAspectRatio;
 	if ( asp == 0 )
 	{
-		asp = ( float )App::mWidth / ( float )App::mHeight;
+		asp = ( float )Application::mWidth / ( float )Application::mHeight;
 	}
 
 	auto view = worldInv;
 	auto viewInv = world;
-	auto proj = Matrix4x4::CreatePerspectiveFieldOfView( 0.25f * 3.14f, asp, mMaxDepth * 0.0001f, mMaxDepth );
+	auto proj = PerspectiveFovLH( 0.25f * 3.14f, asp, mMaxDepth * 0.0001f, mMaxDepth );
 
 	Vector3 viewSpace;
-	viewSpace.X = ( screenPoint.X - proj.M31 ) / proj.M11;
-	viewSpace.Y = ( screenPoint.Y - proj.M32 ) / proj.M22;
+	viewSpace.X = ( ( ( float )screenPoint.X / ( float )Application::mWidth ) * 2.0f - 1.0f - proj.M31 ) / proj.M11;
+	viewSpace.Y = ( ( ( float )screenPoint.Y / ( float )Application::mHeight ) * -2.0f + 1.0f - proj.M32 ) / proj.M22;
 	viewSpace.Z = 1.0;
 
 	Vector3 dir;

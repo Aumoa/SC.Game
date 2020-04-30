@@ -32,6 +32,7 @@ namespace SC::Game
 		System::Collections::Generic::IDictionary<int, MyList^>^ mThreadSceneGraph;
 
 		ContactCallback* mSimulationEventCallback = nullptr;
+		ControllerBehaviourCallback* mControllerBehaviourCallback = nullptr;
 		physx::PxScene* mPxScene = nullptr;
 		bool mFetchResults = true;
 		bool mFixedUpdate = false;

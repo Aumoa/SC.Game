@@ -4,6 +4,7 @@ namespace SC::Game
 {
 	ref class Component;
 	ref class Transform;
+	ref class CharacterController;
 
 	/// <summary>
 	/// 장면에 포함될 수 있는, 게임 세계에서 표현되는 모든 개체의 공통 인터페이스를 제공합니다.
@@ -21,10 +22,13 @@ namespace SC::Game
 		bool mIsStaticRigid = false;
 		Game::Tag mTag;
 
+		CharacterController^ mController;
+
 	private:
 		bool OnComponentAdd( Component^ component );
 		void OnComponentRemove( Component^ component );
 		void RigidSwap( physx::PxRigidActor* pRigidbody );
+		void ControllerSwap( physx::PxController* pController );
 
 	internal:
 		void SetScene( Scene^ sceneRef );

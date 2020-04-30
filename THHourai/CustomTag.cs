@@ -6,6 +6,7 @@ namespace THHourai
 	[Flags]
 	enum CustomTag
 	{
-		CameraBlocker = Tag.Custom << 1
+		CameraBlocker = Tag.Custom << 1,
+		Terrain = Tag.Custom << 2,
 	}
 }

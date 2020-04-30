@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SC.Game\SC.Game.vcxproj" />
+    <ProjectReference Include="..\SC\SC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Image\" />
+    <Folder Include="Assets\Model\" />
+    <Folder Include="Assets\Texture\" />
+    <Folder Include="Abilities\" />
+  </ItemGroup>
+
+</Project>

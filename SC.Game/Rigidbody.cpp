@@ -19,6 +19,11 @@ Object^ Rigidbody::Clone()
 
 void Rigidbody::AddForce( Vector3 force )
 {
+	if ( !mRigidbody )
+	{
+		throw gcnew ComponentDisconnectedException( this );
+	}
+
 	PxVec3 pxForce;
 
 	Assign( pxForce, force );
@@ -42,16 +47,31 @@ void Rigidbody::MovePosition( Vector3 position )
 
 void Rigidbody::WakeUp()
 {
+	if ( !mRigidbody )
+	{
+		throw gcnew ComponentDisconnectedException( this );
+	}
+
 	mRigidbody->wakeUp();
 }
 
 void Rigidbody::Sleep()
 {
+	if ( !mRigidbody )
+	{
+		throw gcnew ComponentDisconnectedException( this );
+	}
+
 	mRigidbody->putToSleep();
 }
 
 Vector3 Rigidbody::Position::get()
 {
+	if ( !mRigidbody )
+	{
+		throw gcnew ComponentDisconnectedException( this );
+	}
+
 	auto p = mRigidbody->getGlobalPose().p;
 	Vector3 pp;
 	Assign( pp, p );
@@ -60,6 +80,11 @@ Vector3 Rigidbody::Position::get()
 
 void Rigidbody::Position::set( Vector3 value )
 {
+	if ( !mRigidbody )
+	{
+		throw gcnew ComponentDisconnectedException( this );
+	}
+
 	auto gp = mRigidbody->getGlobalPose();
 	Assign( gp.p, value );
 	mRigidbody->setGlobalPose( gp );
@@ -67,6 +92,11 @@ void Rigidbody::Position::set( Vector3 value )
 
 Quaternion Rigidbody::Rotation::get()
 {
+	if ( !mRigidbody )
+	{
+		throw gcnew ComponentDisconnectedException( this );
+	}
+
 	auto q = mRigidbody->getGlobalPose().q;
 	Quaternion qq;
 	Assign( qq, q );
@@ -75,6 +105,11 @@ Quaternion Rigidbody::Rotation::get()
 
 void Rigidbody::Rotation::set( Quaternion value )
 {
+	if ( !mRigidbody )
+	{
+		throw gcnew ComponentDisconnectedException( this );
+	}
+
 	auto gp = mRigidbody->getGlobalPose();
 	Assign( gp.q, value );
 	mRigidbody->setGlobalPose( gp );

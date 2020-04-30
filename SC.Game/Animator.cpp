@@ -112,14 +112,13 @@ Animator::!Animator()
 Object^ Animator::Clone()
 {
 	auto clone = gcnew Animator();
+
 	clone->mController = mController;
-	clone->mAnimVars = mAnimVars;
+	clone->mAnimVars = gcnew Dictionary<String^, System::Object^>( mAnimVars );
 
 	clone->mCurrentState = mCurrentState;
 	clone->mPrevState = mPrevState;
 	clone->mBlendTime = mBlendTime;
-
-	clone->mBoneTransform = mBoneTransform;
 
 	return clone;
 }

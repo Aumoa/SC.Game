@@ -4,11 +4,9 @@ using SC.Game;
 
 namespace THHourai.Scene01
 {
-	class Sunlight : GameObject
+	class Sunlight : SingletonGameObject<Sunlight>
 	{
-		static Sunlight instance;
-
-		Sunlight() : base( "Scene01.Sunlight" )
+		public Sunlight() : base( "Scene01.Sunlight" )
 		{
 			var light = AddComponent<Light>();
 			light.Ambient = 0.2f;
@@ -20,15 +18,6 @@ namespace THHourai.Scene01
 
 			Transform.Position = new Vector3( -8.0f, 16.0f, -4.0f );
 			Transform.LookAt( Vector3.Zero );
-		}
-
-		public static Sunlight Instance
-		{
-			get
-			{
-				if ( instance == null ) instance = new Sunlight();
-				return instance;
-			}
 		}
 	}
 }

@@ -53,17 +53,17 @@ ULONG STDMETHODCALLTYPE Heap::Release()
 	}
 }
 
-void* STDMETHODCALLTYPE Heap::Map()
+void* Heap::Map()
 {
 	return mHeapRef->GetUploadAddress( App::mFrameIndex, mIndex );
 }
 
-void* STDMETHODCALLTYPE Heap::Map( int frameIndex )
+void* Heap::Map( int frameIndex )
 {
 	return mHeapRef->GetUploadAddress( frameIndex, mIndex );
 }
 
-void STDMETHODCALLTYPE Heap::Unmap()
+void Heap::Unmap()
 {
 	D3D12_RANGE range;
 	range.Begin = mIndex * mHeapRef->mAlign;
@@ -71,7 +71,7 @@ void STDMETHODCALLTYPE Heap::Unmap()
 	mHeapRef->AddCopyRange( App::mFrameIndex, range );
 }
 
-void STDMETHODCALLTYPE Heap::Unmap( int frameIndex )
+void Heap::Unmap( int frameIndex )
 {
 	D3D12_RANGE range;
 	range.Begin = mIndex * mHeapRef->mAlign;

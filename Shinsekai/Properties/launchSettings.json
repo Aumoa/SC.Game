@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Shinsekai": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}

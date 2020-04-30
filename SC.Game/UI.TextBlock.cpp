@@ -195,6 +195,21 @@ void TextBlock::Opacity::set( float value )
 	mGlyphRenderer->mOpacity = value;
 }
 
+bool TextBlock::IsRichText::get()
+{
+	return mIsRichText;
+}
+
+void TextBlock::IsRichText::set( bool value )
+{
+	if ( mIsRichText != value )
+	{
+		mIsRichText = value;
+
+		OnContentChanged( Content );
+	}
+}
+
 void TextBlock::OnFormatChanged()
 {
 	if ( mGlyphRenderer )
@@ -247,126 +262,136 @@ void TextBlock::ParseText( String^ original )
 
 	vector<DWRITE_TEXT_RANGE> italicContexts;
 	stack<int> italicStack;
+	
+	String^ str;
 
-	int i = 0;
-	while ( i < original->Length )
+	if ( mIsRichText )
 	{
-		auto indexOf = original->IndexOf( L'<', i );
-
-		// 문자열에 특수 컨텍스트가 없습니다.
-		if ( indexOf == -1 )
+		int i = 0;
+		while ( i < original->Length )
 		{
-			builder->Append( original->Substring( i ) );
-			break;
-		}
-		else
-		{
-			// 토큰 시작 전 문자열을 기록합니다.
-			builder->Append( original->Substring( i, indexOf - i ) );
+			auto indexOf = original->IndexOf( L'<', i );
 
-			// 토큰 종료 지점을 검색합니다.
-			auto endOf = original->IndexOf( L'>', indexOf );
-
-			// 문자열 파싱 에러입니다.
-			if ( endOf == -1 )
+			// 문자열에 특수 컨텍스트가 없습니다.
+			if ( indexOf == -1 )
 			{
 				builder->Append( original->Substring( i ) );
-
-				return;
+				break;
 			}
 			else
 			{
-				auto token = original->Substring( indexOf + 1, endOf - indexOf - 1 );
+				// 토큰 시작 전 문자열을 기록합니다.
+				builder->Append( original->Substring( i, indexOf - i ) );
 
-				//
-				// 구문을 분석합니다.
-				auto sep = token->IndexOf( L'=' );
-				String^ key;
-				String^ value;
-				if ( sep == -1 )
+				// 토큰 종료 지점을 검색합니다.
+				auto endOf = original->IndexOf( L'>', indexOf );
+
+				// 문자열 파싱 에러입니다.
+				if ( endOf == -1 )
 				{
-					key = token;
-					value = "";
+					builder->Append( original->Substring( i ) );
+
+					return;
 				}
 				else
 				{
-					key = token->Substring( 0, sep );
-					value = token->Substring( sep + 1, token->Length - sep - 1 );
-				}
+					auto token = original->Substring( indexOf + 1, endOf - indexOf - 1 );
 
-				//
-				// 각 토큰에 대한 행동을 수행합니다.
-				bool ret = false;
-				if ( key->default[0] != L'/' )  // Close seq
-				{
-					stack<int>* stack = nullptr;
-
-					if ( key == L"b" ) { stack = &boldStack; }
-					else if ( key == L"u" ) { stack = &underlineStack; }
-					else if ( key == L"t" ) { stack = &throughStack; }
-					else if ( key == L"i" ) { stack = &italicStack; }
-					else if ( key == L"color" )
+					//
+					// 구문을 분석합니다.
+					auto sep = token->IndexOf( L'=' );
+					String^ key;
+					String^ value;
+					if ( sep == -1 )
 					{
-						auto pos = ( int )builder->Length;
-						auto color = ColorTranslator::FromHtml( value );
-						colorStack.push( { pos, gcroot<Color>( color ) } );
-						ret = true;
-					}
-					else { ret = true; }
-
-					if ( !ret )
-					{
-						stack->push( ( int )builder->Length );
-					}
-				}
-				else
-				{
-					stack<int>* stack = nullptr;
-					vector<DWRITE_TEXT_RANGE>* contexts = nullptr;
-
-					if ( key == L"/b" )
-					{
-						stack = &boldStack;
-						contexts = &boldContexts;
-					}
-					else if ( key == L"/u" )
-					{
-						stack = &underlineStack;
-						contexts = &underlineContexts;
-					}
-					else if ( key == L"/t" )
-					{
-						stack = &throughStack;
-						contexts = &throughContexts;
-					}
-					else if ( key == L"/color" )
-					{
-						auto c = colorStack.top();
-						colorStack.pop();
-
-						colorContexts.push_back( { { ( UINT )c.first, ( UINT )builder->Length - ( UINT )c.first }, c.second } );
-						ret = true;
+						key = token;
+						value = "";
 					}
 					else
 					{
-						ret = true;
+						key = token->Substring( 0, sep );
+						value = token->Substring( sep + 1, token->Length - sep - 1 );
 					}
 
-					if ( !ret )
+					//
+					// 각 토큰에 대한 행동을 수행합니다.
+					bool ret = false;
+					if ( key->default[0] != L'/' )  // Close seq
 					{
-						auto pos = stack->top();
-						stack->pop();
-						contexts->push_back( DWRITE_TEXT_RANGE{ ( UINT )pos, ( UINT )builder->Length - ( UINT )pos } );
-					}
-				}
+						stack<int>* stack = nullptr;
 
-				i = endOf + 1;
+						if ( key == L"b" ) { stack = &boldStack; }
+						else if ( key == L"u" ) { stack = &underlineStack; }
+						else if ( key == L"t" ) { stack = &throughStack; }
+						else if ( key == L"i" ) { stack = &italicStack; }
+						else if ( key == L"color" )
+						{
+							auto pos = ( int )builder->Length;
+							auto color = ColorTranslator::FromHtml( value );
+							colorStack.push( { pos, gcroot<Color>( color ) } );
+							ret = true;
+						}
+						else { ret = true; }
+
+						if ( !ret )
+						{
+							stack->push( ( int )builder->Length );
+						}
+					}
+					else
+					{
+						stack<int>* stack = nullptr;
+						vector<DWRITE_TEXT_RANGE>* contexts = nullptr;
+
+						if ( key == L"/b" )
+						{
+							stack = &boldStack;
+							contexts = &boldContexts;
+						}
+						else if ( key == L"/u" )
+						{
+							stack = &underlineStack;
+							contexts = &underlineContexts;
+						}
+						else if ( key == L"/t" )
+						{
+							stack = &throughStack;
+							contexts = &throughContexts;
+						}
+						else if ( key == L"/color" )
+						{
+							auto c = colorStack.top();
+							colorStack.pop();
+
+							colorContexts.push_back( { { ( UINT )c.first, ( UINT )builder->Length - ( UINT )c.first }, c.second } );
+							ret = true;
+						}
+						else
+						{
+							ret = true;
+						}
+
+						if ( !ret )
+						{
+							auto pos = stack->top();
+							stack->pop();
+							contexts->push_back( DWRITE_TEXT_RANGE{ ( UINT )pos, ( UINT )builder->Length - ( UINT )pos } );
+						}
+					}
+
+					i = endOf + 1;
+				}
 			}
 		}
+
+		str = builder->ToString();
+	}
+	else
+	{
+		str = original;
 	}
 
 	auto pDWriteFactory = Graphics::mFactory->pDWriteFactory.Get();
-	auto str = builder->ToString();
 
 	ComPtr<IDWriteTextLayout> pLayout;
 	HR( pDWriteFactory->CreateTextLayout( msclr::interop::marshal_context().marshal_as<const wchar_t*>( str ), ( UINT32 )str->Length, mTextFormat->mTextFormat, 0, 0, &pLayout ) );

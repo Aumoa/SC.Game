@@ -6,38 +6,41 @@ using SC.Game;
 
 namespace THHourai
 {
-	class GamePlayer : GameObject
+	partial class GamePlayer : SingletonGameObject<GamePlayer>
 	{
-		static GamePlayer instance;
-
 		PhysicsMaterial physicsMaterial;
 
 		public GamePlayer() : base( "GamePlayer" )
 		{
 			var task = AssetBundle.LoadAssetAsync( @"Assets\Model\Syameimaru_Aya\Syameimaru_Aya.mdl" );
-			var results = task.Result;
+			var results = task.Result.Clone() as GameObject;
 
 			results.Transform.Parent = Transform;
 			results.Transform.LocalScale = new Vector3( 0.01f, 0.01f, 0.01f );
 			results.Transform.LocalPosition = new Vector3( 0.0f, 0.0f, 0.0f );
 
 			var rigidbody = AddComponent<Rigidbody>();
-			var capsule = AddComponent<CapsuleCollider>();
-			AddComponent<WASDMove>();
+			var collider = AddComponent<CapsuleCollider>();
 
 			rigidbody.Constraints = RigidbodyConstraints.Rotation;
-
-			capsule.Center = new Vector3( 0.0f, 1.0f, 0.0f );
-			capsule.Radius = 0.25f;
-			capsule.Height = 1.5f;
-			capsule.Rotation = Quaternion.CreateFromAxisAngle( Vector3.UnitZ, 3.14159f * 0.5f );
+			collider.Radius = 0.3f;
 
 			physicsMaterial = new PhysicsMaterial( "GamePlayer.physicsMaterial" );
 			physicsMaterial.Restitution = 0.0f;
 
-			rigidbody.Mass = 1.0f;
-			capsule.Material = physicsMaterial;
+			InitializeComponents();
+		}
 
+		void InitializeComponents()
+		{
+			AddComponent<TargetPositionMove>();
+
+			InitializeAnimator();
+		}
+
+		void InitializeAnimator()
+		{
+			// 애니메이션 설정
 			var animator = GetComponentInChildren<Animator>();
 			var controller = animator.Controller;
 
@@ -74,19 +77,6 @@ namespace THHourai
 
 				return false;
 			} ) );
-		}
-
-		public static GamePlayer Instance
-		{
-			get
-			{
-				if ( instance == null )
-				{
-					instance = new GamePlayer();
-				}
-
-				return instance;
-			}
 		}
 	}
 }

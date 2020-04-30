@@ -28,6 +28,18 @@ namespace THHourai
 			return 0;
 		}
 
+		public override void OnActive( bool activated )
+		{
+			if ( activated )
+			{
+				Cursor.LockState = CursorLockMode.Confined;
+			}
+			else
+			{
+				Cursor.LockState = CursorLockMode.None;
+			}
+		}
+
 		static void Main()
 		{
 			Start( Instance = new App() );

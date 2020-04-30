@@ -44,14 +44,6 @@ namespace THHourai.Scene01
 		{
 			var instance = GameCamera.Instance;
 			var terrain = new Terrain( "Scene01.Terrain" );
-			Cube[] cubes = new Cube[10];
-
-			for ( int i = 0; i < 5; ++i )
-			{
-				cubes[i] = new Cube( string.Format( "Scene01.cubes[{0}]", i ) );
-				cubes[i].Transform.Position = new Vector3( 2.0f + i * 2.0f, 1.0f, 0.0f );
-				Add( cubes[i] );
-			}
 
 			Add( instance );
 			Add( terrain );
@@ -62,8 +54,6 @@ namespace THHourai.Scene01
 			sf.Target = instance.Transform;
 
 			page = new Page();
-
-			GameCamera.Instance.GetComponent<CameraFollow>().target = GamePlayer.Instance.Transform;
 		}
 
 		public override void Unload()

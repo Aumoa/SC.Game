@@ -77,6 +77,7 @@ using Microsoft::WRL::ComPtr;
 #include "TextParser.h"
 #include "MDLParser.h"
 #include "SkinnedMeshRendererQueue.h"
+#include "ControllerBehaviourCallback.h"
 #include "UI.GlyphRenderer.h"
 #include "UI.RichTextColorUnknown.h"
 #include "DirectX.Geometry.h"
@@ -220,6 +221,7 @@ inline void HR( HRESULT hr )
 #include "SphereCollider.h"
 #include "ThreadDispatcher.h"
 #include "Animator.h"
+#include "CharacterController.h"
 #include "Behaviour.h"
 
 #include "UI.DependencyObject.h"
@@ -227,12 +229,15 @@ inline void HR( HRESULT hr )
 #include "UI.Page.h"
 #include "UI.Brush.h"
 #include "UI.SolidColorBrush.h"
+#include "UI.RevealBrush.h"
 #include "UI.Shapes.Shape.h"
 #include "UI.Shapes.Rectangle.h"
 #include "UI.Panel.h"
 #include "UI.RelativePanel.h"
 #include "UI.TextFormat.h"
 #include "UI.TextBlock.h"
+#include "UI.Border.h"
+#include "UI.Image.h"
 
 /* Exceptions */
 #include "ComponentDisconnectedException.h"

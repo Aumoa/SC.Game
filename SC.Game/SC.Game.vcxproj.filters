@@ -324,6 +324,21 @@
     <ClInclude Include="Tag.h">
       <Filter>Managed\Enum</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterController.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerBehaviourCallback.h">
+      <Filter>Unmanaged</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.RevealBrush.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Border.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.Image.h">
+      <Filter>Managed\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -591,6 +606,21 @@
     </ClCompile>
     <ClCompile Include="Cursor.cpp">
       <Filter>Managed</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterController.cpp">
+      <Filter>Managed\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerBehaviourCallback.cpp">
+      <Filter>Unmanaged</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.RevealBrush.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Border.cpp">
+      <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.Image.cpp">
+      <Filter>Managed\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

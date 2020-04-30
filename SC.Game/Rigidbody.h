@@ -5,7 +5,7 @@ namespace SC::Game
 	/// <summary>
 	/// 연결된 게임 오브젝트가 물리 제어로 동작하도록 합니다.
 	/// </summary>
-	public ref class Rigidbody sealed : public Component
+	public ref class Rigidbody : public Component
 	{
 	internal:
 		physx::PxRigidDynamic* mRigidbody = nullptr;

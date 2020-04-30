@@ -102,6 +102,29 @@ bool GameObject::OnComponentAdd( Component^ component )
 		pIsCol->AttachToActor( mRigidbody );
 	}
 
+	else if ( CharacterController::typeid == component->GetType() )
+	{
+		mController = ( CharacterController^ )component;
+
+		if ( mSceneRef )
+		{
+			PxExtendedVec3 pos;
+			Assign( pos, Transform->Position );
+
+			PxCapsuleControllerDesc capsuleControllerDesc{ };
+			capsuleControllerDesc.setToDefault();
+			capsuleControllerDesc.radius = mController->mRadius;
+			capsuleControllerDesc.height = mController->mHeight;
+			capsuleControllerDesc.density = mController->mDensity;
+			capsuleControllerDesc.slopeLimit = mController->mSlopeLimit;
+			capsuleControllerDesc.material = Physics::mDefaultMat;
+			capsuleControllerDesc.stepOffset = mController->mStepOffset;
+
+			mController->mController = mSceneRef->mCharacterControllerManager->createController( capsuleControllerDesc );
+			mController->mController->setFootPosition( pos );
+		}
+	}
+
 	return true;
 }
 
@@ -160,6 +183,12 @@ void GameObject::OnComponentRemove( Component^ component )
 			collider->AttachToActor( pxRigid );
 		}
 	}
+
+	else if ( component->GetType() == CharacterController::typeid )
+	{
+		ControllerSwap( nullptr );
+		mController = nullptr;
+	}
 }
 
 void GameObject::RigidSwap( PxRigidActor* pRigidbody )
@@ -188,6 +217,11 @@ void GameObject::RigidSwap( PxRigidActor* pRigidbody )
 	}
 }
 
+void GameObject::ControllerSwap( physx::PxController* pController )
+{
+
+}
+
 void GameObject::SetScene( Scene^ sceneRef )
 {
 	if ( mSceneRef )
@@ -211,6 +245,24 @@ void GameObject::SetScene( Scene^ sceneRef )
 		if ( mRigidbody )
 		{
 			mSceneRef->mPxScene->addActor( *mRigidbody );
+		}
+
+		if ( mController && !mController->mController )
+		{
+			PxExtendedVec3 pos;
+			Assign( pos, Transform->Position );
+
+			PxCapsuleControllerDesc capsuleControllerDesc{ };
+			capsuleControllerDesc.setToDefault();
+			capsuleControllerDesc.radius = mController->mRadius;
+			capsuleControllerDesc.height = mController->mHeight;
+			capsuleControllerDesc.density = mController->mDensity;
+			capsuleControllerDesc.slopeLimit = mController->mSlopeLimit;
+			capsuleControllerDesc.material = Physics::mDefaultMat;
+			capsuleControllerDesc.stepOffset = mController->mStepOffset;
+
+			mController->mController = sceneRef->mCharacterControllerManager->createController( capsuleControllerDesc );
+			mController->mController->setFootPosition( pos );
 		}
 	}
 }
@@ -360,19 +412,26 @@ GameObject::!GameObject()
 
 Object^ GameObject::Clone()
 {
-	auto clone = gcnew GameObject( Name + L" Clone" );
+	auto go = gcnew GameObject( Name + L" Clone" );
+	go->Transform->Clone( Transform );
 
 	for each ( auto gameObject in mGameObjects )
 	{
-		clone->mGameObjects->Add( ( GameObject^ )gameObject->Clone() );
+		auto clone = ( GameObject^ )gameObject->Clone();
+		clone->Transform->Parent = go->Transform;
 	}
 
 	for each ( auto component in mComponents )
 	{
-		clone->mComponents->Add( ( Component^ )component->Clone() );
+		auto clone = ( Component^ )component->Clone();
+		clone->mGameObject = go;
+		go->OnComponentAdd( clone );
+		go->mComponents->Add( clone );
 	}
 
-	return clone;
+	go->mTag = mTag;
+
+	return go;
 }
 
 generic< class T > where T : Component, gcnew()
@@ -522,7 +581,14 @@ int GameObject::NumChilds::get()
 
 Tag GameObject::Tag::get()
 {
-	return mTag;
+	if ( auto parent = Transform->mParent; parent )
+	{
+		return parent->Object->Tag | mTag;
+	}
+	else
+	{
+		return mTag;
+	}
 }
 
 void GameObject::Tag::set( Game::Tag value )

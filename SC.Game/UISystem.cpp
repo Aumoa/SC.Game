@@ -107,7 +107,10 @@ void UISystem::Render( int frameIndex )
 	// 셰이더 입력 매개변수의 인덱스를 초기화합니다.
 	mShaderDispatchInfoIndex = 0;
 
+	auto cursorPos = Input::MousePosition;
+	float value[2] = { ( float )cursorPos.X, ( float )cursorPos.Y };
 	mDeviceContext.SetGraphicsRootConstantBufferView( Slot_UI_ScreenResolution, mConstantBuffer->GetGPUVirtualAddress() );
+	mDeviceContext.SetGraphicsRoot32BitConstants( Slot_UI_CursorPos, 2, value );
 
 	if ( auto page = ( Page^ )mRootPage; page )
 	{

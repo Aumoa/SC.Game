@@ -18,13 +18,12 @@ namespace SC::Game
 		static HWND hWnd;
 		static Event<DisposingDelegate> Disposing;
 		static Event<ResizingDelegate> Resizing;
-		static int mWidth;
-		static int mHeight;
 
 		static std::wstring mAppName;
 		static int mPhysicsHz;
 		static bool mVSync;
 		static bool mDisablePresent;
+		static bool mActivated;
 
 		static int mFrameIndex;
 		static ComPtr<ID3D12Fence> mFence;
