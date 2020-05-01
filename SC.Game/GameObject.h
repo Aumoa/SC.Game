@@ -6,6 +6,8 @@ namespace SC::Game
 	ref class Transform;
 	ref class CharacterController;
 
+	delegate void MeshChangedDelegate();
+
 	/// <summary>
 	/// 장면에 포함될 수 있는, 게임 세계에서 표현되는 모든 개체의 공통 인터페이스를 제공합니다.
 	/// </summary>
@@ -40,6 +42,7 @@ namespace SC::Game
 		void OnCollisionStay( Collision collision );
 		void OnTriggerEnter( Collider^ collider );
 		void OnTriggerExit( Collider^ collider );
+		void OnMeshChanged();
 
 	public:
 		/// <summary>

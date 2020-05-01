@@ -11,6 +11,9 @@ namespace SC::Game
 		ImmutableHeap* mVertexBuffer = nullptr;
 		ImmutableHeap* mIndexBuffer = nullptr;
 
+		UINT mVertexStride = 0;
+		physx::PxConvexMesh* mConvexMesh = nullptr;
+
 		int mVertexCount = 0;
 		int mIndexCount = 0;
 		bool mIsSkinned = false;

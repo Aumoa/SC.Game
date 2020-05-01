@@ -4,14 +4,33 @@ using namespace SC::Game;
 using namespace System;
 
 using namespace std;
+using namespace physx;
 
 void Mesh::Initialize( const void* pVertexBuffer, unsigned int vertexStride, const unsigned int* pIndexBuffer, unsigned int vertexCount, unsigned int indexCount )
 {
-	mVertexBuffer = new ImmutableHeap( vertexStride * vertexCount, pVertexBuffer );
+	SIZE_T sizeInBytes = vertexStride * vertexCount;
+
+	mVertexBuffer = new ImmutableHeap( sizeInBytes, pVertexBuffer );
 	mIndexBuffer = new ImmutableHeap( sizeof( UINT ) * indexCount, pIndexBuffer );
 
 	mVertexCount = vertexCount;
 	mIndexCount = indexCount;
+
+	PxConvexMeshDesc convexMeshDesc;
+	convexMeshDesc.setToDefault();
+	convexMeshDesc.points.count = vertexCount;
+	convexMeshDesc.points.data = pVertexBuffer;
+	convexMeshDesc.points.stride = vertexStride;
+	convexMeshDesc.indices.count = indexCount;
+	convexMeshDesc.indices.data = pIndexBuffer;
+	convexMeshDesc.indices.stride = sizeof( UINT );
+	convexMeshDesc.flags = PxConvexFlag::eFAST_INERTIA_COMPUTATION | PxConvexFlag::eDISABLE_MESH_VALIDATION | PxConvexFlag::eCOMPUTE_CONVEX;
+
+	PxDefaultMemoryOutputStream buffer;
+	if ( Physics::mCooking->cookConvexMesh( convexMeshDesc, buffer ) )
+	{
+		mConvexMesh = Physics::mCooking->createConvexMesh( convexMeshDesc, Physics::mPhysics->getPhysicsInsertionCallback() );
+	}
 }
 
 Mesh::Mesh( String^ xName ) : Asset( xName )
@@ -104,6 +123,12 @@ Mesh::!Mesh()
 		pUnknown.Attach( mIndexBuffer );
 		App::GCAdd( move( pUnknown ) );
 		mIndexBuffer = nullptr;
+	}
+
+	if ( mConvexMesh )
+	{
+		mConvexMesh->release();
+		mConvexMesh = nullptr;
 	}
 }
 

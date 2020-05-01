@@ -40,6 +40,7 @@ namespace Project_SLOW
 			//var rigidbody = AddComponent<Rigidbody>();
 			//var collider = AddComponent<CapsuleCollider>();
 			var cc = AddComponent<CharacterController>();
+			cc.Radius = 0.5f;
 
 			//rigidbody.Constraints = RigidbodyConstraints.Rotation;
 			//collider.Radius = radius;

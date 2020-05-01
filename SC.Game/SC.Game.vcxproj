@@ -177,6 +177,7 @@
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetBundle.h" />
     <ClInclude Include="Assignable.h" />
+    <ClInclude Include="AssimpParser.h" />
     <ClInclude Include="Behaviour.h" />
     <ClInclude Include="Bone.h" />
     <ClInclude Include="BoxCollider.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CDeviceContext.h" />
     <ClInclude Include="CGraphicsPipelineStateDesc.h" />
+    <ClInclude Include="CharacterCollisionFlags.h" />
     <ClInclude Include="CharacterController.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
@@ -227,6 +229,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="MDLParser.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshCollider.h" />
     <ClInclude Include="MeshFilter.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Mutex.h" />
@@ -332,6 +335,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MDLParser.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshCollider.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Mutex.cpp" />

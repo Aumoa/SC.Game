@@ -21,13 +21,15 @@ Object^ CharacterController::Clone()
 	return clone;
 }
 
-void CharacterController::MovePosition( Vector3 value )
+CharacterCollisionFlags CharacterController::MovePosition( Vector3 value )
 {
 	value = Vector3::Subtract( value, Transform->Position );
 
 	PxVec3 disp;
 	Assign( disp, value );
 	auto flag = mController->move( disp, 0, Time::FixedDeltaTime, PxControllerFilters() );
+
+	return ( CharacterCollisionFlags )( uint32_t )flag;
 }
 
 float CharacterController::Radius::get()
@@ -61,7 +63,7 @@ void CharacterController::SlopeLimit::set( float value )
 
 	if ( mController )
 	{
-		mController->setSlopeLimit( mSlopeLimit );
+		mController->setSlopeLimit( value );
 	}
 }
 

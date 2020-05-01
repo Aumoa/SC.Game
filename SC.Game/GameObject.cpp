@@ -381,6 +381,15 @@ void GameObject::OnTriggerExit( Collider^ collider )
 	}
 }
 
+void GameObject::OnMeshChanged()
+{
+	auto meshCollider = GetComponent<MeshCollider^>();
+	if ( meshCollider )
+	{
+		meshCollider->mHasUpdate = true;
+	}
+}
+
 GameObject::GameObject( String^ xName ) : Asset( xName )
 {
 	mTransform = gcnew Game::Transform();

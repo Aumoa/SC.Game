@@ -13,6 +13,7 @@ namespace Project_SLOW
 
 		Vector3 target;
 		bool targetAccepted = false;
+		float gravityAccel = 0.0f;
 
 		public TargetPositionMove() : base()
 		{
@@ -29,10 +30,11 @@ namespace Project_SLOW
 
 		public override void FixedUpdate()
 		{
+			Vector3 disp = Transform.Position;
+
 			if ( targetAccepted )
 			{
-				var position = Transform.Position;
-				var vec = target - position;
+				var vec = target - disp;
 				vec.Y = 0.0f;
 
 				if ( vec.Length() >= 0.1f )
@@ -42,11 +44,11 @@ namespace Project_SLOW
 					var toV = Vector3.Normalize( vec );
 
 					// 대상 지점까지의 거리를 계산합니다.
-					var distance = Vector3.Distance( position, target );
+					var distance = Vector3.Distance( disp, target );
 
 					// 거리만큼 이동합니다.
 					var move = toV * Math.Min( speed * Time.FixedDeltaTime, distance );
-					cc.MovePosition( position + move );
+					disp += move;
 
 					// 대상 방향의 회전 각도를 계산합니다.
 					var dot = Vector3.Dot( fromV, toV );
@@ -76,6 +78,15 @@ namespace Project_SLOW
 					animator.SetVar( "walkSpeed", 0.0f );
 					targetAccepted = false;
 				}
+			}
+
+			gravityAccel += Time.FixedDeltaTime * 9.8f;
+			disp.Y -= gravityAccel * Time.FixedDeltaTime;
+
+			var flag = cc.MovePosition( disp );
+			if ( ( flag & CharacterCollisionFlags.Down ) == CharacterCollisionFlags.Down )
+			{
+				gravityAccel = 0;
 			}
 		}
 

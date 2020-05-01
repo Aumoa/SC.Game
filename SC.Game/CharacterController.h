@@ -31,7 +31,8 @@ namespace SC::Game
 		/// 컨트롤러 개체의 위치를 이동합니다.
 		/// </summary>
 		/// <param name="value"> 위치의 상대값을 전달합니다. </param>
-		void MovePosition( System::Numerics::Vector3 value );
+		/// <returns> 캐릭터가 충돌할 때 충돌이 발생한 위치를 반환합니다. </returns>
+		CharacterCollisionFlags MovePosition( System::Numerics::Vector3 value );
 
 		/// <summary>
 		/// 캐릭터의 반경을 설정하거나 가져옵니다.

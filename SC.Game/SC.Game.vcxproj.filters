@@ -339,6 +339,15 @@
     <ClInclude Include="UI.Image.h">
       <Filter>Managed\UI</Filter>
     </ClInclude>
+    <ClInclude Include="MeshCollider.h">
+      <Filter>Managed\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpParser.h">
+      <Filter>Managed\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterCollisionFlags.h">
+      <Filter>Managed</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -621,6 +630,9 @@
     </ClCompile>
     <ClCompile Include="UI.Image.cpp">
       <Filter>Managed\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshCollider.cpp">
+      <Filter>Managed\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
