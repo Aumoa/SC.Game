@@ -12,7 +12,7 @@
 
 namespace DirectX
 {
-    typedef std::vector<SC::Game::Vertex> VertexCollection;
+    typedef std::vector<SC::Game::tag_Vertex> VertexCollection;
     typedef std::vector<UINT> IndexCollection;
 
     void ComputeBox( VertexCollection& vertices, IndexCollection& indices, const XMFLOAT3& size, bool rhcoords, bool invertn );

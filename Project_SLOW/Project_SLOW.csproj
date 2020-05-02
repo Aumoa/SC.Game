@@ -1,20 +1,138 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{442C44FF-6323-4EE7-B84D-636AE244B6DC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Project_SLOW</RootNamespace>
+    <AssemblyName>Project_SLOW</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SC.Game\SC.Game.vcxproj" />
-    <ProjectReference Include="..\SC\SC.csproj" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Include="Abilities\Ability.cs" />
+    <Compile Include="Abilities\AttackAbility.cs" />
+    <Compile Include="Abilities\MoveAbility.cs" />
+    <Compile Include="Abilities\PositionBasedAbility.cs" />
+    <Compile Include="Abilities\TargetBasedAbility.cs" />
+    <Compile Include="App.cs" />
+    <Compile Include="BasePage.cs" />
+    <Compile Include="Behaviour\BasicClickEvent.cs" />
+    <Compile Include="Behaviour\TargetPositionMove.cs" />
+    <Compile Include="CharacterBase.cs" />
+    <Compile Include="Common\CursorSystem.cs" />
+    <Compile Include="Common\CursorSystemGO.cs" />
+    <Compile Include="Common\FadeIn.cs" />
+    <Compile Include="Common\FadeOut.cs" />
+    <Compile Include="Common\PropertyPair.cs" />
+    <Compile Include="Common\SimpleButton.cs" />
+    <Compile Include="Common\Unit.cs" />
+    <Compile Include="Components\Properties.cs" />
+    <Compile Include="CustomTag.cs" />
+    <Compile Include="Effects\Effect.cs" />
+    <Compile Include="Effects\ImmediatelyDamageEffect.cs" />
+    <Compile Include="Effects\TargetBasedEffect.cs" />
+    <Compile Include="MainCamera.cs" />
+    <Compile Include="Players\Mokou.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Singleton.cs" />
+    <Compile Include="SingletonGameObject.cs" />
+    <Compile Include="Stage1\BasicProperties.cs" />
+    <Compile Include="Stage1\CameraAction.cs" />
+    <Compile Include="Stage1\CameraMove.cs" />
+    <Compile Include="Stage1\GameCamera.cs" />
+    <Compile Include="Stage1\Mypage.cs" />
+    <Compile Include="Stage1\Myscene.cs" />
+    <Compile Include="Stage1\Sunlight.cs" />
+    <Compile Include="Stage1\Terrain.cs" />
+    <Compile Include="Title\Mypage.cs" />
+    <Compile Include="Title\Mypage.EventCallback.cs" />
+    <Compile Include="Title\Mypage.Initialize.cs" />
+    <Compile Include="Title\Myscene.cs" />
+    <Compile Include="Weapons\MokouAttackWeapon.cs" />
+    <Compile Include="Weapons\PositionBasedWeapon.cs" />
+    <Compile Include="Weapons\SimplyDamageWeapon.cs" />
+    <Compile Include="Weapons\TargetBasedWeapon.cs" />
+    <Compile Include="Weapons\Weapon.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Model\Mokou\mokou.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree0.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree1.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree2.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree3.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree4.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree5.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree6.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree7.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree8.mdl" />
+    <None Include="Assets\Model\Trees\AshenTree9.mdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Model\Mokou\mokou.png" />
+    <Content Include="Assets\Model\Trees\AshenTree.png" />
+    <Content Include="Assets\Texture\grass\grass01.jpg" />
+    <Content Include="Assets\Texture\grass\grass01_h.jpg" />
+    <Content Include="Assets\Texture\grass\grass01_n.jpg" />
+    <Content Include="Assets\Texture\grass\grass01_s.jpg" />
+    <Content Include="Assets\Texture\grass\grass02.jpg" />
+    <Content Include="Assets\Texture\grass\grass02_h.jpg" />
+    <Content Include="Assets\Texture\grass\grass02_n.jpg" />
+    <Content Include="Assets\Texture\grass\grass02_s.jpg" />
+    <Content Include="Assets\Texture\grass\grass03.jpg" />
+    <Content Include="Assets\Texture\grass\grass03_h.jpg" />
+    <Content Include="Assets\Texture\grass\grass03_n.jpg" />
+    <Content Include="Assets\Texture\grass\grass03_s.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Image\" />
-    <Folder Include="Assets\Model\" />
-    <Folder Include="Assets\Texture\" />
-    <Folder Include="Abilities\" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\SC.Game\SC.Game.vcxproj">
+      <Project>{686212a5-651d-4ff0-b012-300aede1c777}</Project>
+      <Name>SC.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SC\SC.csproj">
+      <Project>{ca952250-406b-44e6-814e-4627afbb6a22}</Project>
+      <Name>SC</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

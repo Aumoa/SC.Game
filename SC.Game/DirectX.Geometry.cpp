@@ -124,16 +124,16 @@ void DirectX::ComputeBox( VertexCollection& vertices, IndexCollection& indices, 
 
         // Four vertices per face.
         // (Normal - side1 - side2) * tsize // Normal // t0
-        vertices.push_back( SC::Game::Vertex( XMVectorMultiply( XMVectorSubtract( XMVectorSubtract( Normal, side1 ), side2 ), tsize ), Normal, textureCoordinates[0] ) );
+        vertices.push_back( SC::Game::tag_Vertex( XMVectorMultiply( XMVectorSubtract( XMVectorSubtract( Normal, side1 ), side2 ), tsize ), Normal, textureCoordinates[0] ) );
 
         // (Normal - side1 + side2) * tsize // Normal // t1
-        vertices.push_back( SC::Game::Vertex( XMVectorMultiply( XMVectorAdd( XMVectorSubtract( Normal, side1 ), side2 ), tsize ), Normal, textureCoordinates[1] ) );
+        vertices.push_back( SC::Game::tag_Vertex( XMVectorMultiply( XMVectorAdd( XMVectorSubtract( Normal, side1 ), side2 ), tsize ), Normal, textureCoordinates[1] ) );
 
         // (Normal + side1 + side2) * tsize // Normal // t2
-        vertices.push_back( SC::Game::Vertex( XMVectorMultiply( XMVectorAdd( Normal, XMVectorAdd( side1, side2 ) ), tsize ), Normal, textureCoordinates[2] ) );
+        vertices.push_back( SC::Game::tag_Vertex( XMVectorMultiply( XMVectorAdd( Normal, XMVectorAdd( side1, side2 ) ), tsize ), Normal, textureCoordinates[2] ) );
 
         // (Normal + side1 - side2) * tsize // Normal // t3
-        vertices.push_back( SC::Game::Vertex( XMVectorMultiply( XMVectorSubtract( XMVectorAdd( Normal, side1 ), side2 ), tsize ), Normal, textureCoordinates[3] ) );
+        vertices.push_back( SC::Game::tag_Vertex( XMVectorMultiply( XMVectorSubtract( XMVectorAdd( Normal, side1 ), side2 ), tsize ), Normal, textureCoordinates[3] ) );
     }
 
     // Build RH above
@@ -187,7 +187,7 @@ void DirectX::ComputeSphere( VertexCollection& vertices, IndexCollection& indice
             XMVECTOR Normal = XMVectorSet( dx, dy, dz, 0 );
             XMVECTOR Tex = XMVectorSet( u, v, 0, 0 );
 
-            vertices.push_back( SC::Game::Vertex( XMVectorScale( Normal, radius ), Normal, Tex ) );
+            vertices.push_back( SC::Game::tag_Vertex( XMVectorScale( Normal, radius ), Normal, Tex ) );
         }
     }
 
@@ -392,7 +392,7 @@ void DirectX::ComputeGeoSphere( VertexCollection& vertices, IndexCollection& ind
         float v = latitude / XM_PI;
 
         auto texcoord = XMVectorSet( 1.0f - u, v, 0.0f, 0.0f );
-        vertices.push_back( SC::Game::Vertex( pos, Normal, texcoord ) );
+        vertices.push_back( SC::Game::tag_Vertex( pos, Normal, texcoord ) );
     }
 
     // There are a couple of fixes to do. One is a texture coordinate wraparound fixup. At some point, there will be
@@ -420,7 +420,7 @@ void DirectX::ComputeGeoSphere( VertexCollection& vertices, IndexCollection& ind
             CheckIndexOverflow( newIndex );
 
             // copy this vertex, correct the texture coordinate, and add the vertex
-            SC::Game::Vertex v = vertices[i];
+            SC::Game::tag_Vertex v = vertices[i];
             v.Tex.x = 1.0f;
             vertices.push_back( v );
 
@@ -453,9 +453,9 @@ void DirectX::ComputeGeoSphere( VertexCollection& vertices, IndexCollection& ind
                 assert( *triIndex0 == i );
                 assert( *triIndex1 != i && *triIndex2 != i ); // assume no degenerate triangles
 
-                const SC::Game::Vertex& v0 = vertices[*triIndex0];
-                const SC::Game::Vertex& v1 = vertices[*triIndex1];
-                const SC::Game::Vertex& v2 = vertices[*triIndex2];
+                const SC::Game::tag_Vertex& v0 = vertices[*triIndex0];
+                const SC::Game::tag_Vertex& v1 = vertices[*triIndex1];
+                const SC::Game::tag_Vertex& v2 = vertices[*triIndex2];
 
                 // check the other two vertices to see if we might need to fix this triangle
 
@@ -514,7 +514,7 @@ void DirectX::ComputeGeoSphere( VertexCollection& vertices, IndexCollection& ind
             const auto& otherVertex1 = vertices[*pOtherIndex1];
 
             // Calculate the texcoords for the new pole vertex, add it to the vertices and update the index
-            SC::Game::Vertex newPoleVertex = poleVertex;
+            SC::Game::tag_Vertex newPoleVertex = poleVertex;
             newPoleVertex.Tex.x = ( otherVertex0.Tex.x + otherVertex1.Tex.x ) / 2;
             newPoleVertex.Tex.y = poleVertex.Tex.y;
 
@@ -610,7 +610,7 @@ namespace
 
             XMVECTOR Tex = XMVectorMultiplyAdd( XMVectorSwizzle<0, 2, 3, 3>( circleVector ), textureScale, g_XMOneHalf );
 
-            vertices.push_back( SC::Game::Vertex( Pos, Normal, Tex ) );
+            vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, Tex ) );
         }
     }
 }
@@ -641,8 +641,8 @@ void DirectX::ComputeCylinder( VertexCollection& vertices, IndexCollection& indi
 
         XMVECTOR Tex = XMLoadFloat( &u );
 
-        vertices.push_back( SC::Game::Vertex( XMVectorAdd( sideOffset, topOffset ), Normal, Tex ) );
-        vertices.push_back( SC::Game::Vertex( XMVectorSubtract( sideOffset, topOffset ), Normal, XMVectorAdd( Tex, g_XMIdentityR1 ) ) );
+        vertices.push_back( SC::Game::tag_Vertex( XMVectorAdd( sideOffset, topOffset ), Normal, Tex ) );
+        vertices.push_back( SC::Game::tag_Vertex( XMVectorSubtract( sideOffset, topOffset ), Normal, XMVectorAdd( Tex, g_XMIdentityR1 ) ) );
 
         index_push_back( indices, i * 2 );
         index_push_back( indices, ( i * 2 + 2 ) % ( stride * 2 ) );
@@ -698,8 +698,8 @@ void DirectX::ComputeCone( VertexCollection& vertices, IndexCollection& indices,
         Normal = XMVector3Normalize( Normal );
 
         // Duplicate the top vertex for distinct normals
-        vertices.push_back( SC::Game::Vertex( topOffset, Normal, g_XMZero ) );
-        vertices.push_back( SC::Game::Vertex( pt, Normal, XMVectorAdd( Tex, g_XMIdentityR1 ) ) );
+        vertices.push_back( SC::Game::tag_Vertex( topOffset, Normal, g_XMZero ) );
+        vertices.push_back( SC::Game::tag_Vertex( pt, Normal, XMVectorAdd( Tex, g_XMIdentityR1 ) ) );
 
         index_push_back( indices, i * 2 );
         index_push_back( indices, ( i * 2 + 3 ) % ( stride * 2 ) );
@@ -757,7 +757,7 @@ void DirectX::ComputeTorus( VertexCollection& vertices, IndexCollection& indices
             Pos = XMVector3Transform( Pos, transform );
             Normal = XMVector3TransformNormal( Normal, transform );
 
-            vertices.push_back( SC::Game::Vertex( Pos, Normal, Tex ) );
+            vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, Tex ) );
 
             // And create indices for two triangles.
             size_t nextI = ( i + 1 ) % stride;
@@ -821,13 +821,13 @@ void DirectX::ComputeTetrahedron( VertexCollection& vertices, IndexCollection& i
 
         // Duplicate vertices to use face normals
         XMVECTOR Pos = XMVectorScale( verts[v0], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMZero /* 0, 0 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMZero /* 0, 0 */ ) );
 
         Pos = XMVectorScale( verts[v1], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMIdentityR0 /* 1, 0 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMIdentityR0 /* 1, 0 */ ) );
 
         Pos = XMVectorScale( verts[v2], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMIdentityR1 /* 0, 1 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMIdentityR1 /* 0, 1 */ ) );
     }
 
     // Built LH above
@@ -887,13 +887,13 @@ void DirectX::ComputeOctahedron( VertexCollection& vertices, IndexCollection& in
 
         // Duplicate vertices to use face normals
         XMVECTOR Pos = XMVectorScale( verts[v0], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMZero /* 0, 0 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMZero /* 0, 0 */ ) );
 
         Pos = XMVectorScale( verts[v1], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMIdentityR0 /* 1, 0 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMIdentityR0 /* 1, 0 */ ) );
 
         Pos = XMVectorScale( verts[v2], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMIdentityR1 /* 0, 1*/ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMIdentityR1 /* 0, 1*/ ) );
     }
 
     // Built LH above
@@ -1012,19 +1012,19 @@ void DirectX::ComputeDodecahedron( VertexCollection& vertices, IndexCollection& 
 
         // Duplicate vertices to use face normals
         XMVECTOR Pos = XMVectorScale( verts[v0], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, textureCoordinates[textureIndex[t][0]] ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, textureCoordinates[textureIndex[t][0]] ) );
 
         Pos = XMVectorScale( verts[v1], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, textureCoordinates[textureIndex[t][1]] ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, textureCoordinates[textureIndex[t][1]] ) );
 
         Pos = XMVectorScale( verts[v2], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, textureCoordinates[textureIndex[t][2]] ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, textureCoordinates[textureIndex[t][2]] ) );
 
         Pos = XMVectorScale( verts[v3], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, textureCoordinates[textureIndex[t][3]] ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, textureCoordinates[textureIndex[t][3]] ) );
 
         Pos = XMVectorScale( verts[v4], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, textureCoordinates[textureIndex[t][4]] ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, textureCoordinates[textureIndex[t][4]] ) );
     }
 
     // Built LH above
@@ -1105,13 +1105,13 @@ void DirectX::ComputeIcosahedron( VertexCollection& vertices, IndexCollection& i
 
         // Duplicate vertices to use face normals
         XMVECTOR Pos = XMVectorScale( verts[v0], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMZero /* 0, 0 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMZero /* 0, 0 */ ) );
 
         Pos = XMVectorScale( verts[v1], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMIdentityR0 /* 1, 0 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMIdentityR0 /* 1, 0 */ ) );
 
         Pos = XMVectorScale( verts[v2], size );
-        vertices.push_back( SC::Game::Vertex( Pos, Normal, g_XMIdentityR1 /* 0, 1 */ ) );
+        vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, g_XMIdentityR1 /* 0, 1 */ ) );
     }
 
     // Built LH above
@@ -1153,7 +1153,7 @@ namespace
         // Create the vertex data.
         Bezier::CreatePatchVertices( controlPoints, tessellation, isMirrored, [&]( FXMVECTOR Pos, FXMVECTOR Normal, FXMVECTOR Tex )
             {
-                vertices.push_back( SC::Game::Vertex( Pos, Normal, Tex ) );
+                vertices.push_back( SC::Game::tag_Vertex( Pos, Normal, Tex ) );
             } );
     }
 }

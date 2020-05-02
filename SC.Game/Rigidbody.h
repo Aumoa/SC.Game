@@ -37,7 +37,7 @@ namespace SC::Game
 		/// 리지드바디의 상태를 활성화시킵니다.
 		/// </summary>
 		void WakeUp();
-		
+
 		/// <summary>
 		/// 리지드바디의 상태를 비활성화시킵니다.
 		/// </summary>

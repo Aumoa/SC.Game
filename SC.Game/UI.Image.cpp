@@ -3,7 +3,8 @@ using namespace SC::Game;
 using namespace SC::Game::UI;
 
 using namespace System;
-using namespace System::Drawing;
+
+using System::Drawing::RectangleF;
 
 struct tag
 {

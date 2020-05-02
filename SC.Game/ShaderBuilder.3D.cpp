@@ -49,7 +49,7 @@ void ShaderBuilder::Load3DShader()
 	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	pipelineDesc.SetVertexShader( pColorVertexShader, ARRAYSIZE( pColorVertexShader ) );
 	pipelineDesc.SetPixelShader( pColorPixelShader, ARRAYSIZE( pColorPixelShader ) );
-	pipelineDesc.AddInputLayout( Vertex::InputElements );
+	pipelineDesc.AddInputLayout( tag_Vertex::InputElements );
 	pipelineDesc.SetDepthStencilState( true );
 	pipelineDesc.CullMode = D3D12_CULL_MODE_NONE;
 	//pipelineDesc.WireframeMode = true;
@@ -72,7 +72,7 @@ void ShaderBuilder::Load3DShader()
 	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	pipelineDesc.SetVertexShader( pSkyboxVertexShader, ARRAYSIZE( pSkyboxVertexShader ) );
 	pipelineDesc.SetPixelShader( pSkyboxPixelShader, ARRAYSIZE( pSkyboxPixelShader ) );
-	pipelineDesc.AddInputLayout( Vertex::InputElements );
+	pipelineDesc.AddInputLayout( tag_Vertex::InputElements );
 	pipelineDesc.CullMode = D3D12_CULL_MODE_FRONT;
 	pipelineDesc.SetDepthStencilState( true );
 	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;

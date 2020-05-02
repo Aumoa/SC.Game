@@ -158,13 +158,13 @@ namespace SC::Game::UI
 		/// </summary>
 		property Element^ default[int]
 		{
-			virtual Element^ get( int index );
+			virtual Element ^ get( int index );
 			virtual void set( int index, Element^ value );
 		}
 
-		/// <summary>
-		/// 이 클래스의 이름 해시 값을 가져옵니다.
-		/// </summary>
+			/// <summary>
+			/// 이 클래스의 이름 해시 값을 가져옵니다.
+			/// </summary>
 		static const int ClassName = ( gcnew System::String( "panel" ) )->GetHashCode();
 
 		/// <summary>

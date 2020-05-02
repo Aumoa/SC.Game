@@ -136,7 +136,7 @@ Element^ Panel::default::get( int index )
 	return mContentType[index];
 }
 
-void Panel::default::set( int index, Element^ value )
+void Panel::default::set( int index, Element ^ value )
 {
 	mContentType[index] = value;
 }

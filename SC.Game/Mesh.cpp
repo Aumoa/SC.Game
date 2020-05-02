@@ -2,6 +2,7 @@ using namespace SC;
 using namespace SC::Game;
 
 using namespace System;
+using namespace System::Collections::Generic;
 
 using namespace std;
 using namespace physx;
@@ -38,24 +39,24 @@ Mesh::Mesh( String^ xName ) : Asset( xName )
 
 }
 
-void Mesh::Initialize( const vector<Vertex>& vertexBuffer, const vector<unsigned int>& indexBuffer )
+void Mesh::Initialize( const vector<tag_Vertex>& vertexBuffer, const vector<unsigned int>& indexBuffer )
 {
-	Initialize( vertexBuffer.data(), sizeof( Vertex ), indexBuffer.data(), ( UINT )vertexBuffer.size(), ( UINT )indexBuffer.size() );
+	Initialize( vertexBuffer.data(), sizeof( tag_Vertex ), indexBuffer.data(), ( UINT )vertexBuffer.size(), ( UINT )indexBuffer.size() );
 }
 
-void Mesh::Initialize( const vector<SkinnedVertex>& vertexBuffer, const vector<unsigned int>& indexBuffer )
+void Mesh::Initialize( const vector<tag_SkinnedVertex>& vertexBuffer, const vector<unsigned int>& indexBuffer )
 {
 	mIsSkinned = true;
 
-	Initialize( vertexBuffer.data(), sizeof( SkinnedVertex ), indexBuffer.data(), ( UINT )vertexBuffer.size(), ( UINT )indexBuffer.size() );
+	Initialize( vertexBuffer.data(), sizeof( tag_SkinnedVertex ), indexBuffer.data(), ( UINT )vertexBuffer.size(), ( UINT )indexBuffer.size() );
 }
 
 void Mesh::DrawIndexed( CDeviceContext& deviceContext )
 {
 	D3D12_VERTEX_BUFFER_VIEW vbv{ };
 	vbv.BufferLocation = mVertexBuffer->GetGPUVirtualAddress();
-	vbv.SizeInBytes = ( mIsSkinned ? sizeof( SkinnedVertex ) : sizeof( Vertex ) ) * mVertexCount;
-	vbv.StrideInBytes = ( mIsSkinned ? sizeof( SkinnedVertex ) : sizeof( Vertex ) );
+	vbv.SizeInBytes = ( mIsSkinned ? sizeof( tag_SkinnedVertex ) : sizeof( tag_Vertex ) ) * mVertexCount;
+	vbv.StrideInBytes = ( mIsSkinned ? sizeof( tag_SkinnedVertex ) : sizeof( tag_Vertex ) );
 
 	deviceContext.IASetPrimitiveTopology( D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	deviceContext.IASetVertexBuffers( 0, 1, &vbv );
@@ -80,8 +81,8 @@ void Mesh::DrawSkinnedIndexed( UINT64 virtualAddress, CDeviceContext& deviceCont
 {
 	D3D12_VERTEX_BUFFER_VIEW vbv{ };
 	vbv.BufferLocation = virtualAddress;
-	vbv.SizeInBytes = sizeof( Vertex ) * mVertexCount;
-	vbv.StrideInBytes = sizeof( Vertex );
+	vbv.SizeInBytes = sizeof( tag_Vertex ) * mVertexCount;
+	vbv.StrideInBytes = sizeof( tag_Vertex );
 
 	deviceContext.IASetPrimitiveTopology( D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	deviceContext.IASetVertexBuffers( 0, 1, &vbv );
@@ -137,12 +138,75 @@ bool Mesh::IsSkinned::get()
 	return mIsSkinned;
 }
 
+Mesh^ Mesh::CreateMesh( String^ xName, IList<Vertex>^ vertexBuffer, IList<UInt32>^ indexBuffer )
+{
+	vector<tag_Vertex> raw_vertexBuffer( vertexBuffer->Count );
+	vector<UINT> raw_indexBuffer( indexBuffer->Count );
+
+	for ( int i = 0; i < vertexBuffer->Count; ++i )
+	{
+		auto v1 = vertexBuffer[i];
+		auto& v2 = raw_vertexBuffer[i];
+
+		v2.Pos = { v1.Pos.X, v1.Pos.Y, v1.Pos.Z };
+		v2.Color = { v1.Color.X, v1.Color.Y, v1.Color.Z, v1.Color.W };
+		v2.Tex = { v1.Tex.X, v1.Tex.Y };
+		v2.Normal = { v1.Normal.X, v1.Normal.Y, v1.Normal.Z };
+		v2.Tangent = { v1.Tangent.X, v1.Tangent.Y, v1.Tangent.Z };
+	}
+
+	for ( int i = 0; i < indexBuffer->Count; ++i )
+	{
+		raw_indexBuffer[i] = indexBuffer[i];
+	}
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( raw_vertexBuffer, raw_indexBuffer );
+
+	return mesh;
+}
+
+Mesh^ Mesh::CreateMesh( String^ xName, IList<SkinnedVertex>^ vertexBuffer, IList<UInt32>^ indexBuffer )
+{
+	vector<tag_SkinnedVertex> raw_vertexBuffer( vertexBuffer->Count );
+	vector<UINT> raw_indexBuffer( indexBuffer->Count );
+
+	for ( int i = 0; i < vertexBuffer->Count; ++i )
+	{
+		auto v1 = vertexBuffer[i];
+		auto& v2 = raw_vertexBuffer[i];
+
+		v2.Pos = { v1.Pos.X, v1.Pos.Y, v1.Pos.Z };
+		v2.Color = { v1.Color.X, v1.Color.Y, v1.Color.Z, v1.Color.W };
+		v2.Tex = { v1.Tex.X, v1.Tex.Y };
+		v2.Normal = { v1.Normal.X, v1.Normal.Y, v1.Normal.Z };
+		v2.Tangent = { v1.Tangent.X, v1.Tangent.Y, v1.Tangent.Z };
+		v2.Weights[0] = v1.Weights.X;
+		v2.Weights[1] = v1.Weights.Y;
+		v2.Weights[2] = v1.Weights.Z;
+		v2.Indices[0] = v1.Indices.X;
+		v2.Indices[1] = v1.Indices.Y;
+		v2.Indices[2] = v1.Indices.Z;
+		v2.Indices[3] = v1.Indices.W;
+	}
+
+	for ( int i = 0; i < indexBuffer->Count; ++i )
+	{
+		raw_indexBuffer[i] = indexBuffer[i];
+	}
+
+	auto mesh = gcnew Mesh( xName );
+	mesh->Initialize( raw_vertexBuffer, raw_indexBuffer );
+
+	return mesh;
+}
+
 Mesh^ Mesh::CreatePlane( String^ xName, float texScaleX, float texScaleY, int gridCountX, int gridCountY )
 {
 	int vertexCountX = gridCountX + 1;
 	int vertexCountY = gridCountY + 1;
 
-	vector<Vertex> vertexBuffer( vertexCountX * vertexCountY );
+	vector<tag_Vertex> vertexBuffer( vertexCountX * vertexCountY );
 	vector<UINT> indexBuffer( gridCountX * gridCountY * 6 );
 
 	float xPosBeg = -1.0f;
@@ -156,7 +220,7 @@ Mesh^ Mesh::CreatePlane( String^ xName, float texScaleX, float texScaleY, int gr
 	{
 		for ( int i = 0; i < vertexCountX; ++i )
 		{
-			Vertex v;
+			tag_Vertex v;
 
 			v.Pos = { xPosBeg + xPosStride * i, 0.0f, yPosBeg + yPosStride * j };
 			v.Color = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -191,7 +255,7 @@ Mesh^ Mesh::CreatePlane( String^ xName, float texScaleX, float texScaleY, int gr
 
 Mesh^ Mesh::CreateCube( String^ xName )
 {
-	vector<Vertex> vertexBuffer( 24 );
+	vector<tag_Vertex> vertexBuffer( 24 );
 	vector<UINT> indexBuffer( 36 );
 
 	/* Front */
@@ -227,18 +291,18 @@ Mesh^ Mesh::CreateCube( String^ xName )
 	vertexBuffer[7].Tangent = { -1.0f, +0.0f, +0.0f };
 
 	/* Right */
-	vertexBuffer[ 8].Pos = { +1.0f, +1.0f, -1.0f };
-	vertexBuffer[ 9].Pos = { +1.0f, +1.0f, +1.0f };
+	vertexBuffer[8].Pos = { +1.0f, +1.0f, -1.0f };
+	vertexBuffer[9].Pos = { +1.0f, +1.0f, +1.0f };
 	vertexBuffer[10].Pos = { +1.0f, -1.0f, +1.0f };
 	vertexBuffer[11].Pos = { +1.0f, -1.0f, -1.0f };
 
-	vertexBuffer[ 8].Normal = { +1.0f, +0.0f, +0.0f };
-	vertexBuffer[ 9].Normal = { +1.0f, +0.0f, +0.0f };
+	vertexBuffer[8].Normal = { +1.0f, +0.0f, +0.0f };
+	vertexBuffer[9].Normal = { +1.0f, +0.0f, +0.0f };
 	vertexBuffer[10].Normal = { +1.0f, +0.0f, +0.0f };
 	vertexBuffer[11].Normal = { +1.0f, +0.0f, +0.0f };
 
-	vertexBuffer[ 8].Tangent = { -0.0f, +0.0f, +1.0f };
-	vertexBuffer[ 9].Tangent = { -0.0f, +0.0f, +1.0f };
+	vertexBuffer[8].Tangent = { -0.0f, +0.0f, +1.0f };
+	vertexBuffer[9].Tangent = { -0.0f, +0.0f, +1.0f };
 	vertexBuffer[10].Tangent = { -0.0f, +0.0f, +1.0f };
 	vertexBuffer[11].Tangent = { -0.0f, +0.0f, +1.0f };
 
@@ -298,7 +362,7 @@ Mesh^ Mesh::CreateCube( String^ xName )
 	constexpr static const float stride = 1.0f / 6.0f;
 	for ( int i = 0; i < 6; ++i )
 	{
-		Vertex( &array )[4] = ( Vertex( & )[4] )vertexBuffer[i * 4];
+		tag_Vertex( &array )[4] = ( tag_Vertex( & )[4] )vertexBuffer[i * 4];
 
 		float mul1 = ( float )i;
 		float mul2 = ( float )( i + 1 );
@@ -312,7 +376,7 @@ Mesh^ Mesh::CreateCube( String^ xName )
 	{
 		0, 1, 3,
 		1, 2, 3,
-		
+
 		4, 5, 7,
 		5, 6, 7,
 
@@ -336,7 +400,7 @@ Mesh^ Mesh::CreateCube( String^ xName )
 
 Mesh^ Mesh::CreateSphere( String^ xName, int tessellation )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeSphere( vertexBuffer, indexBuffer, 2.0f, tessellation, false, false );
@@ -348,7 +412,7 @@ Mesh^ Mesh::CreateSphere( String^ xName, int tessellation )
 
 Mesh^ Mesh::CreateGeosphere( String^ xName, int tessellation )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeGeoSphere( vertexBuffer, indexBuffer, 2.0f, tessellation, false );
@@ -360,7 +424,7 @@ Mesh^ Mesh::CreateGeosphere( String^ xName, int tessellation )
 
 Mesh^ Mesh::CreateCylinder( String^ xName, int tessellation )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeCylinder( vertexBuffer, indexBuffer, 1.0f, 2.0f, tessellation, false );
@@ -372,7 +436,7 @@ Mesh^ Mesh::CreateCylinder( String^ xName, int tessellation )
 
 Mesh^ Mesh::CreateCone( String^ xName, int tessellation )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeCone( vertexBuffer, indexBuffer, 2.0f, 1.0f, tessellation, false );
@@ -384,7 +448,7 @@ Mesh^ Mesh::CreateCone( String^ xName, int tessellation )
 
 Mesh^ Mesh::CreateTorus( String^ xName, int tessellation, float thickness )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeTorus( vertexBuffer, indexBuffer, 2.0f, thickness, tessellation, false );
@@ -396,7 +460,7 @@ Mesh^ Mesh::CreateTorus( String^ xName, int tessellation, float thickness )
 
 Mesh^ Mesh::CreateTetrahedron( String^ xName )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeTetrahedron( vertexBuffer, indexBuffer, 1.0f, false );
@@ -408,7 +472,7 @@ Mesh^ Mesh::CreateTetrahedron( String^ xName )
 
 Mesh^ Mesh::CreateOctahedron( String^ xName )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeOctahedron( vertexBuffer, indexBuffer, 1.0f, false );
@@ -420,7 +484,7 @@ Mesh^ Mesh::CreateOctahedron( String^ xName )
 
 Mesh^ Mesh::CreateDodecahedron( String^ xName )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeDodecahedron( vertexBuffer, indexBuffer, 1.0f, false );
@@ -432,7 +496,7 @@ Mesh^ Mesh::CreateDodecahedron( String^ xName )
 
 Mesh^ Mesh::CreateIcosahedron( String^ xName )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeIcosahedron( vertexBuffer, indexBuffer, 1.0f, false );
@@ -444,7 +508,7 @@ Mesh^ Mesh::CreateIcosahedron( String^ xName )
 
 Mesh^ Mesh::CreateTeapot( String^ xName, int tessellation )
 {
-	vector<Vertex> vertexBuffer;
+	vector<tag_Vertex> vertexBuffer;
 	vector<UINT> indexBuffer;
 
 	ComputeTeapot( vertexBuffer, indexBuffer, 1.0f, tessellation, false );

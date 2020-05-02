@@ -53,7 +53,7 @@ namespace Project_SLOW
 					// 대상 방향의 회전 각도를 계산합니다.
 					var dot = Vector3.Dot( fromV, toV );
 					var axis = Vector3.Cross( fromV, toV );
-					var angle = MathF.Acos( dot );
+					var angle = ( float )Math.Acos( dot );
 
 					// 회전 각도를 제한합니다.
 					angle = Math.Min( Time.FixedDeltaTime * rotateSpeed, angle );

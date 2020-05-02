@@ -315,7 +315,7 @@ Texture2D^ Material::NormalMap::get()
 void Material::NormalMap::set( Texture2D^ value )
 {
 	if ( IsFreezed ) throw gcnew System::AccessViolationException( "Material 개체가 동결되었습니다. 값을 수정하는 것은 접근 위반에 해당합니다." );
-	
+
 	mConstantData->NormalMap = ( value != nullptr );
 	mNormalMap = value;
 	UpdateConstants();

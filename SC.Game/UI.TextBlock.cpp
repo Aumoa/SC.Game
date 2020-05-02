@@ -44,8 +44,8 @@ RectangleF TextBlock::OnUpdate( RectangleF clientRect )
 			auto offset = gcnew cli::array<PointF>( 9 )
 			{
 				PointF( 0, 0 ), PointF( 0.5f, 0 ), PointF( 1.0f, 0 ),
-				PointF( 0, 0.5f ), PointF( 0.5f, 0.5f ), PointF( 1.0f, 0.5f ),
-				PointF( 0, 1.0f ), PointF( 0.5f, 1.0f ), PointF( 1.0f, 1.0f )
+					PointF( 0, 0.5f ), PointF( 0.5f, 0.5f ), PointF( 1.0f, 0.5f ),
+					PointF( 0, 1.0f ), PointF( 0.5f, 1.0f ), PointF( 1.0f, 1.0f )
 			};
 
 			auto right = mComputed.Right - actualWidth;
@@ -262,7 +262,7 @@ void TextBlock::ParseText( String^ original )
 
 	vector<DWRITE_TEXT_RANGE> italicContexts;
 	stack<int> italicStack;
-	
+
 	String^ str;
 
 	if ( mIsRichText )

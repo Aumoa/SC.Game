@@ -768,14 +768,14 @@ void MDLParser::LoadMeshes( String^ name, GameObject^ head, IList<Material^>^ mt
 
 		if ( model.NumBones == 0 )
 		{
-			vector<Vertex> vertexBuffer( geoset.Vertices.size() );
+			vector<tag_Vertex> vertexBuffer( geoset.Vertices.size() );
 			for ( int i = 0, count = ( int )geoset.Vertices.size(); i < count; ++i )
 			{
 				auto& vertex = geoset.Vertices[i];
 				auto& normal = geoset.Normals[i];
 				auto& uv = geoset.TVertices[i];
 
-				Vertex v;
+				tag_Vertex v;
 				v.Pos = { -( float )vertex.y, ( float )vertex.z, ( float )vertex.x };
 				v.Normal = { -( float )normal.y, ( float )normal.z, ( float )normal.x };
 				v.Tex = { ( float )uv.x, ( float )uv.y };
@@ -804,7 +804,7 @@ void MDLParser::LoadMeshes( String^ name, GameObject^ head, IList<Material^>^ mt
 		}
 		else
 		{
-			vector<SkinnedVertex> vertexBuffer( geoset.Vertices.size() );
+			vector<tag_SkinnedVertex> vertexBuffer( geoset.Vertices.size() );
 			for ( int i = 0, count = ( int )geoset.Vertices.size(); i < count; ++i )
 			{
 				auto& vertex = geoset.Vertices[i];
@@ -812,7 +812,7 @@ void MDLParser::LoadMeshes( String^ name, GameObject^ head, IList<Material^>^ mt
 				auto& uv = geoset.TVertices[i];
 				auto& group = geoset.Groups[geoset.VertexGroup[i]];
 
-				SkinnedVertex v{ };
+				tag_SkinnedVertex v{ };
 				v.Pos = { -( float )vertex.y, ( float )vertex.z, ( float )vertex.x };
 				v.Normal = { -( float )normal.y, ( float )normal.z, ( float )normal.x };
 				v.Tex = { ( float )uv.x, ( float )uv.y };

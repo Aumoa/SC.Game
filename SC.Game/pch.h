@@ -71,7 +71,7 @@ using Microsoft::WRL::ComPtr;
 #include "tag_ShaderInfo.h"
 #include "RaycastCallback.h"
 #include "GlyphBuffer.h"
-#include "Vertex.h"
+#include "tag_Vertex.h"
 #include "ContactCallback.h"
 #include "Bezier.h"
 #include "TextParser.h"
@@ -98,60 +98,6 @@ using Microsoft::WRL::ComPtr;
 #include "DescriptorAllocator.h"
 #include "VisibleDescriptorAllocator.h"
 
-#pragma managed
-inline System::String^ FormatMessage( HRESULT hr )
-{
-	using namespace std;
-
-	switch ( hr )
-	{
-	case S_OK:
-		return "S_OK(0x00000000): ";
-	case E_FAIL:
-		return "E_FAIL(0x80004005): Unspecified error.";
-	case E_INVALIDARG:
-		return "E_INVALIDARG(0x80070057): One or more arguments are invalid.";
-	case WINCODEC_ERR_WRONGSTATE:
-		return "WINCODEC_ERR_WRONGSTATE(0x88982F04): The codec is in the wrong state.";
-	case __HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND ):
-		return "HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND): The system cannot find the file specified.";
-	case __HRESULT_FROM_WIN32( ERROR_PATH_NOT_FOUND ):
-		return "HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND): The system cannot find the path specified.";
-	case E_ACCESSDENIED:
-		return "E_ACCESSDENIED(0x80070005): General access denied error.";
-	case DXGI_ERROR_DEVICE_REMOVED:
-		return "DXGI_ERROR_DEVICE_REMOVED(0x887A0005): The GPU device instance has been suspended. Use GetDeviceRemovedReason to determine the appropriate action.";
-	case DXGI_ERROR_DEVICE_HUNG:
-		return "DXGI_ERROR_DEVICE_HUNG(0x887A0006): The GPU will not respond to more commands, most likely because of an invalid command passed by the calling application.";
-	case DXGI_ERROR_DEVICE_RESET:
-		return "DXGI_ERROR_DEVICE_RESET(0x887A0007): The GPU will not respond to more commands, most likely because some other application submitted invalid commands. The calling application should re-create the device and continue.";
-	case 0x8007007B:
-		return "(0x8007007B): The filename, directory name or volume label syntax is incorrect.";
-	default:
-		return System::String::Format( "Unknown HRESULT Error: {0}", hr );
-	}
-}
-
-inline void ThrowHR( HRESULT hr )
-{
-	auto exception = gcnew System::Exception( FormatMessage( hr ) );
-	exception->HResult = ( int )hr;
-	throw exception;
-}
-
-#pragma unmanaged
-inline void HR( HRESULT hr )
-{
-	using namespace SC;
-
-	if ( FAILED( hr ) )
-	{
-		ThrowHR( hr );
-	}
-}
-
-#pragma managed
-
 #pragma pop_macro( "_MANAGED" )
 
 #include <msclr/marshal.h>
@@ -169,6 +115,44 @@ inline void HR( HRESULT hr )
 #include "UI.TextAlignment.h"
 #include "UI.TextVerticalAlignment.h"
 
+/* Exceptions */
+#include "ComponentDisconnectedException.h"
+#include "WinCodecWrongState.h"
+#include "DxgiDeviceRemovedException.h"
+#include "DxgiDeviceHungException.h"
+#include "DxgiDeviceResetException.h"
+#include "PathInvalidException.h"
+
+inline void HR( HRESULT hr )
+{
+	if ( hr >= 0 ) return;
+	switch ( hr )
+	{
+	case E_FAIL:
+		throw gcnew System::Exception( "Unspecified error." );
+	case E_INVALIDARG:
+		throw gcnew System::ArgumentException( "One or more arguments are invalid." );
+	case WINCODEC_ERR_WRONGSTATE:
+		throw gcnew SC::Game::WinCodecWrongState( "The codec is in the wrong state." );
+	case __HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND ):
+		throw gcnew System::IO::FileNotFoundException( "The system cannot find the file specified." );
+	case __HRESULT_FROM_WIN32( ERROR_PATH_NOT_FOUND ):
+		throw gcnew System::IO::FileNotFoundException( "The system cannot find the path specified." );
+	case E_ACCESSDENIED:
+		throw gcnew System::AccessViolationException( "General access denied error." );
+	case DXGI_ERROR_DEVICE_REMOVED:
+		throw gcnew SC::Game::DxgiDeviceRemovedException();
+	case DXGI_ERROR_DEVICE_HUNG:
+		throw gcnew SC::Game::DxgiDeviceHungException();
+	case DXGI_ERROR_DEVICE_RESET:
+		throw gcnew SC::Game::DxgiDeviceResetException();
+	case 0x8007007B:
+		throw gcnew SC::Game::PathInvalidException();
+	default:
+		throw gcnew System::Exception( System::String::Format( "Unknown exception: {0}", hr ) );
+	}
+}
+
 /* Struct */
 #include "Ray.h"
 #include "Keyframe.h"
@@ -181,6 +165,7 @@ inline void HR( HRESULT hr )
 #include "AnimationTransitionCondition.h"
 #include "StateMachine.h"
 #include "RaycastHit.h"
+#include "Vertex.h"
 #include "UI.DependencyProperty.h"
 #include "UI.Thickness.h"
 
@@ -240,9 +225,6 @@ inline void HR( HRESULT hr )
 #include "UI.TextBlock.h"
 #include "UI.Border.h"
 #include "UI.Image.h"
-
-/* Exceptions */
-#include "ComponentDisconnectedException.h"
 
 /* Packages */
 #include "Physics.h"

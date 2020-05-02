@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Project_SLOW": {
-      "commandName": "Project",
-      "workingDirectory": "$(ProjectDir)"
-    }
-  }
-}

@@ -44,8 +44,8 @@ void Element::Update( RectangleF clientRect )
 	array<PointF>^ offset = gcnew array<PointF>
 	{
 		PointF( 0, 0 ), PointF( 0.5f, 0 ), PointF( 1.0f, 0 ),
-		PointF( 0, 0.5f ), PointF( 0.5f, 0.5f ), PointF( 1.0f, 0.5f ),
-		PointF( 0, 1.0f ), PointF( 0.5f, 1.0f ), PointF( 1.0f, 1.0f )
+			PointF( 0, 0.5f ), PointF( 0.5f, 0.5f ), PointF( 1.0f, 0.5f ),
+			PointF( 0, 1.0f ), PointF( 0.5f, 1.0f ), PointF( 1.0f, 1.0f )
 	};
 
 	if ( Width != 0 )

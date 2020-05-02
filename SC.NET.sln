@@ -1,0 +1,117 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SC", "SC\SC.csproj", "{CA952250-406B-44E6-814E-4627AFBB6A22}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SC.Game", "SC.Game\SC.Game.vcxproj", "{686212A5-651D-4FF0-B012-300AEDE1C777}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project_SLOW", "Project_SLOW\Project_SLOW.csproj", "{442C44FF-6323-4EE7-B84D-636AE244B6DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLib", "ExternalLib", "{7461707C-7B1C-4E33-BDDC-BD3CD658BA7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BFF1DC0-F6B5-49C6-B84E-89DE4345BA4A}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x64", "x64", "{2FFFCECE-428A-4D5A-8B60-6FAE06A82C09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{70C22E43-4D13-40F4-A6C0-29E8137ADC49}"
+	ProjectSection(SolutionItems) = preProject
+		ExternalLib\x64\Debug\assimp.dll = ExternalLib\x64\Debug\assimp.dll
+		ExternalLib\x64\Debug\assimp.lib = ExternalLib\x64\Debug\assimp.lib
+		ExternalLib\x64\Debug\LowLevel_static.lib = ExternalLib\x64\Debug\LowLevel_static.lib
+		ExternalLib\x64\Debug\LowLevelAABB_static.lib = ExternalLib\x64\Debug\LowLevelAABB_static.lib
+		ExternalLib\x64\Debug\LowLevelDynamics_static.lib = ExternalLib\x64\Debug\LowLevelDynamics_static.lib
+		ExternalLib\x64\Debug\PhysX.lib = ExternalLib\x64\Debug\PhysX.lib
+		ExternalLib\x64\Debug\PhysXCharacterKinematic_static.lib = ExternalLib\x64\Debug\PhysXCharacterKinematic_static.lib
+		ExternalLib\x64\Debug\PhysXCommon.lib = ExternalLib\x64\Debug\PhysXCommon.lib
+		ExternalLib\x64\Debug\PhysXCooking.lib = ExternalLib\x64\Debug\PhysXCooking.lib
+		ExternalLib\x64\Debug\PhysXExtensions_static.lib = ExternalLib\x64\Debug\PhysXExtensions_static.lib
+		ExternalLib\x64\Debug\PhysXFoundation.lib = ExternalLib\x64\Debug\PhysXFoundation.lib
+		ExternalLib\x64\Debug\PhysXPvdSDK_static.lib = ExternalLib\x64\Debug\PhysXPvdSDK_static.lib
+		ExternalLib\x64\Debug\PhysXTask_static.lib = ExternalLib\x64\Debug\PhysXTask_static.lib
+		ExternalLib\x64\Debug\PhysXVehicle_static.lib = ExternalLib\x64\Debug\PhysXVehicle_static.lib
+		ExternalLib\x64\Debug\SceneQuery_static.lib = ExternalLib\x64\Debug\SceneQuery_static.lib
+		ExternalLib\x64\Debug\SimulationController_static.lib = ExternalLib\x64\Debug\SimulationController_static.lib
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{1FE38374-4106-4531-AD7A-E886562DED46}"
+	ProjectSection(SolutionItems) = preProject
+		ExternalLib\x64\Release\assimp.dll = ExternalLib\x64\Release\assimp.dll
+		ExternalLib\x64\Release\assimp.lib = ExternalLib\x64\Release\assimp.lib
+		ExternalLib\x64\Release\LowLevel_static.lib = ExternalLib\x64\Release\LowLevel_static.lib
+		ExternalLib\x64\Release\LowLevelAABB_static.lib = ExternalLib\x64\Release\LowLevelAABB_static.lib
+		ExternalLib\x64\Release\LowLevelDynamics_static.lib = ExternalLib\x64\Release\LowLevelDynamics_static.lib
+		ExternalLib\x64\Release\PhysX.lib = ExternalLib\x64\Release\PhysX.lib
+		ExternalLib\x64\Release\PhysXCharacterKinematic_static.lib = ExternalLib\x64\Release\PhysXCharacterKinematic_static.lib
+		ExternalLib\x64\Release\PhysXCommon.lib = ExternalLib\x64\Release\PhysXCommon.lib
+		ExternalLib\x64\Release\PhysXCooking.lib = ExternalLib\x64\Release\PhysXCooking.lib
+		ExternalLib\x64\Release\PhysXExtensions_static.lib = ExternalLib\x64\Release\PhysXExtensions_static.lib
+		ExternalLib\x64\Release\PhysXFoundation.lib = ExternalLib\x64\Release\PhysXFoundation.lib
+		ExternalLib\x64\Release\PhysXPvdSDK_static.lib = ExternalLib\x64\Release\PhysXPvdSDK_static.lib
+		ExternalLib\x64\Release\PhysXTask_static.lib = ExternalLib\x64\Release\PhysXTask_static.lib
+		ExternalLib\x64\Release\PhysXVehicle_static.lib = ExternalLib\x64\Release\PhysXVehicle_static.lib
+		ExternalLib\x64\Release\SceneQuery_static.lib = ExternalLib\x64\Release\SceneQuery_static.lib
+		ExternalLib\x64\Release\SimulationController_static.lib = ExternalLib\x64\Release\SimulationController_static.lib
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Debug|x64.Build.0 = Debug|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Debug|x86.Build.0 = Debug|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Release|x64.Build.0 = Release|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA952250-406B-44E6-814E-4627AFBB6A22}.Release|x86.Build.0 = Release|Any CPU
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Debug|x64.ActiveCfg = Debug|x64
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Debug|x64.Build.0 = Debug|x64
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Debug|x86.ActiveCfg = Debug|Win32
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Debug|x86.Build.0 = Debug|Win32
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Release|Any CPU.ActiveCfg = Release|Win32
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Release|x64.ActiveCfg = Release|x64
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Release|x64.Build.0 = Release|x64
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Release|x86.ActiveCfg = Release|Win32
+		{686212A5-651D-4FF0-B012-300AEDE1C777}.Release|x86.Build.0 = Release|Win32
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|x64.Build.0 = Release|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2FFFCECE-428A-4D5A-8B60-6FAE06A82C09} = {7461707C-7B1C-4E33-BDDC-BD3CD658BA7F}
+		{70C22E43-4D13-40F4-A6C0-29E8137ADC49} = {2FFFCECE-428A-4D5A-8B60-6FAE06A82C09}
+		{1FE38374-4106-4531-AD7A-E886562DED46} = {2FFFCECE-428A-4D5A-8B60-6FAE06A82C09}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F225B13E-8A70-45C6-92BE-4D5A92694A29}
+	EndGlobalSection
+EndGlobal

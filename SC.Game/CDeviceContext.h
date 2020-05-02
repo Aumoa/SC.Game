@@ -37,7 +37,7 @@ namespace SC::Game
 
 		void GCAdd( ComPtr<IUnknown>&& pUnknown );
 		void GCFlush( ID3D12Fence* pFence, UINT64 fenceValue );
-		
+
 		void SetPipelineState( ID3D12PipelineState* pPipelineState );
 		void SetGraphicsRootSignature( ID3D12RootSignature* pRootSignature );
 		void SetComputeRootSignature( ID3D12RootSignature* pRootSignature );

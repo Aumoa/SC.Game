@@ -21,7 +21,7 @@ namespace SC::Game
 		/// 충돌한 표면의 법선을 나타냅니다.
 		/// </summary>
 		System::Numerics::Vector3 Normal;
-		
+
 		/// <summary>
 		/// 충돌한 지점의 세계 좌표를 나타냅니다.
 		/// </summary>

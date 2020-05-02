@@ -13,6 +13,8 @@ UINT DescriptorAllocator::mHandleStride;
 D3D12_CPU_DESCRIPTOR_HANDLE DescriptorAllocator::mHandleBase;
 queue<UINT> DescriptorAllocator::mQueue;
 
+bool DescriptorAllocator::mDisposed = false;
+
 void DescriptorAllocator::Initialize()
 {
 	App::Disposing.push_front( OnDisposing );
@@ -22,9 +24,12 @@ void DescriptorAllocator::Initialize()
 
 void DescriptorAllocator::Push( UINT index )
 {
-	auto lock = mLocker.Lock();
+	if ( !mDisposed )
+	{
+		auto lock = mLocker.Lock();
 
-	mQueue.push( index );
+		mQueue.push( index );
+	}
 }
 
 CShaderResourceView DescriptorAllocator::CreateShaderResourceView( ID3D12Resource* pResource, const D3D12_SHADER_RESOURCE_VIEW_DESC* pSRVDesc )
@@ -80,6 +85,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE DescriptorAllocator::GetHandle( UINT index )
 void DescriptorAllocator::OnDisposing()
 {
 	mDescriptorHeap.Reset();
+	mDisposed = true;
 }
 
 void DescriptorAllocator::Realloc( UINT newCapacity )

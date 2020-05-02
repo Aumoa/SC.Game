@@ -60,7 +60,7 @@ void RelativePanel::ComputeRect( int index, std::vector<gcroot<RectangleF>>& com
 					contentRect.Height = bottom - contentRect.Y;
 				}
 			}
-			
+
 			if ( items->TryGetValue( Above, value ) )
 			{
 				int indexOf = IndexOf( value );

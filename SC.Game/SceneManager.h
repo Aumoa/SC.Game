@@ -18,13 +18,13 @@ namespace SC::Game
 		/// </summary>
 		/// <param name="arg"> 장면의 Load 메서드로 전달될 매개 변수를 전달합니다. </param>
 		generic< class T > where T : Scene, gcnew()
-		static System::Threading::Tasks::Task<T>^ LoadSceneAsync( System::Object^ arg );
+			static System::Threading::Tasks::Task<T>^ LoadSceneAsync( System::Object^ arg );
 
 		/// <summary>
 		/// 장면을 비동기로 불러옵니다.
 		/// </summary>
 		generic< class T > where T : Scene, gcnew()
-		static System::Threading::Tasks::Task<T>^ LoadSceneAsync()
+			static System::Threading::Tasks::Task<T>^ LoadSceneAsync()
 		{
 			return LoadSceneAsync<T>( nullptr );
 		}
@@ -34,13 +34,13 @@ namespace SC::Game
 		/// </summary>
 		/// <param name="arg"> 장면의 Load 메서드로 전달될 매개 변수를 전달합니다. </param>
 		generic< class T > where T : Scene, gcnew()
-		static T LoadScene( System::Object^ arg );
+			static T LoadScene( System::Object^ arg );
 
 		/// <summary>
 		/// 장면을 불러옵니다.
 		/// </summary>
 		generic< class T > where T : Scene, gcnew()
-		static T LoadScene()
+			static T LoadScene()
 		{
 			return LoadScene<T>( nullptr );
 		}
@@ -53,6 +53,6 @@ namespace SC::Game
 
 	private:
 		generic< class T > where T : Scene
-		static T MyTask( System::Object^ value );
+			static T MyTask( System::Object^ value );
 	};
 }

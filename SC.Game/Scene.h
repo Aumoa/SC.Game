@@ -205,7 +205,7 @@ namespace SC::Game
 		/// </summary>
 		property GameObject^ default[int]
 		{
-			virtual GameObject^ get( int index );
+			virtual GameObject ^ get( int index );
 			virtual void set( int index, GameObject^ value );
 		}
 	};

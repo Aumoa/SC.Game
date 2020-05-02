@@ -24,8 +24,8 @@ namespace SC::Game
 	internal:
 		Mesh( System::String^ xName );
 
-		void Initialize( const std::vector<Vertex>& vertexBuffer, const std::vector<unsigned int>& indexBuffer );
-		void Initialize( const std::vector<SkinnedVertex>& vertexBuffer, const std::vector<unsigned int>& indexBuffer );
+		void Initialize( const std::vector<tag_Vertex>& vertexBuffer, const std::vector<unsigned int>& indexBuffer );
+		void Initialize( const std::vector<tag_SkinnedVertex>& vertexBuffer, const std::vector<unsigned int>& indexBuffer );
 		void DrawIndexed( CDeviceContext& deviceContext );
 		void DrawSkinnedIndexed( UINT64 virtualAddress, CDeviceContext& deviceContext );
 
@@ -40,6 +40,22 @@ namespace SC::Game
 		{
 			bool get();
 		}
+
+		/// <summary>
+		/// 정점 및 색인 데이터 목록을 이용하여 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="vertexBuffer"> 정점 버퍼 목록을 전달합니다. </param>
+		/// <param name="indexBuffer"> 색인 버퍼 목록을 전달합니다. </param>
+		static Mesh^ CreateMesh( System::String^ xName, System::Collections::Generic::IList<Vertex>^ vertexBuffer, System::Collections::Generic::IList<System::UInt32>^ indexBuffer );
+
+		/// <summary>
+		/// 정점 및 색인 데이터 목록을 이용하여 메쉬 개체를 생성합니다.
+		/// </summary>
+		/// <param name="xName"> 데이터 개체 이름을 전달합니다. </param>
+		/// <param name="vertexBuffer"> 정점 버퍼 목록을 전달합니다. </param>
+		/// <param name="indexBuffer"> 색인 버퍼 목록을 전달합니다. </param>
+		static Mesh^ CreateMesh( System::String^ xName, System::Collections::Generic::IList<SkinnedVertex>^ vertexBuffer, System::Collections::Generic::IList<System::UInt32>^ indexBuffer );
 
 		/// <summary>
 		/// 평면 메쉬 개체를 생성합니다.

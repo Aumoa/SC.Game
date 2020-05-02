@@ -1,4 +1,6 @@
 # 패치 노트
+## 2020-05-02. ver 1.5
+- 엔진 기반을 .NET Framework로 변경.
 ## 2020-05-01. ver 1.4.0
 - Convex Mesh를 사용하는 Mesh Collider 컴포넌트 추가
 ## 2020-05-01. ver 1.3.0

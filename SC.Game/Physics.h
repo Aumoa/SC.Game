@@ -11,7 +11,7 @@ namespace SC::Game
 		static physx::PxFoundation* mFoundation;
 		static physx::PxPvd* mPVD;
 		static physx::PxPvdTransport* mPVDTransport;
-		
+
 		static physx::PxPhysics* mPhysics;
 		static physx::PxCooking* mCooking;
 

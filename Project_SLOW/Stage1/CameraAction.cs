@@ -62,7 +62,7 @@ namespace Project_SLOW.Stage1
 				quat = Quaternion.CreateFromAxisAngle( Vector3.UnitY, -3.14f * 0.35f ) * quat;
 			}
 
-			distance = Math.Clamp( distance + -Input.MouseScrollDelta.Y * 0.1f, 0.5f, 10.0f );
+			distance = Clamp( distance + -Input.MouseScrollDelta.Y * 0.1f, 0.5f, 10.0f );
 
 			var t = Time.DeltaTime * RotateSpeed;
 
@@ -86,5 +86,12 @@ namespace Project_SLOW.Stage1
 			get;
 			set;
 		} = 5.0f;
+
+		public static float Clamp( float value, float min, float max )
+		{
+			if ( value < min ) return min;
+			else if ( value > max ) return max;
+			else return value;
+		}
 	}
 }

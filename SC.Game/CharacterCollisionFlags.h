@@ -11,7 +11,7 @@ namespace SC::Game
 		/// 캐릭터의 옆 부분이 충돌되었습니다.
 		/// </summary>
 		Sides = 0b1,
-		
+
 		/// <summary>
 		/// 캐릭터의 윗 부분이 충돌되었습니다.
 		/// </summary>

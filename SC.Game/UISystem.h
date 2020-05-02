@@ -40,7 +40,7 @@ namespace SC::Game
 
 	public:
 		static void Initialize();
-		
+
 		static void Update( int frameIndex );
 		static void Render( int frameIndex );
 

@@ -13,6 +13,8 @@ namespace SC::Game
 		static D3D12_CPU_DESCRIPTOR_HANDLE mHandleBase;
 		static std::queue<UINT> mQueue;
 
+		static bool mDisposed;
+
 	public:
 		static void Initialize();
 		static void Push( UINT index );

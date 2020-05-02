@@ -210,7 +210,7 @@ void GameLogic::GeometryWriting()
 			dc.SetGraphicsRootShaderResource( Slot_3D_Textures, *cam->mSkyboxTexture->mShaderResourceView );
 			mMesh->DrawIndexed( dc );
 		}
-		
+
 		dc.SetPipelineState( ShaderBuilder::pPipelineStateColor.Get() );
 		for each ( auto meshRenderer in mCurrentScene->mSceneMeshRenderers )
 		{
@@ -246,7 +246,7 @@ cli::array<Task^>^ GameLogic::ShadowCast()
 		auto lambda = gcnew ShadowRenderLambda();
 		lambda->mLight = light;
 		lambda->mID = idx;
-		
+
 		vector->Add( Task::Run( gcnew Action( lambda, &ShadowRenderLambda::Task ) ) );
 	}
 

@@ -78,7 +78,7 @@ void SkinnedMeshRenderer::Mesh::set( Game::Mesh^ value )
 		mVertexBuffer = nullptr;
 	}
 
-	mVertexBuffer = new LargeHeap( D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, sizeof( Vertex ) * mMesh->mVertexCount );
+	mVertexBuffer = new LargeHeap( D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, sizeof( tag_Vertex ) * mMesh->mVertexCount );
 }
 
 Material^ SkinnedMeshRenderer::Material::get()

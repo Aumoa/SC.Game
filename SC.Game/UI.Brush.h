@@ -24,7 +24,7 @@ namespace SC::Game::UI
 
 	internal:
 		Brush( int type );
-		
+
 		void UpdateBuffer();
 
 	public:
