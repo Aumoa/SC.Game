@@ -24,12 +24,8 @@ void DescriptorAllocator::Initialize()
 
 void DescriptorAllocator::Push( UINT index )
 {
-	if ( !mDisposed )
-	{
-		auto lock = mLocker.Lock();
-
-		mQueue.push( index );
-	}
+	auto lock = mLocker.Lock();
+	mQueue.push( index );
 }
 
 CShaderResourceView DescriptorAllocator::CreateShaderResourceView( ID3D12Resource* pResource, const D3D12_SHADER_RESOURCE_VIEW_DESC* pSRVDesc )

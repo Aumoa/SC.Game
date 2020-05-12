@@ -3,6 +3,7 @@ using namespace SC::Game;
 
 using namespace System;
 using namespace System::Collections::Generic;
+using namespace System::Numerics;
 
 using namespace std;
 
@@ -84,6 +85,26 @@ void AnimationClip::AddKeyframes( String^ boneName, Keyframes keyframes )
 	}
 }
 
+void AnimationClip::RenameKeyframes( String^ boneName, String^ rename, float scaleFactor )
+{
+	if ( mKeyframes->ContainsKey( boneName ) )
+	{
+		auto keyframes = mKeyframes[boneName];
+		mKeyframes->Remove( boneName );
+		mKeyframes[rename] = keyframes;
+
+		if ( scaleFactor < 0.99f || scaleFactor > 1.01f )
+		{
+			for ( int i = 0; i < keyframes.Translation->Count; ++i )
+			{
+				auto keyframe = keyframes.Translation[i];
+				keyframe.Value *= scaleFactor;
+				keyframes.Translation[i] = keyframe;
+			}
+		}
+	}
+}
+
 Keyframes AnimationClip::GetKeyframes( String^ boneName )
 {
 	if ( mKeyframes->ContainsKey( boneName ) )
@@ -94,6 +115,11 @@ Keyframes AnimationClip::GetKeyframes( String^ boneName )
 	{
 		return Keyframes();
 	}
+}
+
+bool AnimationClip::HasKeyframes( String^ boneName )
+{
+	return mKeyframes->ContainsKey( boneName );
 }
 
 float AnimationClip::Duration::get()

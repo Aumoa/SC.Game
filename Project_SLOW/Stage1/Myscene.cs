@@ -1,5 +1,10 @@
 ﻿using System;
+using System.ComponentModel.Design;
+using System.Drawing;
+using System.Numerics;
+using System.Security.Cryptography;
 using SC.Game;
+using SC.Game.Assets;
 
 namespace Project_SLOW.Stage1
 {
@@ -29,23 +34,22 @@ namespace Project_SLOW.Stage1
 		{
 			page = new Mypage();
 
+			Add( Boss.Instance );
 			Add( GameCamera.Instance );
 			Add( Terrain.Instance );
 			Add( Sunlight.Instance );
 			Add( CursorSystemGO.Instance );
 
-			var testPlayer = new Mokou( "testPlayer" );
+			Boss.Instance.Transform.LocalPosition = new Vector3( 12.553f, 0.6376f, 5.93f );
+			Boss.Instance.Transform.LocalRotation = Quaternion.CreateFromAxisAngle( Vector3.UnitY, ( float )Math.PI * -0.9f );
+
+			var testPlayer = new Arisa( "testPlayer" );
 			var basicClickEvent = testPlayer.AddComponent<BasicClickEvent>();
 			basicClickEvent.Camera = GameCamera.Instance.GetComponentInChildren<Camera>();
 			Add( testPlayer );
 
-			var gameObject = new GameObject( "gameObject" );
-			gameObject.AddComponent<MeshFilter>().Mesh = Mesh.CreateSphere( "teapot", 6 );
-			gameObject.AddComponent<MeshRenderer>();
-			gameObject.AddComponent<MeshCollider>();
-			gameObject.Transform.Scale = new System.Numerics.Vector3( 1.0f, 1.0f, 1.0f );
-			gameObject.Transform.Position = new System.Numerics.Vector3( 0.0f, 0.5f, 0.0f );
-			Add( gameObject );
+			var follow = GameCamera.Instance.AddComponent<CameraFollow>();
+			follow.player = testPlayer;
 		}
 
 		public override void Unload()

@@ -27,10 +27,20 @@ void Mesh::Initialize( const void* pVertexBuffer, unsigned int vertexStride, con
 	convexMeshDesc.indices.stride = sizeof( UINT );
 	convexMeshDesc.flags = PxConvexFlag::eFAST_INERTIA_COMPUTATION | PxConvexFlag::eDISABLE_MESH_VALIDATION | PxConvexFlag::eCOMPUTE_CONVEX;
 
+	PxTriangleMeshDesc triangleMeshDesc;
+	triangleMeshDesc.setToDefault();
+	triangleMeshDesc.points.count = vertexCount;
+	triangleMeshDesc.points.data = pVertexBuffer;
+	triangleMeshDesc.points.stride = vertexStride;
+	triangleMeshDesc.triangles.count = indexCount / 3;
+	triangleMeshDesc.triangles.data = pIndexBuffer;
+	triangleMeshDesc.triangles.stride = sizeof( UINT ) * 3;
+
 	PxDefaultMemoryOutputStream buffer;
 	if ( Physics::mCooking->cookConvexMesh( convexMeshDesc, buffer ) )
 	{
 		mConvexMesh = Physics::mCooking->createConvexMesh( convexMeshDesc, Physics::mPhysics->getPhysicsInsertionCallback() );
+		mTriangleMesh = Physics::mCooking->createTriangleMesh( triangleMeshDesc, Physics::mPhysics->getPhysicsInsertionCallback() );
 	}
 }
 
@@ -126,10 +136,13 @@ Mesh::!Mesh()
 		mIndexBuffer = nullptr;
 	}
 
-	if ( mConvexMesh )
+	if ( !App::mDisposed )
 	{
-		mConvexMesh->release();
-		mConvexMesh = nullptr;
+		if ( mConvexMesh )
+		{
+			mConvexMesh->release();
+			mConvexMesh = nullptr;
+		}
 	}
 }
 

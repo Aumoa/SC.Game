@@ -41,10 +41,36 @@ namespace SC::Game
 		void AddKeyframes( System::String^ boneName, Keyframes keyframes );
 
 		/// <summary>
+		/// 뼈대 키프레임 목록에서 뼈대 이름을 변경합니다.
+		/// </summary>
+		/// <param name="boneName"> 뼈대 이름을 전달합니다. </param>
+		/// <param name="rename"> 변경할 새로운 뼈대 이름을 전달합니다. </param>
+		/// <param name="scaleFactor"> 변경한 후 값의 비례를 전달합니다. </param>
+		/// <remarks> 일반적으로, 이 작업은 다른 형식으로 생성된 애니메이션 클립을 이 애니메이션 모델에 적용합니다. </remarks>
+		void RenameKeyframes( System::String^ boneName, System::String^ rename, float scaleFactor );
+
+		/// <summary>
+		/// 뼈대 키프레임 목록에서 뼈대 이름을 변경합니다.
+		/// </summary>
+		/// <param name="boneName"> 뼈대 이름을 전달합니다. </param>
+		/// <param name="rename"> 변경할 새로운 뼈대 이름을 전달합니다. </param>
+		/// <remarks> 일반적으로, 이 작업은 다른 형식으로 생성된 애니메이션 클립을 이 애니메이션 모델에 적용합니다. </remarks>
+		void RenameKeyframes( System::String^ boneName, System::String^ rename )
+		{
+			RenameKeyframes( boneName, rename, 1.0f );
+		}
+
+		/// <summary>
 		/// 뼈대 키프레임 목록에서 뼈대에 관련된 키프레임 목록을 가져옵니다.
 		/// </summary>
 		/// <param name="boneName"> 뼈대 이름을 전달합니다. </param>
 		Keyframes GetKeyframes( System::String^ boneName );
+
+		/// <summary>
+		/// 뼈대 키프레임 목록에서 뼈대에 관련된 키프레임 목록이 있는지 검사합니다.
+		/// </summary>
+		/// <param name="boneName"> 뼈대 이름을 전달합니다. </param>
+		bool HasKeyframes( System::String^ boneName );
 
 		/// <summary>
 		/// 애니메이션의 마지막 키프레임 시간 위치를 가져옵니다.

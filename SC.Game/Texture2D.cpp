@@ -2,6 +2,7 @@ using namespace SC;
 using namespace SC::Game;
 
 using namespace System;
+using namespace System::Collections::Generic;
 
 using namespace std;
 using namespace std::filesystem;
@@ -138,10 +139,13 @@ Texture2D::!Texture2D()
 		mTexture2D = nullptr;
 	}
 
-	if ( mShaderResourceView )
+	if ( !App::mDisposed )
 	{
-		delete mShaderResourceView;
-		mShaderResourceView = nullptr;
+		if ( mShaderResourceView )
+		{
+			delete mShaderResourceView;
+			mShaderResourceView = nullptr;
+		}
 	}
 }
 
@@ -159,7 +163,7 @@ Texture2D::Texture2D( String^ xName, String^ filepath, TextureFormat format ) : 
 	mFilename = xName;
 }
 
-Texture2D::Texture2D( String^ xName, void* textureData, UInt32 sizeInBytes, TextureFormat format ) : Asset( xName )
+Texture2D::Texture2D( String^ xName, cli::array<Byte>^ textureData, UInt32 sizeInBytes, TextureFormat format ) : Asset( xName )
 {
 	auto pImagingFactory = Graphics::mFactory->pWICFactory.Get();
 
@@ -167,8 +171,9 @@ Texture2D::Texture2D( String^ xName, void* textureData, UInt32 sizeInBytes, Text
 	ComPtr<IWICBitmapDecoder> pDecoder;
 
 	// 스트림을 열어 메모리 데이터를 불러옵니다.
+	pin_ptr<Byte> ptr = &textureData[0];
 	HR( pImagingFactory->CreateStream( &pStream ) );
-	HR( pStream->InitializeFromMemory( ( WICInProcPointer )textureData, sizeInBytes ) );
+	HR( pStream->InitializeFromMemory( ( WICInProcPointer )ptr, sizeInBytes ) );
 
 	// 스트림 데이터를 기반으로 이미지 디코더를 생성합니다.
 	HR( pImagingFactory->CreateDecoderFromStream( pStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &pDecoder ) );

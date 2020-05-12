@@ -15,8 +15,11 @@ namespace SC::Game
 	public ref class Application abstract
 	{
 	internal:
+		static Application^ mApp;
+		static AppConfiguration mConfiguration;
 		static System::UInt32 mWidth;
 		static System::UInt32 mHeight;
+		static UI::Page^ mPage;
 
 	public:
 		/// <summary>
@@ -80,13 +83,5 @@ namespace SC::Game
 			System::UInt32 get();
 			void set( System::UInt32 value );
 		}
-	};
-
-	ref class ApplicationCore abstract
-	{
-	public:
-		static Application^ mApp;
-		static AppConfiguration mConfiguration;
-		static UI::Page^ mPage;
 	};
 }

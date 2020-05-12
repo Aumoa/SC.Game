@@ -28,6 +28,19 @@ namespace SC::Game
 
 	public:
 		/// <summary>
+		/// <see cref="AppConfiguration"/> 구조체의 새 인스턴스를 초기화합니다.
+		/// </summary>
+		/// <param name="appName"> 앱의 이름을 전달합니다. </param>
+		/// <param name="physicsUpdatesPerSecond"> 초당 물리 연산 횟수를 전달합니다. </param>
+		AppConfiguration( System::String^ appName, int physicsUpdatesPerSecond );
+
+		/// <summary>
+		/// <see cref="AppConfiguration"/> 구조체의 새 인스턴스를 초기화합니다.
+		/// </summary>
+		/// <param name="appName"> 앱의 이름을 전달합니다. </param>
+		AppConfiguration( System::String^ appName );
+
+		/// <summary>
 		/// (<see cref="System::Object"/> 클래스에서 상속 됨.) 현재 개체의 텍스트 표현을 생성하여 반환합니다.
 		/// </summary>
 		System::String^ ToString() override;

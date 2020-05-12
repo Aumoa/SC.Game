@@ -10,19 +10,19 @@ Application::Application( AppConfiguration configuration )
 		configuration.PhysicsUpdatesPerSecond = 60;
 	}
 
-	ApplicationCore::mApp = this;
-	ApplicationCore::mConfiguration = configuration;
+	mApp = this;
+	mConfiguration = configuration;
 
-	App::mAppName = msclr::interop::marshal_context().marshal_as<const wchar_t*>( ApplicationCore::mConfiguration.AppName );
-	App::mPhysicsHz = ApplicationCore::mConfiguration.PhysicsUpdatesPerSecond;
-	App::mVSync = ApplicationCore::mConfiguration.VSync;
+	App::mAppName = msclr::interop::marshal_context().marshal_as<const wchar_t*>( mConfiguration.AppName );
+	App::mPhysicsHz = mConfiguration.PhysicsUpdatesPerSecond;
+	App::mVSync = mConfiguration.VSync;
 
 	App::Initialize();
 
 	DXGI_ADAPTER_DESC1 desc{ };
 	HR( Graphics::mDevice->pAdapter->GetDesc1( &desc ) );
 
-	ApplicationCore::mConfiguration.mAdapterName = String::Format(
+	mConfiguration.mAdapterName = String::Format(
 		"{0}({1:0.0}GB, {2})",
 		msclr::interop::marshal_as<String^>( desc.Description ),
 		desc.DedicatedVideoMemory / 1024 / 1024 / 1024,
@@ -59,7 +59,7 @@ void Application::Quit( int exitCode )
 
 AppConfiguration Application::Configuration::get()
 {
-	return ApplicationCore::mConfiguration;
+	return mConfiguration;
 }
 
 UInt32 Application::Width::get()

@@ -35,30 +35,34 @@ namespace Project_SLOW.Stage1
 		void ScreenPadding( ref bool leftKey, ref bool rightKey, ref bool upKey, ref bool downKey )
 		{
 			var mousePosition = Input.MousePosition;
-			if ( mousePosition.X < 10 )
-			{
-				leftKey = true;
-			}
 
-			else if ( mousePosition.X > App.Width - 10 )
+			if ( Cursor.LockState == CursorLockMode.Confined )
 			{
-				rightKey = true;
-			}
+				if ( mousePosition.X < 10 )
+				{
+					leftKey = true;
+				}
 
-			if ( mousePosition.Y < 10 )
-			{
-				upKey = true;
-			}
+				else if ( mousePosition.X > App.Width - 10 )
+				{
+					rightKey = true;
+				}
 
-			else if ( mousePosition.Y > App.Height - 10 )
-			{
-				downKey = true;
+				if ( mousePosition.Y < 10 )
+				{
+					upKey = true;
+				}
+
+				else if ( mousePosition.Y > App.Height - 10 )
+				{
+					downKey = true;
+				}
 			}
 		}
 
 		void MovePosition( bool leftKey, bool rightKey, bool upKey, bool downKey )
 		{
-			var delta = Time.FixedDeltaTime;
+			var delta = Time.DeltaTime;
 			bool updated = false;
 
 			var right = Vector3.UnitX * delta;
@@ -92,7 +96,7 @@ namespace Project_SLOW.Stage1
 
 			if ( updated )
 			{
-				Transform.Position += move;
+				Transform.Position += move * 5.0f;
 			}
 		}
 	}

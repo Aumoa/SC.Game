@@ -112,9 +112,6 @@
     <ClInclude Include="Asset.h">
       <Filter>Managed\Assets</Filter>
     </ClInclude>
-    <ClInclude Include="AssetBundle.h">
-      <Filter>Managed\Assets</Filter>
-    </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Managed\Assets</Filter>
     </ClInclude>
@@ -201,12 +198,6 @@
     </ClInclude>
     <ClInclude Include="SphereCollider.h">
       <Filter>Managed\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MDLParser.h">
-      <Filter>Managed\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="TextParser.h">
-      <Filter>Managed\Parser</Filter>
     </ClInclude>
     <ClInclude Include="UI.Anchor.h">
       <Filter>Managed\UI</Filter>
@@ -480,9 +471,6 @@
     <ClCompile Include="Asset.cpp">
       <Filter>Managed\Assets</Filter>
     </ClCompile>
-    <ClCompile Include="AssetBundle.cpp">
-      <Filter>Managed\Assets</Filter>
-    </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Managed\Assets</Filter>
     </ClCompile>
@@ -548,12 +536,6 @@
     </ClCompile>
     <ClCompile Include="SphereCollider.cpp">
       <Filter>Managed\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MDLParser.cpp">
-      <Filter>Managed\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="TextParser.cpp">
-      <Filter>Managed\Parser</Filter>
     </ClCompile>
     <ClCompile Include="UI.Border.cpp">
       <Filter>Managed\UI</Filter>

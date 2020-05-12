@@ -12,10 +12,10 @@ void MeshCollider::Update()
 		auto scale = Transform->Scale;
 		auto meshFilter = GetComponent<MeshFilter^>();
 
-		auto geo = static_cast< PxConvexMeshGeometry* >( mGeometry );
+		auto geo = static_cast< PxTriangleMeshGeometry* >( mGeometry );
 		if ( meshFilter )
 		{
-			geo->convexMesh = meshFilter->Mesh->mConvexMesh;
+			geo->triangleMesh = meshFilter->Mesh->mTriangleMesh;
 			auto scale = Transform->Scale;
 
 			geo->scale.rotation = PxQuat( PxIDENTITY{ } );
@@ -30,7 +30,7 @@ void MeshCollider::Update()
 
 MeshCollider::MeshCollider() : Collider()
 {
-	auto meshGeo = new PxConvexMeshGeometry();
+	auto meshGeo = new PxTriangleMeshGeometry();
 
 	mGeometry = meshGeo;
 }

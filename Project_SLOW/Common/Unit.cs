@@ -37,15 +37,9 @@ namespace Project_SLOW
 
 		void LoadComponents()
 		{
-			//var rigidbody = AddComponent<Rigidbody>();
-			//var collider = AddComponent<CapsuleCollider>();
 			var cc = AddComponent<CharacterController>();
 			cc.Radius = 0.5f;
-
-			//rigidbody.Constraints = RigidbodyConstraints.Rotation;
-			//collider.Radius = radius;
-			//collider.Height = 1.0f;
-			//collider.Center = new Vector3( 0.0f, 0.2f, 0.0f );
+			cc.Height = 1.8f;
 
 			AddComponent<Properties>();
 			AddComponent<MoveAbility>();
@@ -64,7 +58,7 @@ namespace Project_SLOW
 
 			//
 			// ToWalk 트랜지션
-			controller.AddTransition( "Stand", new AnimationTransitionCondition( "Walk", "walkSpeed", 0.3f, ( object animVar ) =>
+			controller.AddTransition( "Stand", new AnimationTransitionCondition( "Walk", "walkSpeed", 0.1f, ( object animVar ) =>
 			{
 				if ( animVar is float value )
 				{
@@ -79,7 +73,7 @@ namespace Project_SLOW
 
 			//
 			// ToStand 트랜지션
-			controller.AddTransition( "Walk", new AnimationTransitionCondition( "Stand", "walkSpeed", 0.3f, ( object animVar ) =>
+			controller.AddTransition( "Walk", new AnimationTransitionCondition( "Stand", "walkSpeed", 0.1f, ( object animVar ) =>
 			{
 				if ( animVar is float value )
 				{

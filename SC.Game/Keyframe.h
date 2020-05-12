@@ -29,6 +29,14 @@ namespace SC::Game
 		}
 
 		/// <summary>
+		/// (<see cref="System::Object"/> 클래스에서 상속 됨.) 단일 키프레임에 대한 텍스트 형식을 생성하여 반환합니다.
+		/// </summary>
+		System::String^ ToString() override
+		{
+			return System::String::Format( "Keyframe: {0:F2}, {1:F4}", TimePos, Value );
+		}
+
+		/// <summary>
 		/// (<see cref="System::Object"/> 클래스에서 상속 됨.) 두 개체의 값이 같은지 비교합니다.
 		/// </summary>
 		/// <param name="right"> 비교할 대상 개체를 전달합니다. </param>

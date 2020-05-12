@@ -18,6 +18,7 @@ namespace SC::Game
 		static HWND hWnd;
 		static Event<DisposingDelegate> Disposing;
 		static Event<ResizingDelegate> Resizing;
+		static bool mDisposed;
 
 		static std::wstring mAppName;
 		static int mPhysicsHz;

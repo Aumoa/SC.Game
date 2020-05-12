@@ -70,44 +70,47 @@ Scene::~Scene()
 
 Scene::!Scene()
 {
-	if ( mCharacterControllerManager )
+	if ( !App::mDisposed )
 	{
-		mCharacterControllerManager->release();
-		mCharacterControllerManager = nullptr;
-	}
-
-	for each ( auto go in mGameObjects )
-	{
-		go->SetScene( nullptr );
-	}
-
-	if ( mSimulationEventCallback )
-	{
-		delete mSimulationEventCallback;
-		mSimulationEventCallback = nullptr;
-	}
-
-	if ( mPxScene )
-	{
-		if ( !mFetchResults )
+		if ( mCharacterControllerManager )
 		{
-			mFetchResults = mPxScene->fetchResults( true );
+			mCharacterControllerManager->release();
+			mCharacterControllerManager = nullptr;
 		}
 
-		mPxScene->release();
-		mPxScene = nullptr;
-	}
+		for each ( auto go in mGameObjects )
+		{
+			go->SetScene( nullptr );
+		}
 
-	if ( mSkinnedMeshRendererQueue )
-	{
-		delete mSkinnedMeshRendererQueue;
-		mSkinnedMeshRendererQueue = nullptr;
-	}
+		if ( mSimulationEventCallback )
+		{
+			delete mSimulationEventCallback;
+			mSimulationEventCallback = nullptr;
+		}
 
-	if ( mControllerBehaviourCallback )
-	{
-		delete mControllerBehaviourCallback;
-		mControllerBehaviourCallback = nullptr;
+		if ( mPxScene )
+		{
+			if ( !mFetchResults )
+			{
+				mFetchResults = mPxScene->fetchResults( true );
+			}
+
+			mPxScene->release();
+			mPxScene = nullptr;
+		}
+
+		if ( mSkinnedMeshRendererQueue )
+		{
+			delete mSkinnedMeshRendererQueue;
+			mSkinnedMeshRendererQueue = nullptr;
+		}
+
+		if ( mControllerBehaviourCallback )
+		{
+			delete mControllerBehaviourCallback;
+			mControllerBehaviourCallback = nullptr;
+		}
 	}
 }
 
@@ -295,7 +298,7 @@ void Scene::Update()
 
 		// 고정 비율 타이머의 고정 시간 크기를 설정합니다.
 		mFixedUpdateTimer->IsFixedTimeStep = true;
-		mFixedUpdateTimer->TargetElapsedTicksPerSecond = ApplicationCore::mConfiguration.PhysicsUpdatesPerSecond;
+		mFixedUpdateTimer->TargetElapsedTicksPerSecond = Application::mConfiguration.PhysicsUpdatesPerSecond;
 	}
 
 	// 장면 그래프를 작성합니다.
@@ -344,6 +347,7 @@ void Scene::Update()
 	// 모든 트랜스폼을 슬립 상태로 변경합니다.
 	for each ( auto go in mSceneGraph )
 	{
+		go->mTransform->BufferUpdate();
 		go->mTransform->mBufferUpdated = false;
 	}
 }
@@ -363,9 +367,9 @@ void Scene::FixedUpdate()
 		go->FixedUpdate();
 	}
 
-	mPxScene->simulate( 1.0f / ApplicationCore::mConfiguration.PhysicsUpdatesPerSecond );
+	mPxScene->simulate( 1.0f / Application::mConfiguration.PhysicsUpdatesPerSecond );
 	mFetchResults = mPxScene->fetchResults( false );
-	mCharacterControllerManager->computeInteractions( 1.0f / ApplicationCore::mConfiguration.PhysicsUpdatesPerSecond );
+	mCharacterControllerManager->computeInteractions( 1.0f / Application::mConfiguration.PhysicsUpdatesPerSecond );
 }
 
 int Scene::Count::get()

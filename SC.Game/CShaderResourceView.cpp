@@ -21,10 +21,13 @@ CShaderResourceView::CShaderResourceView( CShaderResourceView&& right )
 
 CShaderResourceView::~CShaderResourceView()
 {
-	if ( mIndex != -1 )
+	if ( !App::mDisposed )
 	{
-		DescriptorAllocator::Push( mIndex );
-		mIndex = -1;
+		if ( mIndex != -1 )
+		{
+			DescriptorAllocator::Push( mIndex );
+			mIndex = -1;
+		}
 	}
 }
 

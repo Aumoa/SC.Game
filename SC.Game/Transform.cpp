@@ -80,7 +80,13 @@ void Transform::Update()
 			}
 			mLocalRotation = quat * Quaternion::Conjugate( identity2 );
 		}
+	}
+}
 
+void Transform::BufferUpdate()
+{
+	//if ( IsUpdated )
+	{
 		if ( mConstants )
 		{
 			Matrix4x4 world = World;
@@ -392,7 +398,7 @@ bool Transform::IsUpdated::get()
 {
 	bool v = mBufferUpdated;
 
-	if ( !v && mParent != nullptr )
+	if ( mParent != nullptr )
 	{
 		v = v || mParent->IsUpdated;
 	}

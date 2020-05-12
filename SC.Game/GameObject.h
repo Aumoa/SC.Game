@@ -101,7 +101,14 @@ namespace SC::Game
 		/// <summary>
 		/// 개체의 하위 개체를 가져옵니다.
 		/// </summary>
+		/// <param name="index"> 하위 개체의 순서 번호를 전달합니다. </param>
 		GameObject^ GetChild( int index );
+
+		/// <summary>
+		/// 개체의 하위 개체의 순서 번호를 가져옵니다.
+		/// </summary>
+		/// <param name="name"> 하위 개체의 이름을 전달합니다. </param>
+		int FindChild( System::String^ name );
 
 		/// <summary>
 		/// 개체의 변환 개체를 가져옵니다.

@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using System.Drawing;
 using SC.Game.UI;
+using SC.Game.UI.Shapes;
+
+using Rectangle = SC.Game.UI.Shapes.Rectangle;
 
 namespace Project_SLOW
 {
@@ -14,6 +17,7 @@ namespace Project_SLOW
 
 		static TextBlock fpsText;
 		static TextBlock debugText;
+		static Rectangle debugBackground;
 
 		protected BasePage( string xName ) : base( xName )
 		{
@@ -48,6 +52,8 @@ namespace Project_SLOW
 				tickCount = 0;
 			}
 
+
+
 			tickCount += 1;
 
 			return base.OnUpdate( clientRect );
@@ -72,10 +78,17 @@ namespace Project_SLOW
 					debugText.AddDependencyProperty( "Panel.ZOrder=100" );
 					debugText.Content = "DebugText";
 					debugText.IsRichText = false;
+
+					debugBackground = new Rectangle( "debugBackground" );
+					debugBackground.Fill = new SolidColorBrush( Color.Black );
+					debugBackground.Fill.Opacity = 0.5f;
+					debugBackground.Width = 500.0f;
+					debugBackground.Height = 100.0f;
 				}
 
 				relativePanel.Add( fpsText );
 				relativePanel.Add( debugText );
+				relativePanel.Add( debugBackground );
 			}
 
 			Content = relativePanel;

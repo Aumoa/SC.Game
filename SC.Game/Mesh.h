@@ -13,6 +13,7 @@ namespace SC::Game
 
 		UINT mVertexStride = 0;
 		physx::PxConvexMesh* mConvexMesh = nullptr;
+		physx::PxTriangleMesh* mTriangleMesh = nullptr;
 
 		int mVertexCount = 0;
 		int mIndexCount = 0;

@@ -408,20 +408,23 @@ GameObject::!GameObject()
 {
 	if ( mRigidbody )
 	{
-		if ( mSceneRef && mRigidbody )
+		if ( !App::mDisposed )
 		{
-			mSceneRef->mPxScene->removeActor( *mRigidbody );
-		}
+			if ( mSceneRef && mRigidbody )
+			{
+				mSceneRef->mPxScene->removeActor( *mRigidbody );
+			}
 
-		delete ( gcroot<GameObject^>* )mRigidbody->userData;
-		mRigidbody->release();
-		mRigidbody = nullptr;
+			delete ( gcroot<GameObject^>* )mRigidbody->userData;
+			mRigidbody->release();
+			mRigidbody = nullptr;
+		}
 	}
 }
 
 Object^ GameObject::Clone()
 {
-	auto go = gcnew GameObject( Name + L" Clone" );
+	auto go = gcnew GameObject( Name );
 	go->Transform->Clone( Transform );
 
 	for each ( auto gameObject in mGameObjects )
@@ -576,6 +579,19 @@ IList<T>^ GameObject::GetComponentsInChildren()
 GameObject^ GameObject::GetChild( int index )
 {
 	return mGameObjects[index];
+}
+
+int GameObject::FindChild( String^ name )
+{
+	for ( int i = 0; i < NumChilds; ++i )
+	{
+		if ( mGameObjects[i]->Name == name )
+		{
+			return i;
+		}
+	}
+
+	return -1;
 }
 
 Transform^ GameObject::Transform::get()

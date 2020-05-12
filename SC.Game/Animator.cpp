@@ -25,6 +25,12 @@ void Animator::Start()
 		return;
 	}
 
+	if ( mController )
+	{
+		mCurrentState = MakeStateMachine( mController->DefaultState );
+		mPrevState = { };
+	}
+
 	int numBones = Object->GetComponentsInChildren<Bone^>()->Count;
 
 	if ( !mBoneTransform )
@@ -39,6 +45,10 @@ void Animator::Start()
 	{
 		mFinalTransformBuffer = new LargeHeap( D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, sizeof( tag_BoneTransform ) * numBones );
 		InitializeOffset( Object, -1 );
+
+		auto map = ( tag_BoneTransform* )mFinalTransformBuffer->Map();
+		memcpy( map, mFinalTransform->data(), sizeof( tag_BoneTransform ) * mFinalTransform->size() );
+		mFinalTransformBuffer->Unmap();
 	}
 	else
 	{
@@ -114,7 +124,7 @@ Object^ Animator::Clone()
 	auto clone = gcnew Animator();
 
 	clone->mController = mController;
-	clone->mAnimVars = gcnew Dictionary<String^, System::Object^>( mAnimVars );
+	clone->mAnimVars = mAnimVars ? gcnew Dictionary<String^, System::Object^>( mAnimVars ) : nullptr;
 
 	clone->mCurrentState = mCurrentState;
 	clone->mPrevState = mPrevState;
@@ -167,8 +177,6 @@ void Animator::Controller::set( AnimatorController^ value )
 {
 	mController = value;
 	mAnimVars = value->MakeParameters();
-	mCurrentState = MakeStateMachine( value->DefaultState );
-	mPrevState = { };
 }
 
 void Animator::InitializeOffset( GameObject^ gameObject, int parent )
@@ -178,15 +186,7 @@ void Animator::InitializeOffset( GameObject^ gameObject, int parent )
 	if ( bone )
 	{
 		auto idx = bone->Index;
-		auto trp = gameObject->Transform;
-		auto pos = trp->LocalPosition;
-		auto scale = trp->LocalScale;
-		auto quat = trp->LocalRotation;
-
-		auto offset =
-			Matrix4x4::CreateScale( scale ) *
-			Matrix4x4::CreateFromQuaternion( quat ) *
-			Matrix4x4::CreateTranslation( pos );
+		auto offset = bone->Offset;
 
 		Assign( mBoneTransform->at( idx ).Offset, offset );
 		Assign( mBoneTransform->at( idx ).ToRoot, Matrix4x4::Identity );
@@ -220,6 +220,16 @@ void Animator::UpdateToRoot( GameObject^ gameObject, int parent )
 				Matrix4x4::CreateScale( key.Scaling.Value ) *
 				Matrix4x4::CreateFromQuaternion( key.Rotation.Value ) *
 				Matrix4x4::CreateTranslation( key.Translation.Value );
+
+			auto trp = gameObject->Transform;
+			trp->LocalPosition = key.Translation.Value;
+			trp->LocalScale = key.Scaling.Value;
+			trp->LocalRotation = key.Rotation.Value;
+		}
+		else
+		{
+			transform = bone->ToRoot;
+			gameObject->Transform->LocalWorld = transform;
 		}
 
 		Matrix4x4 parentTransform = Matrix4x4::Identity;
@@ -231,6 +241,20 @@ void Animator::UpdateToRoot( GameObject^ gameObject, int parent )
 
 		Assign( mBoneTransform->at( idx ).ToRoot, transform * parentTransform );
 		parent = idx;
+	}
+	else
+	{
+		auto name = gameObject->Name;
+
+		if ( mCurrentState.Keyframes->ContainsKey( name ) )
+		{
+			auto key = mCurrentState.Keyframes[name];
+
+			auto trp = gameObject->Transform;
+			trp->LocalPosition = key.Translation.Value;
+			trp->LocalScale = key.Scaling.Value;
+			trp->LocalRotation = key.Rotation.Value;
+		}
 	}
 
 	for ( int i = 0; i < gameObject->NumChilds; ++i )
@@ -269,15 +293,16 @@ void Animator::Transistor()
 
 			if ( i.HasExitTime )
 			{
-				if ( mCurrentState.TimePos < ( mCurrentState.Duration - i.BlendTime ) )
+				checkIf = false;
+
+				if ( mCurrentState.TimePos >= ( mCurrentState.Duration - i.BlendTime ) )
 				{
-					checkIf = false;
+					checkIf = true;
 				}
 			}
 
 			if ( checkIf )
 			{
-
 				if ( String::IsNullOrEmpty( i.VarName ) )
 				{
 					change = true;
@@ -286,14 +311,17 @@ void Animator::Transistor()
 				{
 					auto var = GetVar( i.VarName );
 					auto type = var->GetType();
-					if ( type == Trigger::typeid )
+					if ( type == Trigger::typeid && ( ( Trigger )var ).IsActive )
 					{
 						SetVar( i.VarName, Trigger( false ) );
 						change = true;
 					}
-					else if ( i.Condition( var ) )
+					else if ( i.Condition != nullptr )
 					{
-						change = true;
+						if ( i.Condition( var ) )
+						{
+							change = true;
+						}
 					}
 				}
 			}

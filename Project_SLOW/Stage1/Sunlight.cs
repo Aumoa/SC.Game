@@ -21,7 +21,7 @@ namespace Project_SLOW.Stage1
 			light.Width = 60.0f;
 			light.Height = 60.0f;
 
-			Transform.Position = new Vector3( 3.0f, 10.0f, 5.0f );
+			Transform.Position = new Vector3( 3.0f, 10.0f, -5.0f );
 			Transform.LookAt( Vector3.Zero );
 		}
 	}

@@ -8,6 +8,7 @@ using namespace std;
 HWND App::hWnd;
 Event<DisposingDelegate> App::Disposing;
 Event<ResizingDelegate> App::Resizing;
+bool App::mDisposed;
 
 wstring App::mAppName;
 int App::mPhysicsHz;
@@ -86,6 +87,8 @@ void App::CoreLoop()
 			OnIdle();
 		}
 	}
+
+	mDisposed = true;
 }
 
 void App::GCAdd( ComPtr<IUnknown> pUnknown )
@@ -256,7 +259,7 @@ LRESULT CALLBACK App::WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 		Input::mScrollDelta.Y += ( float )( short )HIWORD( wParam ) / ( float )WHEEL_DELTA;
 		break;
 	case WM_ACTIVATEAPP:
-		ApplicationCore::mApp->OnActive( ( bool )wParam );
+		Application::mApp->OnActive( ( bool )wParam );
 		mActivated = ( bool )wParam;
 		break;
 	}

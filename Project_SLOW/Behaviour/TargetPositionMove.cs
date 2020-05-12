@@ -31,6 +31,7 @@ namespace Project_SLOW
 		public override void FixedUpdate()
 		{
 			Vector3 disp = Transform.Position;
+			BasePage.Debug = disp;
 
 			if ( targetAccepted )
 			{
@@ -56,22 +57,23 @@ namespace Project_SLOW
 					var angle = ( float )Math.Acos( dot );
 
 					// 회전 각도를 제한합니다.
-					angle = Math.Min( Time.FixedDeltaTime * rotateSpeed, angle );
-
-					if ( axis.Length() < 0.01f )
+					if ( angle >= 0.01f )
 					{
-						axis = Vector3.UnitY;
+						angle = Math.Min( Time.FixedDeltaTime * rotateSpeed, angle );
+
+						if ( axis.Length() < 0.05f )
+						{
+							axis = Vector3.UnitY;
+						}
+
+						axis.X = 0;
+						axis.Z = 0;
+
+						axis = Vector3.Normalize( axis );
+						Transform.Rotation = Quaternion.CreateFromAxisAngle( axis, angle ) * Transform.Rotation;
+
+						animator.SetVar( "walkSpeed", 1.0f );
 					}
-
-					axis.X = 0;
-					axis.Z = 0;
-
-					axis = Vector3.Normalize( axis );
-					Transform.Rotation = Quaternion.CreateFromAxisAngle( axis, angle ) * Transform.Rotation;
-
-					animator.SetVar( "walkSpeed", 1.0f );
-
-					BasePage.Debug = Transform.Position.ToString();
 				}
 				else
 				{
@@ -111,6 +113,6 @@ namespace Project_SLOW
 		}
 
 		public float speed = 3.0f;
-		public float rotateSpeed = 8.0f;
+		public float rotateSpeed = 15.0f;
 	}
 }

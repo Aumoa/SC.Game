@@ -31,6 +31,7 @@ void AnimatorController::AddState( String^ stateNameOverride, AnimationState^ st
 	{
 		mStates->Add( stateNameOverride, state );
 		if ( isDefault ) mDefaultState = stateNameOverride;
+		else if ( mDefaultState == nullptr ) mDefaultState = stateNameOverride;
 	}
 }
 

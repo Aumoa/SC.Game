@@ -38,7 +38,7 @@ namespace SC::Game
 		/// <param name="textureData"> 텍스처 데이터를 전달합니다. </param>
 		/// <param name="sizeInBytes"> 텍스처 데이터의 크기를 전달합니다. </param>
 		/// <param name="format"> 이미지 형식을 전달합니다. </param>
-		Texture2D( System::String^ xName, void* textureData, System::UInt32 sizeInBytes, TextureFormat format );
+		Texture2D( System::String^ xName, cli::array<System::Byte>^ textureData, System::UInt32 sizeInBytes, TextureFormat format );
 
 		/// <summary>
 		/// (<see cref="Asset"/> 클래스에서 상속 됨.) 개체의 간단한 정보를 텍스트 형식으로 생성하여 반환합니다.

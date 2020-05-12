@@ -74,8 +74,6 @@ using Microsoft::WRL::ComPtr;
 #include "tag_Vertex.h"
 #include "ContactCallback.h"
 #include "Bezier.h"
-#include "TextParser.h"
-#include "MDLParser.h"
 #include "SkinnedMeshRendererQueue.h"
 #include "ControllerBehaviourCallback.h"
 #include "UI.GlyphRenderer.h"
@@ -189,7 +187,6 @@ inline void HR( HRESULT hr )
 #include "AnimationClip.h"
 #include "AnimationState.h"
 #include "AnimatorController.h"
-#include "AssetBundle.h"
 
 #include "GameObject.h"
 #include "Component.h"

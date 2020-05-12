@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -55,6 +56,7 @@
     <Compile Include="App.cs" />
     <Compile Include="BasePage.cs" />
     <Compile Include="Behaviour\BasicClickEvent.cs" />
+    <Compile Include="Behaviour\CameraFollow.cs" />
     <Compile Include="Behaviour\TargetPositionMove.cs" />
     <Compile Include="CharacterBase.cs" />
     <Compile Include="Common\CursorSystem.cs" />
@@ -65,12 +67,15 @@
     <Compile Include="Common\SimpleButton.cs" />
     <Compile Include="Common\Unit.cs" />
     <Compile Include="Components\Properties.cs" />
+    <Compile Include="Components\TestComponent.cs" />
     <Compile Include="CustomTag.cs" />
     <Compile Include="Effects\Effect.cs" />
     <Compile Include="Effects\ImmediatelyDamageEffect.cs" />
     <Compile Include="Effects\TargetBasedEffect.cs" />
+    <Compile Include="Enemy\Boss.cs" />
+    <Compile Include="GameObjectExtensions.cs" />
     <Compile Include="MainCamera.cs" />
-    <Compile Include="Players\Mokou.cs" />
+    <Compile Include="Players\Arisa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="SingletonGameObject.cs" />
@@ -82,6 +87,7 @@
     <Compile Include="Stage1\Myscene.cs" />
     <Compile Include="Stage1\Sunlight.cs" />
     <Compile Include="Stage1\Terrain.cs" />
+    <Compile Include="Stage1\Tree.cs" />
     <Compile Include="Title\Mypage.cs" />
     <Compile Include="Title\Mypage.EventCallback.cs" />
     <Compile Include="Title\Mypage.Initialize.cs" />
@@ -94,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Model\Mokou\mokou.mdl" />
+    <None Include="Assets\Model\scene\source\scene.fbx" />
     <None Include="Assets\Model\Trees\AshenTree0.mdl" />
     <None Include="Assets\Model\Trees\AshenTree1.mdl" />
     <None Include="Assets\Model\Trees\AshenTree2.mdl" />
@@ -107,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Model\Mokou\mokou.png" />
+    <Content Include="Assets\Model\scene\textures\altaria.jpeg" />
+    <Content Include="Assets\Model\scene\textures\ground_grass2.png" />
     <Content Include="Assets\Model\Trees\AshenTree.png" />
     <Content Include="Assets\Texture\grass\grass01.jpg" />
     <Content Include="Assets\Texture\grass\grass01_h.jpg" />
@@ -123,8 +132,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Image\" />
+    <Folder Include="Assets\Model\alien_anim_schieter\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SC.Game.Assets\SC.Game.Assets.csproj">
+      <Project>{6f0dd0d3-d768-43e2-bad6-36cc39cb0ff1}</Project>
+      <Name>SC.Game.Assets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SC.Game\SC.Game.vcxproj">
       <Project>{686212a5-651d-4ff0-b012-300aede1c777}</Project>
       <Name>SC.Game</Name>

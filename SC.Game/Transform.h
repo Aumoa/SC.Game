@@ -33,6 +33,7 @@ namespace SC::Game
 	internal:
 		void CreateBuffer();
 		void Update();
+		void BufferUpdate();
 		void Clone( Game::Transform^ transform );
 
 	public:

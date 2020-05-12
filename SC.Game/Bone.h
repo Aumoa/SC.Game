@@ -9,6 +9,8 @@ namespace SC::Game
 	{
 		System::String^ mName;
 		int mIndex = 0;
+		System::Numerics::Matrix4x4 mOffset;
+		System::Numerics::Matrix4x4 mToRoot;
 
 	public:
 		/// <summary>
@@ -20,6 +22,24 @@ namespace SC::Game
 		/// (<see cref="Component"/> 클래스에서 상속 됨.) 해당 컴포넌트의 완전 복사본을 생성하여 반환합니다.
 		/// </summary>
 		System::Object^ Clone() override;
+
+		/// <summary>
+		/// 뼈대의 오프셋을 설정하거나 가져옵니다.
+		/// </summary>
+		property System::Numerics::Matrix4x4 Offset
+		{
+			System::Numerics::Matrix4x4 get();
+			void set( System::Numerics::Matrix4x4 value );
+		}
+
+		/// <summary>
+		/// 뼈대가 세계 위치로 변환되기 위한 변환 행렬을 설정하거나 가져옵니다.
+		/// </summary>
+		property System::Numerics::Matrix4x4 ToRoot
+		{
+			System::Numerics::Matrix4x4 get();
+			void set( System::Numerics::Matrix4x4 value );
+		}
 
 		/// <summary>
 		/// 뼈대의 이름을 설정하거나 가져옵니다.

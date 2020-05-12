@@ -1,5 +1,6 @@
 ﻿using System;
 using SC.Game;
+//using SC.Game.Assets;
 
 namespace Project_SLOW
 {
@@ -14,7 +15,7 @@ namespace Project_SLOW
 
 		public override void OnStart()
 		{
-			var title = SceneManager.LoadScene<Title.Myscene>();
+			var title = SceneManager.LoadScene<Stage1.Myscene>();
 			SceneManager.Start( title );
 		}
 

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Importer.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeAttributeType.h" />
+    <ClInclude Include="NodeAttribute.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Deformer.h" />
+    <ClInclude Include="Skin.h" />
+    <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="SkinnedControlPoint.h" />
+    <ClInclude Include="AnimStack.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="TimeMode.h" />
+    <ClInclude Include="Joint.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Importer.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NodeAttribute.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="AnimStack.cpp" />
+  </ItemGroup>
+</Project>

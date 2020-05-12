@@ -21,15 +21,18 @@ TextFormat::~TextFormat()
 
 TextFormat::!TextFormat()
 {
-	if ( mTextFormat )
+	if ( !App::mDisposed )
 	{
-		mTextFormat->Release();
-		mTextFormat = nullptr;
-	}
+		if ( mTextFormat )
+		{
+			mTextFormat->Release();
+			mTextFormat = nullptr;
+		}
 
-	if ( mGlyphBuffer )
-	{
-		delete mGlyphBuffer;
-		mGlyphBuffer = nullptr;
+		if ( mGlyphBuffer )
+		{
+			delete mGlyphBuffer;
+			mGlyphBuffer = nullptr;
+		}
 	}
 }

@@ -26,16 +26,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{70C22E43
 		ExternalLib\x64\Debug\LowLevelAABB_static.lib = ExternalLib\x64\Debug\LowLevelAABB_static.lib
 		ExternalLib\x64\Debug\LowLevelDynamics_static.lib = ExternalLib\x64\Debug\LowLevelDynamics_static.lib
 		ExternalLib\x64\Debug\PhysX.lib = ExternalLib\x64\Debug\PhysX.lib
-		ExternalLib\x64\Debug\PhysX_64.dll = ExternalLib\x64\Debug\PhysX_64.dll
 		ExternalLib\x64\Debug\PhysXCharacterKinematic_static.lib = ExternalLib\x64\Debug\PhysXCharacterKinematic_static.lib
 		ExternalLib\x64\Debug\PhysXCommon.lib = ExternalLib\x64\Debug\PhysXCommon.lib
-		ExternalLib\x64\Debug\PhysXCommon_64.dll = ExternalLib\x64\Debug\PhysXCommon_64.dll
 		ExternalLib\x64\Debug\PhysXCooking.lib = ExternalLib\x64\Debug\PhysXCooking.lib
-		ExternalLib\x64\Debug\PhysXCooking_64.dll = ExternalLib\x64\Debug\PhysXCooking_64.dll
 		ExternalLib\x64\Debug\PhysXDevice64.dll = ExternalLib\x64\Debug\PhysXDevice64.dll
 		ExternalLib\x64\Debug\PhysXExtensions_static.lib = ExternalLib\x64\Debug\PhysXExtensions_static.lib
 		ExternalLib\x64\Debug\PhysXFoundation.lib = ExternalLib\x64\Debug\PhysXFoundation.lib
-		ExternalLib\x64\Debug\PhysXFoundation_64.dll = ExternalLib\x64\Debug\PhysXFoundation_64.dll
 		ExternalLib\x64\Debug\PhysXGpu_64.dll = ExternalLib\x64\Debug\PhysXGpu_64.dll
 		ExternalLib\x64\Debug\PhysXPvdSDK_static.lib = ExternalLib\x64\Debug\PhysXPvdSDK_static.lib
 		ExternalLib\x64\Debug\PhysXTask_static.lib = ExternalLib\x64\Debug\PhysXTask_static.lib
@@ -69,6 +65,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{1FE3
 		ExternalLib\x64\Release\SceneQuery_static.lib = ExternalLib\x64\Release\SceneQuery_static.lib
 		ExternalLib\x64\Release\SimulationController_static.lib = ExternalLib\x64\Release\SimulationController_static.lib
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SC.Game.Assets", "SC.Game.Assets\SC.Game.Assets.csproj", "{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FbxSDK", "FbxSDK\FbxSDK.vcxproj", "{A71ECC45-18E9-47AD-91C1-63882A9C8876}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SC.Game.Graphics", "SC.Game.Graphics\SC.Game.Graphics.vcxproj", "{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +116,38 @@ Global
 		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|x64.Build.0 = Release|Any CPU
 		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|x86.ActiveCfg = Release|Any CPU
 		{442C44FF-6323-4EE7-B84D-636AE244B6DC}.Release|x86.Build.0 = Release|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Debug|x64.Build.0 = Debug|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Debug|x86.Build.0 = Debug|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Release|x64.ActiveCfg = Release|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Release|x64.Build.0 = Release|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F0DD0D3-D768-43E2-BAD6-36CC39CB0FF1}.Release|x86.Build.0 = Release|Any CPU
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Debug|x64.ActiveCfg = Debug|x64
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Debug|x64.Build.0 = Debug|x64
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Debug|x86.ActiveCfg = Debug|Win32
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Debug|x86.Build.0 = Debug|Win32
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Release|Any CPU.ActiveCfg = Release|Win32
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Release|x64.ActiveCfg = Release|x64
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Release|x64.Build.0 = Release|x64
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Release|x86.ActiveCfg = Release|Win32
+		{A71ECC45-18E9-47AD-91C1-63882A9C8876}.Release|x86.Build.0 = Release|Win32
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Debug|x64.ActiveCfg = Debug|x64
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Debug|x64.Build.0 = Debug|x64
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Debug|x86.ActiveCfg = Debug|Win32
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Debug|x86.Build.0 = Debug|Win32
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Release|Any CPU.ActiveCfg = Release|Win32
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Release|x64.ActiveCfg = Release|x64
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Release|x64.Build.0 = Release|x64
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Release|x86.ActiveCfg = Release|Win32
+		{50F8AA27-5118-4E2F-A97B-ADBADEB59EF3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

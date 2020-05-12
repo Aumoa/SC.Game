@@ -25,7 +25,7 @@ namespace SC::Game
 		AnimVarConditionDelegate^ Condition;
 
 		/// <summary>
-		/// 이 전환이 진행되는 시간을 설정합니다.
+		/// 애니메이션 재생 시간이 종료될 경우 전환을 가집니다.
 		/// </summary>
 		bool HasExitTime;
 

@@ -150,7 +150,6 @@
     <ClInclude Include="AppConfiguration.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Asset.h" />
-    <ClInclude Include="AssetBundle.h" />
     <ClInclude Include="Assignable.h" />
     <ClInclude Include="Behaviour.h" />
     <ClInclude Include="Bezier.h" />
@@ -205,7 +204,6 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightType.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="MDLParser.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshCollider.h" />
     <ClInclude Include="MeshFilter.h" />
@@ -230,7 +228,6 @@
     <ClInclude Include="Tag.h" />
     <ClInclude Include="tag_ShaderInfo.h" />
     <ClInclude Include="tag_Vertex.h" />
-    <ClInclude Include="TextParser.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureFormat.h" />
     <ClInclude Include="ThreadDispatcher.h" />
@@ -274,7 +271,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Asset.cpp" />
-    <ClCompile Include="AssetBundle.cpp" />
     <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Bone.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
@@ -316,7 +312,6 @@
     <ClCompile Include="LargeHeap.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="MDLParser.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshCollider.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
@@ -344,7 +339,6 @@
     <ClCompile Include="SkinnedMeshRendererQueue.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="StateMachine.cpp" />
-    <ClCompile Include="TextParser.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="ThreadDispatcher.cpp" />
     <ClCompile Include="Time.cpp" />
